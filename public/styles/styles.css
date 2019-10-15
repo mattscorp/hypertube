@@ -2,6 +2,15 @@ body{
 	background-color: #e2e2e2 !important;
 }
 
+/*** NAV ***/
+
+
+
+.btn-success {
+    color: red !important;
+    background-color: black !important;
+    border-color: red !important;
+}
 /*****      HOME PAGE      ******/
 
 .col-sm-3 h3, .col-sm-3 h4, .col-sm-3 h5{
@@ -86,6 +95,32 @@ body{
 
 
 /********* ACCOUNT *****/
+
+
+
+
+
+/***** QUERIES ******/
+
+
+
+@media (min-width: 768px) {
+.navbar-brand.abs
+    {
+        position: absolute;
+        width: 100%;
+        left: 0;
+        text-align: center;
+    }
+}
+
+
+
+
+
+
+
+
 
 
 
