@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS `users` (
     `last_name` varchar(255) DEFAULT NULL,
     `first_name` varchar(255) DEFAULT NULL,
     `login` varchar(100) DEFAULT NULL,
+    `password` text,
     `email` varchar(255) DEFAULT NULL,
     `email_confirmation` text,
     `insta` varchar(100) DEFAULT NULL,
