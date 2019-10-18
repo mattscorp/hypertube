@@ -1,3 +1,5 @@
+'use strict'
+
 // mysql connection credentials
 const db_connect = require('../model/db_connect.js');
 let con = db_connect.con;

@@ -1,0 +1,44 @@
+.main-navigation  {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3.5rem;
+    background: blue;
+    display: flex;
+    align-items: center;
+}
+
+.main-navigation-logo {
+    margin: 0;
+    font-size: 1.5rem;
+
+}
+
+.main-navigation-item {
+    margin-left: 1.5rem;
+}
+
+.main-navigation-item ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: flex;
+}
+
+.main-navigation-item li {
+    margin: 0 1rem;
+
+}
+
+.main-navigation-item a {
+    text-decoration: none;
+    color: red;
+}
+
+.main-navigation-item a:hover,
+.main-navigation-item a.active,
+.main-navigation-item a:active {
+    color: orange;
+}
+

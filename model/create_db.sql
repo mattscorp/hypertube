@@ -5,6 +5,8 @@ SET time_zone = '+00:00';
 
 CREATE DATABASE IF NOT EXISTS `hypertube`;
 
+USE `hypertube`;
+
 CREATE TABLE IF NOT EXISTS `users` (
     `user_ID` INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `uuid` text,
@@ -45,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `ratings` (
     `user_ID` int(11) DEFAULT NULL,
     `rating` int(4),
     `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-)
+);
 
 CREATE TABLE IF NOT EXISTS `comments` (
     `comment_ID` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -53,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
     `user_ID` int(11) DEFAULT NULL,
     `comment` text,
     `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-)
+);
 
 CREATE TABLE IF NOT EXISTS `views` (
     `view_ID` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -62,4 +64,4 @@ CREATE TABLE IF NOT EXISTS `views` (
     `viewed` int(1) DEFAULT 0,
     `time_viewed` int(4) DEFAULT 0,
     `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-)
+);

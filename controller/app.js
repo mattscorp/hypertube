@@ -14,6 +14,17 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // parse requests of content-type - application/json
 app.use(bodyParser.json())
 
+// In order to allow cross-domain requests:
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', "*");
+  res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 //////// API ////////
 
 //// USERS ////
@@ -102,8 +113,17 @@ app.route('/moviedb')
       }
       // https://developers.themoviedb.org/3/movies/get-similar-movies
     }
-  })
+  });
 
+app.post('/test', (req, res) => {
+  res.send("OK CA MARCHE EN POST");
+  console.log(req);
+});
+
+app.get('/test', (req, res) => {
+  res.send("OK CA MARCHE EN GET");
+  console.log(req.query);
+});
 
 app.delete('/users/:userId/:lol', (req, res) => {
   return res.send(
@@ -112,6 +132,6 @@ app.delete('/users/:userId/:lol', (req, res) => {
 });
 
 // listen for requests
-app.listen(3000, () => {
-  console.log("Server is listening on port 3000");
+app.listen(8000, () => {
+  console.log("Server is listening on port 8000");
 });
