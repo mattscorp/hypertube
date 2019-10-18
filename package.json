@@ -4,8 +4,11 @@
   "description": "hypertube",
   "main": "controller/app.js",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
+    "ent": "^2.2.0",
     "express": "^4.17.1",
+    "express-session": "^1.17.0",
     "https": "^1.0.0",
     "mysql": "^2.17.1",
     "nodemon": "^1.19.3",

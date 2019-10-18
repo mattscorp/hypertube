@@ -1,8 +1,31 @@
 'use strict'
+const bcrypt = require('bcryptjs');
 
 // mysql connection credentials
 const db_connect = require('../model/db_connect.js');
 let con = db_connect.con;
+
+// Checks whether the user credentials are valid
+//      --> if successful, resolves the uuid
+//      --> if not, resolves '0'
+const user_connect = async (login, password) => {
+    return new Promise((resolve, reject) => {
+        let sql = "SELECT * FROM `users` WHERE `login` = ?";
+        con.query(sql, [login], (err, result) => {
+            if (err)
+                throw err;
+            else if (result != '') {
+                if (result[0].password == password)
+                    resolve(result[0].uuid);
+                else
+                    resolve('0');
+            } else {
+                resolve('0');
+            }
+        });
+    });
+}
+module.exports.user_connect = user_connect;
 
 // Return all information (except the password) from users based on the user_uuid
 const get_users = async (user_uuid) => {
@@ -29,3 +52,4 @@ const post_users = async (values) => {
     })
 }
 module.exports.post_users = post_users;
+

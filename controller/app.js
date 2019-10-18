@@ -47,9 +47,9 @@ app.route('/users')
 // POST "/users", req.body = []
 //    --> Create the user in the `users` database
   .post((req, res) => {
-    if (req.body == '' || !req.body.uuid || !req.body.language || !req.body.last_name || !req.body.first_name || !req.body.login || !req.body.profile_picture || !req.body.email) {
+    if (req.body == '' || !req.body.uuid || !req.body.language || !req.body.last_name || !req.body.first_name || !req.body.login || !req.body.profile_picture || !req.body.login) {
       res.status(400);
-      res.send("Specify the following : 'uuid', 'language', last_name', 'first_name', 'login', 'profile_picture', 'email'")
+      res.send("Specify the following : 'uuid', 'language', last_name', 'first_name', 'login', 'profile_picture', 'login'")
     } else {
       connection.post_users(req.body);
       res.status(201);
@@ -115,10 +115,9 @@ app.route('/moviedb')
     }
   });
 
-app.post('/test', (req, res) => {
-  res.send("OK CA MARCHE EN POST");
-  console.log(req);
-});
+
+const user = require('./user/connect.js');
+app.use(user);
 
 app.get('/test', (req, res) => {
   res.send("OK CA MARCHE EN GET");

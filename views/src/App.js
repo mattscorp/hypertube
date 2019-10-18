@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 
 import AuthPage from './pages/Auth.js';
@@ -11,7 +10,7 @@ function App() {
     <BrowserRouter>
       <React.Fragment>
         <MainNavigation />
-        <main className="main-content">
+        <main className="mt-2">
           <Switch>
             <Redirect from="/" to="/auth" exact/>
             <Route path="/auth" component={ AuthPage }/>
