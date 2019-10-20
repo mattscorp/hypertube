@@ -1,14 +1,5 @@
 import React, { Component } from 'react';
 
-// import './Auth.css'
-
-import axios from "axios";
-
-axios.create({
-  baseURL: "http://localhost:8000/",
-  responseType: "json"
-});
-
 class AuthPage extends Component {
     
     state = {
@@ -18,7 +9,11 @@ class AuthPage extends Component {
     constructor(props) {
         super(props);
         this.loginEl = React.createRef();
+        this.firstNameEl = React.createRef();
+        this.lastNameEl = React.createRef();
+        this.emailEl = React.createRef();
         this.passwordEl = React.createRef();
+        this.passwordConfirmEl = React.createRef();
 
     }
 
@@ -28,24 +23,36 @@ class AuthPage extends Component {
         });
     }
 
-    submitHandler = async (event) => {
+    submitHandler = event => {
         event.preventDefault();
-        const first_name = this.firstNameEl.current.value;
-        const last_name = this.lastNameEl.current.value;
-        const login = this.loginEl.current.value;
-        const password = this.passwordEl.current.value;
-        const confirm_password = this.confirmPasswordEl.current.value;
-
-        if (login.trim().length === 0 || password.trim().length === 0) {
+        if (this.loginEl.current.value.trim().length === 0 || this.passwordEl.current.value.trim().length === 0) {
             return;
         } else {
-            try {
-                const response = await axios.post('http://localhost:8000/auth', { action:"creation", first_name: first_name, last_name: last_name, login: login, password: password, confirm_password: confirm_password });
-                console.log('👉 Returned data:', response);
-              } catch (e) {
-                console.log(`😱 Axios request failed: ${e}`);
-              }
-            
+            const login = this.loginEl.current.value;
+            const password = this.passwordEl.current.value;
+            let requestBody = '';
+            if (this.state.isLogin) {
+                requestBody = {
+                    body: `{action: "login", login: "${login}", password: "${password}"}`
+                };
+            } else {
+                const first_name =  this.firstNameEl.current.value;
+                const last_name = this.lastNameEl.current.value;
+                const email = this.emailEl.current.value;
+                const confirm_password = this.passwordConfirmEl.current.value;
+                requestBody = {
+                    body: `{action: "creation", login: "${login}", password: "${password}", first_name: "${first_name}", last_name: "${last_name}", email: "${email}", confirm_password: "${confirm_password}"}`
+                };
+                if (password !== confirm_password) {
+                    alert('Passwords don\'t match');
+                    return;
+                }
+            }
+            fetch('http://localhost:8000/auth', {
+                method: 'POST',
+                body: JSON.stringify(requestBody),
+                headers: {'Content-Type': 'application/json'}
+            });
         }
     };
     
@@ -89,6 +96,14 @@ class AuthPage extends Component {
                                         <input required className="form-control" title="Only letters, '-' and '_', minimum 4" type="login" pattern="(?=^.{4,}$)[A-Za-z0-9-_]+" id="login" ref={this.loginEl}></input>
                                     </div>
                                 </div>
+                                {this.state.isLogin ? null : (
+                                <div className="form-group row">
+                                    <label className="col-md-4 col-form-label text-md-right" htmlFor="email">Email</label>
+                                    <div className="col-md-6">
+                                        <input required className="form-control" title="Enter a valid email" type="email" id="email" ref={this.emailEl}></input>
+                                    </div>
+                                </div>
+                                )}
                                 <div className="form-group row">
                                     <label className="col-md-4 col-form-label text-md-right" htmlFor="password">Password</label>
                                     <div className="col-md-6">

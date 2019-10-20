@@ -3,6 +3,7 @@
 const express = require('express');
 let app = express();
 const ent = require('ent');
+const cors = require('cors')
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const uuidv4 = require('uuid/v4');
@@ -18,30 +19,49 @@ app.use(session({
 
 const user = require('../../model/connection.js');
 
+
+router.options('*', cors())
+router.use(cors());
 router.post('/auth', async (req, res) => {
-    if (!req.body.action || (req.body.action != 'signup' && req.body.action != 'login')) {
-      res.status(400);
-      res.send("Action needs to be set to 'signup' or to 'login'");
-    } else if (!req.body.password || !req.body.login || req.body.password.trim().length === 0 || req.body.login.trim().length === 0) {
-      res.status(400);
-      res.send("The following variables must be completed: 'password', 'login'");
-    } else {
-      if (req.body.action == 'login') {
-        console.log('Tentative de connection : ' + req.body.login + req.body.password);
-        let connection = await user.user_connect(req.body.login, req.body.password);
-        if (connection == '0') {
-            res.status(200);
-            res.send("Connection refused: the login or password is wrong.");
+  const action = req.body.body.split('"')[1];
+  const login = (req.body.body.split('login: ')[1]).split('"')[1];
+  const password = ent.encode((req.body.body.split('password: ')[1]).split('"')[1]);
+  if (!action || (action != 'creation' && action != 'login')) {
+    res.send("Action needs to be set to 'creation' or to 'login'");
+  } else if (!password || !login || password.trim().length === 0 || login.trim().length === 0) {
+    res.status(400);
+    res.send("The following variables must be completed: 'password', 'login'");
+  } else {
+    // Connection to the account
+    if (action == 'login') {
+      let connection = await user.user_connect(login, password);
+      if (connection == '0') {
+          res.status(200);
+          res.send("Connection refused: the login or password is wrong.");
+      } else {
+          res.status(200);
+          res.send(connection);
+      }
+      // Account creation
+    } else if (action == 'creation') {
+      let first_name = (req.body.body.split('first_name: ')[1]).split('"')[1];
+      let last_name = (req.body.body.split('last_name: ')[1]).split('"')[1];
+      let email = (req.body.body.split('email: ')[1]).split('"')[1];
+      let confirm_password = (req.body.body.split('confirm_password: ')[1]).split('"')[1];
+      if (confirm_password != password) {
+        res.status(200);
+        res.send('Passwords don\'t match');
+      } else {
+        if (await user.get_users_login(login) != 'vide') {
+          res.status(418);;
+          res.send('This login is already in use');
         } else {
-            res.status(200);
-            res.send(connection);
+          user.post_users(last_name, first_name, login, email, password);
+          res.status(201);
+          res.send('The user has been created');
         }
       }
-      else {
-        console.log('creation de compte TBD ' + req.body);
-        res.send('creation de compte TBD ' + req.body);
-      }
     }
-  });
-
+  }
+});
 module.exports = router;

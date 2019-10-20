@@ -1,5 +1,7 @@
 'use strict'
 const bcrypt = require('bcryptjs');
+const uuidv4 = require('uuid/v4');
+const ent = require('ent');
 
 // mysql connection credentials
 const db_connect = require('../model/db_connect.js');
@@ -15,10 +17,12 @@ const user_connect = async (login, password) => {
             if (err)
                 throw err;
             else if (result != '') {
-                if (result[0].password == password)
-                    resolve(result[0].uuid);
-                else
-                    resolve('0');
+                bcrypt.compare(ent.encode(result[0].password), password, function (err, result) {
+                    if (result === true)
+                        resolve(result[0].uuid);
+                    else
+                        resolve('0');
+                });
             } else {
                 resolve('0');
             }
@@ -41,14 +45,31 @@ const get_users = async (user_uuid) => {
 }
 module.exports.get_users = get_users;
 
+// Return all information (except the password) from users based on the login
+const get_users_login = async (login) => {
+    return new Promise((resolve, reject) => {
+        con.query("SELECT `user_ID`, `uuid`, `language`, `last_name`, `first_name`, `login`, `email_confirmation`, `insta`, `facebook`, `github`, `42`, `nb_views`, `nb_comments`, `nb_ratings`, `profile_picture` FROM `users` WHERE `login` = ?", [login], (err, result) => {
+            if (err)
+                throw err;
+            else {
+                if (result == '') {
+                    resolve('vide');
+                } else
+                    resolve(JSON.stringify(result));
+            }
+        });
+    });
+}
+module.exports.get_users_login = get_users_login;
+
 // Create a user (no OAuth)
-const post_users = async (values) => {
-    let sql = "INSERT INTO `users` (`uuid`, `language`, `last_name`, `first_name`, `login`, `profile_picture`, `email`) VALUES (?)";
-    let sql_values = [values.uuid, values.language, values.last_name, values.first_name, values.login, values.profile_picture, values.email];
+const post_users = (last_name, first_name, login, email, password) => {
+    let sql = "INSERT INTO `users` (`uuid`, `language`, `last_name`, `first_name`, `login`, `email`, `password`) VALUES (?)";
+    let uuid = uuidv4();
+    let sql_values = [uuid, 'English', last_name, first_name, login, email, password];
     con.query(sql, [sql_values], (err, result) => {
         if (err)
             throw err;
-        console.log(result);
     })
 }
 module.exports.post_users = post_users;
