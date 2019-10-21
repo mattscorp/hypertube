@@ -26,9 +26,7 @@ router.post('/auth', async (req, res) => {
   const action = req.body.body.split('"')[1];
   const login = (req.body.body.split('login: ')[1]).split('"')[1];
   const pre_password = (req.body.body.split('password: ')[1]).split('"')[1];
-  console.log(pre_password);
-  const password = pre_password;
-  console.log(password);
+  const password = ent.encode(pre_password);
   if (!action || (action != 'creation' && action != 'login')) {
     res.send("Action needs to be set to 'creation' or to 'login'");
   } else if (!password || !login || password.trim().length === 0 || login.trim().length === 0) {
@@ -55,9 +53,12 @@ router.post('/auth', async (req, res) => {
         res.status(200);
         res.send('Passwords don\'t match');
       } else {
-        if (await user.get_users_login(login) != 'vide') {
+        if (await user.user_exists_login(login) != 'vide') {
           res.status(418);;
           res.send('This login is already in use');
+        } else if (await user.user_exists_email(email) != 'vide') {
+          res.status(418);;
+          res.send('This email is already in use');
         } else {
           user.post_users(last_name, first_name, login, email, password);
           res.status(201);

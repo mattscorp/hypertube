@@ -28,12 +28,8 @@ const user_connect = async (login, password) => {
             if (err)
                 throw err;
             else if (result != '') {
-                console.log('Connection : ' + password);
-                console.log('Connection result : ' + result[0].password);
-                bcrypt.compare(result[0].password, password, function (err, res) {
-                    console.log(res);
+                bcrypt.compare(password, result[0].password, function (err, res) {
                     if (res === true) {
-                        console.log(res);
                         resolve(result[0].uuid);
                     }
                     else
@@ -62,7 +58,7 @@ const get_users = async (user_uuid) => {
 module.exports.get_users = get_users;
 
 // Return all information (except the password) from users based on the login
-const get_users_login = async (login) => {
+const user_exists_login = async (login) => {
     return new Promise((resolve, reject) => {
         con.query("SELECT `user_ID`, `uuid`, `language`, `last_name`, `first_name`, `login`, `email_confirmation`, `insta`, `facebook`, `github`, `42`, `nb_views`, `nb_comments`, `nb_ratings`, `profile_picture` FROM `users` WHERE `login` = ?", [login], (err, result) => {
             if (err)
@@ -76,16 +72,30 @@ const get_users_login = async (login) => {
         });
     });
 }
-module.exports.get_users_login = get_users_login;
+module.exports.user_exists_login = user_exists_login;
+
+// Return all information (except the password) from users based on the email
+const user_exists_email = async (email) => {
+    return new Promise((resolve, reject) => {
+        con.query("SELECT `user_ID`, `uuid`, `language`, `last_name`, `first_name`, `login`, `email_confirmation`, `insta`, `facebook`, `github`, `42`, `nb_views`, `nb_comments`, `nb_ratings`, `profile_picture` FROM `users` WHERE `email` = ?", [email], (err, result) => {
+            if (err)
+                throw err;
+            else {
+                if (result == '') {
+                    resolve('vide');
+                } else
+                    resolve(JSON.stringify(result));
+            }
+        });
+    });
+}
+module.exports.user_exists_email = user_exists_email;
 
 // Create a user (no OAuth)
 const post_users = async (last_name, first_name, login, email, password) => {
-    console.log(password);
     let sql = "INSERT INTO `users` (`uuid`, `language`, `last_name`, `first_name`, `login`, `email`, `password`) VALUES (?)";
     let uuid = uuidv4();
-    console.log('Creation : ' + password);
     let crypted_pass = await crypted_password(password);
-    console.log('Creation crypted : ' + crypted_pass);
     let sql_values = [uuid, 'English', last_name, first_name, login, email, crypted_pass];
     con.query(sql, [sql_values], (err, result) => {
         if (err)
