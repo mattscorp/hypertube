@@ -45,13 +45,22 @@ class FilmsList extends Component{
 
 
     render (){
+        const url_img = 'https://image.tmdb.org/t/p/w185_and_h278_bestv2';
         console.log("this. state . film==> " + JSON.stringify(this.state));
         return (
-            <ul className="liste_film">
-                {
-                    this.state.films.map(film => <li>{film.title}</li>)
-                }
-            </ul>
+            <div className="row">
+                
+                    {
+                        this.state.films.map(film => <div className="col-sm-3" key={film.id} >
+                            <h3>{film.title}</h3>
+                            <img src= {url_img + film.poster_path} alt="Poster of " />
+                            <h4>RESUME</h4>
+                            <p>{film.overview}</p>
+                            </div>)
+                    }
+              
+            </div>
+
         );
     }
 }
