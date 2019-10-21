@@ -1,11 +1,22 @@
 'use strict'
 const bcrypt = require('bcryptjs');
 const uuidv4 = require('uuid/v4');
-const ent = require('ent');
 
 // mysql connection credentials
 const db_connect = require('../model/db_connect.js');
 let con = db_connect.con;
+
+// Returns a crypted password
+const crypted_password = async (password) => {
+    return new Promise((resolve, reject) => {
+        bcrypt.hash(password, 12, function(err, hash) {
+            if (err)
+                throw err;
+            else
+                resolve(hash);
+        });
+    });
+}
 
 // Checks whether the user credentials are valid
 //      --> if successful, resolves the uuid
@@ -13,13 +24,18 @@ let con = db_connect.con;
 const user_connect = async (login, password) => {
     return new Promise((resolve, reject) => {
         let sql = "SELECT * FROM `users` WHERE `login` = ?";
-        con.query(sql, [login], (err, result) => {
+        con.query(sql, [login], async (err, result) => {
             if (err)
                 throw err;
             else if (result != '') {
-                bcrypt.compare(ent.encode(result[0].password), password, function (err, result) {
-                    if (result === true)
+                console.log('Connection : ' + password);
+                console.log('Connection result : ' + result[0].password);
+                bcrypt.compare(result[0].password, password, function (err, res) {
+                    console.log(res);
+                    if (res === true) {
+                        console.log(res);
                         resolve(result[0].uuid);
+                    }
                     else
                         resolve('0');
                 });
@@ -63,10 +79,14 @@ const get_users_login = async (login) => {
 module.exports.get_users_login = get_users_login;
 
 // Create a user (no OAuth)
-const post_users = (last_name, first_name, login, email, password) => {
+const post_users = async (last_name, first_name, login, email, password) => {
+    console.log(password);
     let sql = "INSERT INTO `users` (`uuid`, `language`, `last_name`, `first_name`, `login`, `email`, `password`) VALUES (?)";
     let uuid = uuidv4();
-    let sql_values = [uuid, 'English', last_name, first_name, login, email, password];
+    console.log('Creation : ' + password);
+    let crypted_pass = await crypted_password(password);
+    console.log('Creation crypted : ' + crypted_pass);
+    let sql_values = [uuid, 'English', last_name, first_name, login, email, crypted_pass];
     con.query(sql, [sql_values], (err, result) => {
         if (err)
             throw err;

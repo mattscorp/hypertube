@@ -25,7 +25,10 @@ router.use(cors());
 router.post('/auth', async (req, res) => {
   const action = req.body.body.split('"')[1];
   const login = (req.body.body.split('login: ')[1]).split('"')[1];
-  const password = ent.encode((req.body.body.split('password: ')[1]).split('"')[1]);
+  const pre_password = (req.body.body.split('password: ')[1]).split('"')[1];
+  console.log(pre_password);
+  const password = pre_password;
+  console.log(password);
   if (!action || (action != 'creation' && action != 'login')) {
     res.send("Action needs to be set to 'creation' or to 'login'");
   } else if (!password || !login || password.trim().length === 0 || login.trim().length === 0) {

@@ -3,7 +3,7 @@
 var mysql = require('mysql');
 
 /*  CONEXION MAISON */
-
+/*
   let con = mysql.createConnection({
   host: "localhost",  
   user: "paul",
@@ -18,11 +18,11 @@ let con_1 = mysql.createConnection({
   password: "42Pourlavie!",
 });
 module.exports.con_1 = con_1;
-
+*/
 
 
 /* CONNECTION ECOLE */
-/*
+
 let con = mysql.createConnection({
   host: "localhost",
   port: "3306",
@@ -42,4 +42,3 @@ let con_1 = mysql.createConnection({
 
 });
 module.exports.con_1 = con_1;
-*/
