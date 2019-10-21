@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors')
 const bodyParser = require('body-parser');
 
 // create express app
@@ -59,6 +60,8 @@ app.use(bodyParser.json())
 //   });
 
 // //// API THEMOVIEDB.ORG ////
+app.options('*', cors())
+app.use(cors());
 app.route('/moviedb')
   .get(async (req, res) => {
     if (!req.query.action || (req.query.action != "popular" && req.query.action != "search" && req.query.action != "similar")) {
@@ -73,12 +76,14 @@ app.route('/moviedb')
       // ** POPULAR ** --> returns the most popular movies
       if (req.query.action.toLowerCase() == "popular") {
         let popular_movies = await films.popular_movies("offset", public_category, category);
+        //console.log("ici" + popular_movies);
+
         if (popular_movies == '')
           res.status(204);
         else
           res.status(200);
-        console.log(popular_movies.results[0]);
-        res.send(popular_movies);
+        console.log(popular_movies.results);
+        res.send(popular_movies.results);
       }
       // ** SEARCH ** --> search movies by name
       //    "movie_name": 
