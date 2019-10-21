@@ -78,7 +78,7 @@ class AuthPage extends Component {
                                 <div className="form-group row">
                                     <label className="col-md-4 col-form-label text-md-right" htmlFor="firstName">First name</label>
                                     <div className="col-md-6">
-                                        <input required className="form-control" title="Only letters, '-' and '_', minimum 3" type="text" pattern="(?=^.{3,}$)[A-Za-z-]+" id="firstName" ref={this.firstNameEl}></input>
+                                        <input required className="form-control" title="Only letters, '-' and '_', minimum 3" type="text" pattern="(?=^.{3,}$)[A-Za-z-]+" id="firstName" ref={this.firstNameEl}/>
                                     </div>
                                 </div>
                                 )}
@@ -86,35 +86,35 @@ class AuthPage extends Component {
                                 <div className="form-group row">
                                     <label className="col-md-4 col-form-label text-md-right" htmlFor="lastName">Last name</label>
                                     <div className="col-md-6">
-                                        <input required className="form-control" title="Only letters, '-' and '_'" type="text" pattern="[A-Za-z-]+" id="lastName" ref={this.lastNameEl}></input>
+                                        <input required className="form-control" title="Only letters, '-' and '_'" type="text" pattern="[A-Za-z-]+" id="lastName" ref={this.lastNameEl}/>
                                     </div>
                                 </div>
                                 )}
                                 <div className="form-group row">
                                     <label className="col-md-4 col-form-label text-md-right" htmlFor="login">Login</label>
                                     <div className="col-md-6">
-                                        <input required className="form-control" title="Only letters, '-' and '_', minimum 4" type="login" pattern="(?=^.{4,}$)[A-Za-z0-9-_]+" id="login" ref={this.loginEl}></input>
+                                        <input required className="form-control" title="Only letters, '-' and '_', minimum 4" type="login" pattern="(?=^.{4,}$)[A-Za-z0-9-_]+" id="login" ref={this.loginEl}/>
                                     </div>
                                 </div>
                                 {this.state.isLogin ? null : (
                                 <div className="form-group row">
                                     <label className="col-md-4 col-form-label text-md-right" htmlFor="email">Email</label>
                                     <div className="col-md-6">
-                                        <input required className="form-control" title="Enter a valid email" type="email" id="email" ref={this.emailEl}></input>
+                                        <input required className="form-control" title="Enter a valid email" type="email" id="email" ref={this.emailEl}/>
                                     </div>
                                 </div>
                                 )}
                                 <div className="form-group row">
                                     <label className="col-md-4 col-form-label text-md-right" htmlFor="password">Password</label>
                                     <div className="col-md-6">
-                                        <input title="Must containe 8 characters, small and capital letters, numbers and special characters." required className="form-control" type="password" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" id="password" ref={this.passwordEl}></input>
+                                        <input title="Must containe 8 characters, small and capital letters, numbers and special characters." required className="form-control" type="password" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" id="password" ref={this.passwordEl}/>
                                     </div>
                                 </div>
                                 {this.state.isLogin ? null : (
                                 <div className="form-group row">
                                     <label className="col-md-4 col-form-label text-md-right" htmlFor="password_confirm">Confirm your password</label>
                                     <div className="col-md-6">
-                                        <input title="Must containe 8 characters, small and capital letters, numbers and special characters." required className="form-control" type="password" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" id="password_confirm" ref={this.passwordConfirmEl}></input>
+                                        <input title="Must containe 8 characters, small and capital letters, numbers and special characters." required className="form-control" type="password" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" id="password_confirm" ref={this.passwordConfirmEl}/>
                                     </div>
                                 </div>
                                 )}

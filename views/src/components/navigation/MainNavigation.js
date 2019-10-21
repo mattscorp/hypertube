@@ -15,6 +15,7 @@ const MainNavigation = props => {
                 </button>
                 <div className="navbar-collapse collapse" id="collapsingNavbar">
                     <ul className="navbar-nav">
+                        <li className="nav-item"><NavLink to="/home">Home</NavLink></li>
                         <li className="nav-item"><NavLink to="/auth">Authentification</NavLink></li>
                         <li className="nav-item"><NavLink to="/account">Account</NavLink></li>
                     </ul>
