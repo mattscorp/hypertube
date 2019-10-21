@@ -59,49 +59,50 @@ app.use(bodyParser.json())
 //   });
 
 // //// API THEMOVIEDB.ORG ////
-// app.route('/moviedb')
-//   .get(async (req, res) => {
-//     if (!req.query.action || (req.query.action != "popular" && req.query.action != "search" && req.query.action != "similar")) {
-//       res.status(400);
-//       res.send("Specify the action to be performed: 'popular' to get popular movies, 'search' to get a particular movie");
-//     } else {
-//       // Optional [public] --> 'G' for general public, 'R' for restricted. Default is 'all'
-//       // Optional [offset] --> skip the n first results
-//       // Optional [category] --> 'drama', 'western', etc. By default 'all'
-//       let public_category = (req.query.public && (req.query.public == "G" || req.query.public == "R")) ? req.query.public : "all";
-//       let category = (req.query.category) ? req.query.category : "all";
-//       // ** POPULAR ** --> returns the most popular movies
-//       if (req.query.action.toLowerCase() == "popular") {
-//         let popular_movies = await films.popular_movies("offset", public_category, category);
-//         if (popular_movies == '')
-//           res.status(204);
-//         else
-//           res.status(200);
-//         res.send(popular_movies);
-//       }
-//       // ** SEARCH ** --> search movies by name
-//       //    "movie_name": 
-//       else if (req.query.action.toLowerCase() == "search") {
-//         let search_movies = await films.search_movies(req.query.movie_name);
-//         if (search_movies == '')
-//           res.status(204);
-//         else
-//           res.status(200);
-//         res.send(search_movies);
-//       }
-//       // ** SIMILAR ** --> get movies that are similar to the parameter "movie_ID"
-//       else if (req.query.action.toLowerCase() == "similar") {
-//         console.log(req.query.movie_ID);
-//         let similar_movies = await films.similar_movies(req.query.movie_ID);
-//         if (similar_movies == '')
-//           res.status(204);
-//         else
-//           res.status(200);
-//         res.send(similar_movies);
-//       }
-//       // https://developers.themoviedb.org/3/movies/get-similar-movies
-//     }
-//   });
+app.route('/moviedb')
+  .get(async (req, res) => {
+    if (!req.query.action || (req.query.action != "popular" && req.query.action != "search" && req.query.action != "similar")) {
+      res.status(400);
+      res.send("Specify the action to be performed: 'popular' to get popular movies, 'search' to get a particular movie");
+    } else {
+      // Optional [public] --> 'G' for general public, 'R' for restricted. Default is 'all'
+      // Optional [offset] --> skip the n first results
+      // Optional [category] --> 'drama', 'western', etc. By default 'all'
+      let public_category = (req.query.public && (req.query.public == "G" || req.query.public == "R")) ? req.query.public : "all";
+      let category = (req.query.category) ? req.query.category : "all";
+      // ** POPULAR ** --> returns the most popular movies
+      if (req.query.action.toLowerCase() == "popular") {
+        let popular_movies = await films.popular_movies("offset", public_category, category);
+        if (popular_movies == '')
+          res.status(204);
+        else
+          res.status(200);
+        console.log(popular_movies.results[0]);
+        res.send(popular_movies);
+      }
+      // ** SEARCH ** --> search movies by name
+      //    "movie_name": 
+      else if (req.query.action.toLowerCase() == "search") {
+        let search_movies = await films.search_movies(req.query.movie_name);
+        if (search_movies == '')
+          res.status(204);
+        else
+          res.status(200);
+        res.send(search_movies);
+      }
+      // ** SIMILAR ** --> get movies that are similar to the parameter "movie_ID"
+      else if (req.query.action.toLowerCase() == "similar") {
+        console.log(req.query.movie_ID);
+        let similar_movies = await films.similar_movies(req.query.movie_ID);
+        if (similar_movies == '')
+          res.status(204);
+        else
+          res.status(200);
+        res.send(similar_movies);
+      }
+      // https://developers.themoviedb.org/3/movies/get-similar-movies
+    }
+  });
 
 // Connection / account creation
 const user = require('./user/connect.js');

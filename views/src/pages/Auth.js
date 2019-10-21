@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import AuthContext from '../context/auth-context';
+
 
 class AuthPage extends Component {
     
@@ -6,6 +8,8 @@ class AuthPage extends Component {
         isLogin: true
     }
 
+    static contextType = AuthContext;
+     
     constructor(props) {
         super(props);
         this.loginEl = React.createRef();
@@ -52,7 +56,21 @@ class AuthPage extends Component {
                 method: 'POST',
                 body: JSON.stringify(requestBody),
                 headers: {'Content-Type': 'application/json'}
-            });
+            })
+                .then(res => {
+                    if (res.status !== 200 && res.status !== 201)
+                        throw new Error('Failed');
+                    return res.json();
+                })
+                .then(resData => {
+                    if (resData.token) {
+                        this.context.login(resData.token);
+                    }
+                    console.log(resData);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
         }
     };
     
@@ -68,8 +86,8 @@ class AuthPage extends Component {
                                     <button className="btn btn-secondary" type="button" onClick={this.switchModeHandler}>{this.state.isLogin ? 'Create an account' : "Sign in to your account"}</button>
                                 </div>
                             </div>
-                            <div className="col-md-6 mx-auto">
-                                <h4 className="text-center">Connect</h4>
+                            <div className="col-md-10 mx-auto">
+                                <h4 className="text-center">{this.state.isLogin ? 'Connect to your account' : "Create your account"}</h4>
                             </div>    
                         </div>
                         <div className="card-body">

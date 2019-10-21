@@ -41,7 +41,7 @@ router.post('/auth', async (req, res) => {
           res.send("Connection refused: the login or password is wrong.");
       } else {
           res.status(200);
-          res.send(connection);
+          res.send({token: connection});
       }
       // Account creation
     } else if (action == 'creation') {
