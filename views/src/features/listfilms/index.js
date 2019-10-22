@@ -6,10 +6,26 @@ class FilmsList extends Component{
         films: [],
         page: 1,
         totalPage: null,
+        scrolling: false,
     }
 
     componentWillMount () {
         this.loadFilms();
+        this.scrollListener = window.addEventListener('scroll', (e) => {
+            this.handleScroll(e)
+        })
+    }
+
+    handleScroll = (e) => {
+        const{ scrolling, totalPage, page} = this.state;
+        const last_id = (this.state.page * 20) - 1;
+        if(scrolling) return
+        if(totalPage <= page) return
+        const lastdiv = document.querySelector('div.row > div:last-child ');
+        const lastdivOffset = lastdiv.offsetTop + lastdiv.clientHeight;
+        const pageOffset = window.pageYOffset + window.innerHeight;  
+        var bottomOffset = 20;
+        if (pageOffset > lastdivOffset - bottomOffset) this.loadMore();
     }
 
     loadFilms = () =>{
@@ -32,7 +48,9 @@ class FilmsList extends Component{
                     return res.json();
                 })
                 .then(resData => this.setState({
-                   films: [...films, ...resData]
+                   films: [...films, ...resData],
+                   scrolling: false,
+                   totalPage: resData.totalPage,
                   //  console.log( "yolo = >" + JSON.stringify(resData[0].title));
                 }))
                 .catch(err => {
@@ -43,22 +61,25 @@ class FilmsList extends Component{
     loadMore = () =>{
         this.setState(prevState => ({
             page : prevState.page + 1,
+            scrolling: true,
         }), this.loadFilms)
     }
 
     render (){
-        console.log("this. state . film==> " + JSON.stringify(this.state));
-        console.log("this. state . state.films==> " + JSON.stringify(this.state.films));
+        const {id_film_site} = this.state;
+        // console.log("this. state . film==> " + JSON.stringify(this.state));
+        // console.log("this. state . state.films==> " + JSON.stringify(this.state.films));
         return (
             <div className="container">
                 <div className="row">
-                    {
-                        this.state.films.map(film => <div key={film.id} className="col-sm-3" >
+                    {   
+
+                        this.state.films.map((film, index) => <div onLoad={this.increment_id} key={index} id={index} className="col-sm-3 key" >
                             <Films {...film}/>
                             </div>)
+                    
                     }
-            </div>
-                    <a onClick={this.loadMore}>Load More</a>
+                </div>
             </div>
             
         );

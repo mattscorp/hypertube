@@ -56,7 +56,7 @@ let genres =  {
 // GET the most popular movies
 //      --> film public: 'all' if not specified, 'G' for General Audiences
 //      --> film category: 'all if not specified, 
-const popular_movies = async (offset, public_category, film_category) => {
+const popular_movies = async (page, public_category, film_category) => {
     return new Promise((resolve, reject) => {
         let US_CERTIFICATE = '';
         let CATEGORY = '';
@@ -64,7 +64,7 @@ const popular_movies = async (offset, public_category, film_category) => {
             US_CERTIFICATE = `&certification_country=US&certification.lte=${public_category}`;
         if (film_category != 'all' && genres[film_category.toLowerCase()])
             CATEGORY = `&with_genres=${genres[film_category.toLowerCase()]}`;
-        let sql = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&asort_by=popularity.desc${US_CERTIFICATE}${CATEGORY}`
+        let sql = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&asort_by=popularity.desc${US_CERTIFICATE}${CATEGORY}&page=${page}`
         request(sql, {json: true}, function (error, response, body) {
             resolve(body);
         });

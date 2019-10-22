@@ -69,13 +69,16 @@ app.route('/moviedb')
       res.send("Specify the action to be performed: 'popular' to get popular movies, 'search' to get a particular movie");
     } else {
       // Optional [public] --> 'G' for general public, 'R' for restricted. Default is 'all'
-      // Optional [offset] --> skip the n first results
+      // Optional [page] --> return the n-page
       // Optional [category] --> 'drama', 'western', etc. By default 'all'
       let public_category = (req.query.public && (req.query.public == "G" || req.query.public == "R")) ? req.query.public : "all";
       let category = (req.query.category) ? req.query.category : "all";
+      let page = 1;
       // ** POPULAR ** --> returns the most popular movies
       if (req.query.action.toLowerCase() == "popular") {
-        let popular_movies = await films.popular_movies("offset", public_category, category);
+        if (req.query.page)
+        page = req.query.page;
+        let popular_movies = await films.popular_movies(page, public_category, category);
         //console.log("ici" + popular_movies);
 
         if (popular_movies == '')
