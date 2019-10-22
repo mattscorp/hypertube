@@ -4,7 +4,6 @@ import Films from './listfilms.js';
 class FilmsList extends Component{
     state = {
         films: [],
-        per: 12,
         page: 1,
         totalPage: null,
     }
@@ -14,9 +13,14 @@ class FilmsList extends Component{
     }
 
     loadFilms = () =>{
-        const {per, page, films } = this.state;
-        const URL = 'http://localhost:8000/moviedb?action=popular';
+
+        const {page, films } = this.state;
         const API_KEY = "208ecb5c1ee27eb7b9bc731dc8656bd2";
+
+//  const URL = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&page=${page}`;
+    const URL = `http://localhost:8000/moviedb?action=popular&page=${page}`;
+
+
     fetch(URL, {
                 method: 'GET',
                 headers: {'Content-Type': 'application/json'}
@@ -24,7 +28,7 @@ class FilmsList extends Component{
                 .then(res => {
                     if (res.status !== 200 && res.status !== 201)
                         throw new Error('Failed');
-                    console.log("okko => " + res);
+                    //console.log("okko => " + res);
                     return res.json();
                 })
                 .then(resData => this.setState({
@@ -34,33 +38,29 @@ class FilmsList extends Component{
                 .catch(err => {
                     console.log(err);
                 });
+    }
 
-
-            }
-
-
-
-
-
-
+    loadMore = () =>{
+        this.setState(prevState => ({
+            page : prevState.page + 1,
+        }), this.loadFilms)
+    }
 
     render (){
-        const url_img = 'https://image.tmdb.org/t/p/w185_and_h278_bestv2';
         console.log("this. state . film==> " + JSON.stringify(this.state));
+        console.log("this. state . state.films==> " + JSON.stringify(this.state.films));
         return (
-            <div className="row">
-                
+            <div className="container">
+                <div className="row">
                     {
-                        this.state.films.map(film => <div className="col-sm-3" key={film.id} >
-                            <h3>{film.title}</h3>
-                            <img src= {url_img + film.poster_path} alt="Poster of " />
-                            <h4>RESUME</h4>
-                            <p>{film.overview}</p>
+                        this.state.films.map(film => <div key={film.id} className="col-sm-3" >
+                            <Films {...film}/>
                             </div>)
                     }
-              
             </div>
-
+                    <a onClick={this.loadMore}>Load More</a>
+            </div>
+            
         );
     }
 }

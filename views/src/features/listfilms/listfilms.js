@@ -1,9 +1,14 @@
 import  React from 'react';
 
-const Films = (props) =>  <div className="films">
+const url_img = 'https://image.tmdb.org/t/p/w185_and_h278_bestv2';
+const Films = (props) =>  <div id={props.id} >
 
-    <p>CA MARCHE LA LSTE DE FILM</p>
+<img src= {url_img + props.poster_path} alt={"Poster of " + props.title} />
+<h3>{props.title}</h3>
+ </div>
 
-</div>
 
 export default Films 
+
+//<h4>RESUME</h4>
+// <p>{props.overview}</p>
