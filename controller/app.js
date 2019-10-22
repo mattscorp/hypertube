@@ -1,9 +1,48 @@
 const express = require('express');
+const mysql = require('mysql');
 const cors = require('cors')
 const bodyParser = require('body-parser');
+const session = require("express-session");
+const MySQLStore = require('express-mysql-session')(session); // to store the session data
+const config = require('./config');
 
 // create express app
 const app = express();
+
+var options = {
+  host: config.HOST,
+  port: config.PORT,
+  user: config.USER,
+  password: config.PASSWORD,
+  database: config.DATABASE,
+  schema: {
+    tableName: 'sessions',
+    columnNames: {
+        session_id: 'session_id',
+        expires: 'expires',
+        data: 'data'
+    }
+  }
+};
+
+const session_connection = mysql.createConnection(options); // or mysql.createPool(options);
+const sessionStore = new MySQLStore({}/* session store options */, session_connection);
+
+app.use(session({
+  key: config.SESS_NAME,
+  secret: config.SESS_SECRET,
+  store: sessionStore,
+  resave: false, //This prevents unnecessary re-saves if the session wasn’t modified.
+  saveUninitialized: false, // This complies with laws that require permission before setting a cookie.
+  cookie: {
+    maxAge: parseInt(config.SESS_LIFETIME)
+  }
+}));
+
+
+
+// disables 'x-powered-by', this makes it more difficult for users to see that we are using Express.
+app.disable('x-powered-by');
 
 // model functions
 const connection = require('../model/connection.js');
@@ -117,6 +156,6 @@ const user = require('./user/connect.js');
 app.use(user);
 
 // listen for requests
-app.listen(8000, () => {
-  console.log("Server is listening on port 8000");
+app.listen(config.PORT, () => {
+  console.log("Server is listening on port " + config.PORT);
 });

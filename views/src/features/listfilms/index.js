@@ -9,7 +9,7 @@ class FilmsList extends Component{
         scrolling: false,
     }
 
-    componentWillMount () {
+    componentDidMount () {
         this.loadFilms();
         this.scrollListener = window.addEventListener('scroll', (e) => {
             this.handleScroll(e)

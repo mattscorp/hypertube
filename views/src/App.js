@@ -1,5 +1,17 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
+// import { createStore } from 'redux'; 
+
+// const reducer = (state, action) => {
+//   switch (action.type) {
+//       case "ADD"
+//         break;
+//       case "SUBSTRACT"
+//         break;
+//   }
+//   return state;
+// }
+// const store = createStore(reducer, 1);
 
 import home from './pages/Home.js';
 import AuthPage from './pages/Auth.js';

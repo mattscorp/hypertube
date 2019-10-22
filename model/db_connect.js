@@ -2,43 +2,46 @@
 
 var mysql = require('mysql');
 
-/*  CONEXION MAISON */
+/* CONNEXION MAISON */
 /*
-  let con = mysql.createConnection({
-  host: "localhost",  
-  user: "paul",
-  password: "42Pourlavie!",
-  database: "hypertube"
-});
-module.exports.con = con;
-
-let con_1 = mysql.createConnection({
-  host: "localhost",
-  user: "paul",
-  password: "42Pourlavie!",
-});
-module.exports.con_1 = con_1;
-*/
-
-
-/* CONNECTION ECOLE */
+const HOST = 'localhost';
+module.exports.HOST = HOST;
+const USER = 'paul';
+module.exports.USER = USER;
+const PASSWORD = '42Pourlavie!';
+module.exports.PASSWORD = PASSWORD;
+onst DATABASE = 'hypertube';
+module.exports.DATABASE = DATABASE;
 
 let con = mysql.createConnection({
-  host: "localhost",
-  port: "3306",
-  user: "root",
-  // password: "123456",
-  password: "pvictor",
-  database: "hypertube"
+  host: HOST,
+  user: USER,
+  password: PASSWORD,
+  database: DATABASE
 });
 module.exports.con = con;
 
-let con_1 = mysql.createConnection({
-  host: "localhost",
-  port: "3306",
-  user: "root",
-  // password: "123456",
-  password: "pvictor",
+*/
 
+/* CONNEXION ECOLE */
+
+const HOST = 'localhost';
+module.exports.HOST = HOST;
+const USER = 'root';
+module.exports.USER = USER;
+// const PASSWORD = '123456';
+const PASSWORD = 'pvictor';
+module.exports.PASSWORD = PASSWORD;
+const PORT = 3306;
+module.exports.PORT = PORT;
+const DATABASE = 'hypertube';
+module.exports.DATABASE = DATABASE;
+
+let con = mysql.createConnection({
+  host: HOST,
+  port: PORT,
+  user: USER,
+  password: PASSWORD,
+  database: DATABASE
 });
-module.exports.con_1 = con_1;
+module.exports.con = con;

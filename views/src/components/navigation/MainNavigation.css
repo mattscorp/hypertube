@@ -2,8 +2,8 @@
     margin-left: 1.5rem;
 }
 
-.main-navigation-logo {
-    color: #343a40;
+.main-navigation-logo:hover {
+    font-weight: bold;
 }
 
 .main-navigation-item ul {
@@ -17,14 +17,30 @@
     margin: 0 1rem;
 }
 
-.main-navigation-item a {
+.main-navigation-item a,
+.main-navigation-item button {
     text-decoration: none;
     color: #6c757d;
+    margin: 0;
+    align-items: center;
 }
 
-.main-navigation-item a:hover,
+.main-navigation-item button.active
+.main-navigation-item button:active,
 .main-navigation-item a.active,
 .main-navigation-item a:active {
     color: #343a40;
+    text-shadow: 0.1px 0.1px #343a40;
+    
 }
 
+.main-navigation-item button:hover,
+.main-navigation-item a:hover { 
+    font-weight: bold;
+    color: #343a40;
+}
+
+.main-navigation-item button {
+    border: none;
+    background: transparent;
+}
