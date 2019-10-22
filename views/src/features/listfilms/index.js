@@ -21,7 +21,7 @@ class FilmsList extends Component{
         const last_id = (this.state.page * 20) - 1;
         if(scrolling) return
         if(totalPage <= page) return
-        const lastdiv = document.querySelector('div.row > div:last-child ');
+        const lastdiv = document.querySelector('div.row > div:last-child');
         const lastdivOffset = lastdiv.offsetTop + lastdiv.clientHeight;
         const pageOffset = window.pageYOffset + window.innerHeight;  
         var bottomOffset = 20;
@@ -33,7 +33,6 @@ class FilmsList extends Component{
         const {page, films } = this.state;
         const API_KEY = "208ecb5c1ee27eb7b9bc731dc8656bd2";
 
-//  const URL = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&page=${page}`;
     const URL = `http://localhost:8000/moviedb?action=popular&page=${page}`;
 
 
@@ -44,14 +43,12 @@ class FilmsList extends Component{
                 .then(res => {
                     if (res.status !== 200 && res.status !== 201)
                         throw new Error('Failed');
-                    //console.log("okko => " + res);
                     return res.json();
                 })
                 .then(resData => this.setState({
                    films: [...films, ...resData],
                    scrolling: false,
                    totalPage: resData.totalPage,
-                  //  console.log( "yolo = >" + JSON.stringify(resData[0].title));
                 }))
                 .catch(err => {
                     console.log(err);
@@ -67,8 +64,6 @@ class FilmsList extends Component{
 
     render (){
         const {id_film_site} = this.state;
-        // console.log("this. state . film==> " + JSON.stringify(this.state));
-        // console.log("this. state . state.films==> " + JSON.stringify(this.state.films));
         return (
             <div className="container">
                 <div className="row">
