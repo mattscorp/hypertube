@@ -4,5 +4,6 @@ export default React.createContext({
     token: null,
     user_ID: null,
     login: (token) => {},
-    logout: () => {}
+    logout: () => {},
+    submitHandler: () => {}
 });

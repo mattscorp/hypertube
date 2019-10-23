@@ -63,20 +63,16 @@ class FilmsList extends Component{
     }
 
     render (){
-        const {id_film_site} = this.state;
         return (
             <div className="container">
                 <div className="row">
                     {   
-
                         this.state.films.map((film, index) => <div onLoad={this.increment_id} key={index} id={index} className="col-sm-3 key" >
                             <Films {...film}/>
                             </div>)
-                    
                     }
                 </div>
             </div>
-            
         );
     }
 }

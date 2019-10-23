@@ -4,36 +4,61 @@ import { NavLink } from 'react-router-dom';
 import './MainNavigation.css';
 import AuthContext from '../../context/auth-context'
 
+
 const MainNavigation = props => {
+
+
+
+    
     return (
+
         <AuthContext.Consumer>
+                  
             {(context) => {
+
+
                 return (
-                    <header className="navbar navbar-perso navbar-expand-sm bg-light navbar-light sticky-top">
-                        <div>
-                            <NavLink to="/"><h1 className="navbar-brand abs main-navigation-logo">HYPERTUBE</h1></NavLink>
-                        </div>
-                        <nav className="main-navigation-item">
-                            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
-                                <span className="navbar-toggler-icon"></span>
-                            </button>
-                            <p>{context.token}</p>
-                            <div className="navbar-collapse collapse" id="collapsingNavbar">
-                                <ul className="navbar-nav" style={{ display: 'flex', alignItems: 'center' }}>
-                                    <li className="nav-item" style={{border: '1px solid blue'}}><NavLink to="/home">Home</NavLink></li>
-                                    {!context.token && (
-                                        <li className="nav-item" style={{border: '1px solid red'}}><NavLink to="/auth">Authentification</NavLink></li>
-                                    )}
-                                    {context.token && (
-                                        <li className="nav-item" style={{border: '1px solid green'}}><NavLink to="/account">Account</NavLink></li>
-                                    )}
-                                    {context.token && (
-                                        <div onClick={context.logout} style={{border: '1px solid pink'}}>Logout</div>
-                                    )}
+                    <div className="row sticky-top">
+                             <header className="col-sm-12 navbar navbar-perso navbar-expand-sm bg-light navbar-light ">
+                            <div className="col-sm-3"><NavLink to="/">
+                                    <h1 className="navbar-brand abs main-navigation-logo">HYPERTUBE</h1></NavLink>
+                                <nav className="main-navigation-item">
+                                    <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
+                                        <span className="navbar-toggler-icon"></span>
+                                    </button>
+                                    <p>{context.token}</p>
+                                    <div className="navbar-collapse collapse" id="collapsingNavbar">
+                                        <ul className="navbar-nav">
+                                            <li className="nav-item"><NavLink to="/home">Home</NavLink></li>
+                                            {!context.token && (
+                                                <li className="nav-item"><NavLink to="/auth">Authentification</NavLink></li>
+                                            )}
+                                            {context.token && (
+                                                <li className="nav-item"><NavLink to="/account">Account</NavLink></li>
+                                            )}
+                                            {context.token && (
+                                                <div onClick={context.logout} >Logout</div>
+                                            )}
+                                        </ul>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div className="col-sm-6"></div>
+                            <div className="col-sm-3">
+                                <ul className="navbar-nav ml-auto">
+                                    <li className="nav-item">
+                                        <div className="nav-item">
+                                        <form className="form-inline" onSubmit={context.submitHandler}>
+                                                <input className="form-control mr-sm-2" type="text" placeholder="Search" /> 
+                                                <button className="btn btn-success" type="submit">GO</button>
+                                            </form>
+                                        </div>
+                                    </li>
                                 </ul>
                             </div>
-                        </nav>
-                    </header>
+                        </header>
+                    </div>
+                    
                 )
             }}
         </AuthContext.Consumer>

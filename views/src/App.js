@@ -33,6 +33,12 @@ class App extends Component {
     this.setState({token: null});
   };
 
+  submitHandler = event => {
+    event.preventDefault();
+    console.log("event = " + event);
+    return;   
+}
+
   render() {
     return (
       <BrowserRouter>

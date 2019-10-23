@@ -5,10 +5,13 @@ const Films = (props) =>  <div id={props.id} >
 <div className="image">
     <img src= {props.poster_path ? url_img + props.poster_path : "https://upload.wikimedia.org/wikipedia/commons/f/fc/No_picture_available.png"} alt={"Poster of " + props.title} />
     <div className="overlay">
+        <div className="topright">
+            <p>
+            <span className="glyphicon glyphicon-star">{props.vote_average}</span>
+            </p> 
+        </div>
         <div >
-            <div className="play_hover">
-                <a href="#" ><span> PLAY</span> </a>
-            </div>
+            
             {
                 props.overview.split(' ').map((elem , index)=> 
                      <span key={index}>
@@ -19,13 +22,18 @@ const Films = (props) =>  <div id={props.id} >
                      </span>
                 )
             }
-            
-        </div>
+           
 
-        
+
+            <div className="play_hover">
+                <a href="#" className="btn btn-info btn-lg">
+                <span className="glyphicon glyphicon-play"></span> Play
+                </a>
+            </div>         
+        </div>
     </div>
 </div>
-<h3>{props.title}</h3>
+<h5>{props.title}</h5>
  </div>
 
 

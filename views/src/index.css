@@ -5,11 +5,19 @@ body {
 
 /*** NAV ***/
 
+
 .btn-success {
-    color: red !important;
-    background-color: black !important;
-    border-color: red !important;
+    color:  #9e9e9ec2 !important;
+    background-color: white !important;
+    border-color: #02fc7e !important;
 }
+
+.btn-success:hover {
+    color: #1f1f1fab !important;
+    background-color: #9e9e9ec2 !important;
+    border-color: #02fc7e !important;
+}
+
 
 /*****      HOME PAGE      ******/
 
@@ -27,6 +35,19 @@ h1.jumbotron span{
 	color:red;
 }
 
+.col-sm-3 h5 {
+    padding: 3% 9%;
+}
+
+.topright {
+    position: absolute;
+    top: 8px;
+    right: 16px;
+    color: rgb(229, 255, 0);
+    font-size: 1.42rem;
+}
+
+
 /* By hiding the .overlay element by default, 
 we use the selector .image:hover .overlay 
 to change the styling on hover. 
@@ -41,24 +62,41 @@ is a descendant element. */
 
 .play_hover{
 text-align: center;
+padding: 5%;
+}
+
+.btn-info {
+    color: #1f1f1fab !important;
+    background-color: #9e9e9ec2 !important;
+    border-color: #02fc7e !important;
+}
+
+.btn-info:hover {
+    color:  #9e9e9ec2 !important;
+    background-color: white !important;
+    border-color: #02fc7e !important;
+}
+
+.resume_film{
+    padding: 10%;
 }
 
 .overlay {
    display:none;
 }
 .image:hover .overlay {
-   width:80%;
-   height:100%;
+    width: 65%;
+    height: 90%;
    background:rgba(0,0,0,.75);
    color: #e2e2e2;
    position:absolute;
-
-   top:50%;
+   padding: 10%;
+   top:45%;
    left:50%;
    transform:translate(-50%, -50%);
 
    border-style: solid 1px #5f5656;
-   border-radius: 15px;
+
    display:inline-block;
    -webkit-box-sizing:border-box;
    -moz-box-sizing:border-box;
@@ -89,7 +127,7 @@ text-align: center;
 
 body{
     margin: 0;
-    font-size: .9rem;
+    font-size: 1.42rem;
     font-weight: 400;
     line-height: 1.6;
     color: #212529;
