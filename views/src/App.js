@@ -47,7 +47,7 @@ class App extends Component {
             <main className="mt-2">
               <Switch>
                 {this.state.token && <Redirect from="/" to="/home" exact/>}
-                {!this.state.token && <Redirect from="/" to="/auth" exact/>}
+                {/* {!this.state.token && <Redirect from="/" to="/auth" exact/>} */}
                 {this.state.token && <Redirect from="/auth" to="/account" exact/>}
                 {!this.state.token && <Route path="/auth" component={ AuthPage }/>} 
                 {this.state.token && <Route path="/account" component={ AccountPage }/>}

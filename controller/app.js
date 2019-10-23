@@ -9,35 +9,58 @@ const config = require('./config');
 // create express app
 const app = express();
 
-var options = {
-  host: config.HOST,
-  port: config.PORT,
-  user: config.USER,
-  password: config.PASSWORD,
-  database: config.DATABASE,
-  schema: {
-    tableName: 'sessions',
-    columnNames: {
-        session_id: 'session_id',
-        expires: 'expires',
-        data: 'data'
-    }
-  }
-};
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }))
+// parse requests of content-type - application/json
+app.use(bodyParser.json())
 
-const session_connection = mysql.createConnection(options); // or mysql.createPool(options);
-const sessionStore = new MySQLStore({}/* session store options */, session_connection);
+app.options('*', cors())
+app.use(cors());
 
 app.use(session({
-  key: config.SESS_NAME,
   secret: config.SESS_SECRET,
-  store: sessionStore,
-  resave: false, //This prevents unnecessary re-saves if the session wasn’t modified.
-  saveUninitialized: false, // This complies with laws that require permission before setting a cookie.
-  cookie: {
-    maxAge: parseInt(config.SESS_LIFETIME)
-  }
+  resave: true,
+  saveUninitialized: false
 }));
+
+// const options = {
+//   host: config.HOST,
+//   port: config.PORT,
+//   user: config.USER,
+//   password: config.PASSWORD,
+//   database: config.DATABASE,
+//   charset: 'utf8mb4_bin',
+//   connectionLimit : 1000,
+//   connectTimeout  : 60 * 60 * 1000,ki
+//   acquireTimeout  : 60 * 60 * 1000,
+//   timeout         : 60 * 60 * 1000,
+// };
+
+// const session_connection = mysql.createPool(options); // or mysql.createPool(options);
+// const sessionStore = new MySQLStore({}/* session store options */, session_connection);
+
+// session_connection.query('SELECT *', (err, result) => {
+//   if (err) throw err;
+//   else console.log(results);
+// });   
+
+// setInterval(() => {
+//   session_connection.query('SELECT *', (err, result) => {
+//       if (err) throw err;
+//       else console.log(results);
+//   });   
+// }, 1000);
+
+// app.use(session({
+//   key: config.SESS_NAME,
+//   secret: config.SESS_SECRET,
+//   store: sessionStore,
+//   resave: true, //This prevents unnecessary re-saves if the session wasn’t modified.
+//   saveUninitialized: false, // This complies with laws that require permission before setting a cookie.
+//   cookie: {
+//     maxAge: parseInt(config.SESS_LIFETIME)
+//   }
+// }));
 
 
 
@@ -48,10 +71,7 @@ app.disable('x-powered-by');
 const connection = require('../model/connection.js');
 const films = require('../model/films.js');
 
-// parse requests of content-type - application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }))
-// parse requests of content-type - application/json
-app.use(bodyParser.json())
+
 
 //////// API ////////
 
@@ -99,10 +119,10 @@ app.use(bodyParser.json())
 //   });
 
 // //// API THEMOVIEDB.ORG ////
-app.options('*', cors())
-app.use(cors());
+
 app.route('/moviedb')
   .get(async (req, res) => {
+    console.log("SESSION : " + req.session.token);
     if (!req.query.action || (req.query.action != "popular" && req.query.action != "search" && req.query.action != "similar")) {
       res.status(400);
       res.send("Specify the action to be performed: 'popular' to get popular movies, 'search' to get a particular movie");

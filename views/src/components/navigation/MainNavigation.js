@@ -19,16 +19,16 @@ const MainNavigation = props => {
                             </button>
                             <p>{context.token}</p>
                             <div className="navbar-collapse collapse" id="collapsingNavbar">
-                                <ul className="navbar-nav" style={{ display: 'flex', alignItems: 'center' }}>
-                                    <li className="nav-item" style={{border: '1px solid blue'}}><NavLink to="/home">Home</NavLink></li>
+                                <ul className="navbar-nav">
+                                    <li className="nav-item"><NavLink to="/home">Home</NavLink></li>
                                     {!context.token && (
-                                        <li className="nav-item" style={{border: '1px solid red'}}><NavLink to="/auth">Authentification</NavLink></li>
+                                        <li className="nav-item"><NavLink to="/auth">Authentification</NavLink></li>
                                     )}
                                     {context.token && (
-                                        <li className="nav-item" style={{border: '1px solid green'}}><NavLink to="/account">Account</NavLink></li>
+                                        <li className="nav-item"><NavLink to="/account">Account</NavLink></li>
                                     )}
                                     {context.token && (
-                                        <div onClick={context.logout} style={{border: '1px solid pink'}}>Logout</div>
+                                        <div onClick={context.logout}>Logout</div>
                                     )}
                                 </ul>
                             </div>
