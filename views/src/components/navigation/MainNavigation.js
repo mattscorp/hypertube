@@ -7,6 +7,7 @@ class MainNavigation extends Component {
 
     submitHandler = (event) => {
         event.preventDefault();
+        this.props.changeHomeSearch('Anna');
     }
 
     render() {

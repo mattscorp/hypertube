@@ -1,30 +1,18 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
-// import { createStore } from 'redux'; 
+import {connect} from 'react-redux';
 
-// const reducer = (state, action) => {
-//   switch (action.type) {
-//       case "ADD"
-//         break;
-//       case "SUBSTRACT"
-//         break;
-//   }
-//   return state;
-// }
-// const store = createStore(reducer, 1);
-
-import home from './pages/Home.js';
+import Home from './pages/Home.js';
 import AuthPage from './pages/Auth.js';
 import AccountPage from './pages/Account.js';
 import MainNavigation from './components/navigation/MainNavigation';
-
 
 class App extends Component {
   render() {
     return (
       <BrowserRouter>
         <React.Fragment>
-          <MainNavigation />
+          <MainNavigation changeHomeSearch={() => this.props.setHomeSearch("CHANGED BY GO BUTTON YOLO")}/>
           <main className="mt-2">
             <Switch>
               <Redirect from="/" to="/home" exact/>
@@ -33,7 +21,7 @@ class App extends Component {
               <Route path="/auth" component={ AuthPage }/>}
               <Route path="/account" component={ AccountPage }/>
               {/* <Redirect from="/account" to="/auth" exact/> */}
-              <Route path="/home" component={ home }/>
+              <Route path="/home" render={(props) => <Home {...props} homeSearch={this.props.homeSearch.name}/>}/>
             </Switch>
           </main>
         </React.Fragment>
@@ -42,4 +30,21 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps  = (state) => {
+  return {
+    homeSearch: state.homeSearch
+  };
+}
+
+const mapDispatchToProps  = (dispatch) => {
+  return {
+    setHomeSearch: (homeSearch) => {
+      dispatch({
+        type: "SET_HOME_SEARCH",
+        payload: homeSearch
+      });
+    }
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

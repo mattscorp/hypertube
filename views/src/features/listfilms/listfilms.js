@@ -11,7 +11,6 @@ const Films = (props) =>  <div id={props.id} >
             </p> 
         </div>
         <div >
-            
             {
                 props.overview.split(' ').map((elem , index)=> 
                      <span key={index}>
@@ -22,9 +21,6 @@ const Films = (props) =>  <div id={props.id} >
                      </span>
                 )
             }
-           
-
-
             <div className="play_hover">
                 <a href="#" className="btn btn-info btn-lg">
                 <span className="glyphicon glyphicon-play"></span> Play

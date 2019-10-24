@@ -87,26 +87,26 @@ padding: 5%;
 .image:hover .overlay {
     width: 65%;
     height: 90%;
-   background:rgba(0,0,0,.75);
-   color: #e2e2e2;
-   position:absolute;
-   padding: 10%;
-   top:45%;
-   left:50%;
-   transform:translate(-50%, -50%);
+    background:rgba(0,0,0,.75);
+    color: #e2e2e2;
+    position:absolute;
+    padding: 10%;
+    top:45%;
+    left:50%;
+    transform:translate(-50%, -50%);
 
-   border-style: solid 1px #5f5656;
+    border-style: solid 1px #5f5656;
 
-   display:inline-block;
-   -webkit-box-sizing:border-box;
-   -moz-box-sizing:border-box;
-   box-sizing:border-box;
-   padding: 9%;
+    display:inline-block;
+    -webkit-box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    box-sizing:border-box;
+    padding: 9%;
 
-   /* All other styling - see example */
-   img {
-      vertical-align:top;
-   }
+    /* All other styling - see example */
+    img {
+        vertical-align:top;
+    }
 }
 
 /*.pagination_div{
