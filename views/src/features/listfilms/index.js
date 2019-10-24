@@ -7,6 +7,7 @@ class FilmsList extends Component{
         page: 1,
         totalPage: null,
         scrolling: false,
+        mode: null,
     }
 
     componentDidMount () {
@@ -17,7 +18,7 @@ class FilmsList extends Component{
     }
 
     handleScroll = (e) => {
-        const{ scrolling, totalPage, page} = this.state;
+        const{ scrolling, totalPage, page, mode} = this.state;
         const last_id = (this.state.page * 20) - 1;
         if(scrolling) return
         if(totalPage <= page) return
@@ -25,7 +26,8 @@ class FilmsList extends Component{
         const lastdivOffset = lastdiv.offsetTop + lastdiv.clientHeight;
         const pageOffset = window.pageYOffset + window.innerHeight;  
         var bottomOffset = 20;
-        if (pageOffset > lastdivOffset - bottomOffset) this.loadMore();
+        if ((pageOffset > lastdivOffset - bottomOffset) &&   mode === null) this.loadMore();
+        if ((pageOffset > lastdivOffset - bottomOffset) &&   mode === 1) this.loadMoreSearch();
     }
 
     loadFilms = () =>{
@@ -56,6 +58,40 @@ class FilmsList extends Component{
     }
 
     loadMore = () =>{
+        this.setState(prevState => ({
+            page : prevState.page + 1,
+            scrolling: true,
+        }), this.loadFilms)
+    }
+
+    loadFilmsSearch = () =>{
+
+        const {page, films } = this.state;
+        const API_KEY = "208ecb5c1ee27eb7b9bc731dc8656bd2";
+
+    const URL = `http://localhost:8000/moviedb?action=popular&page=${page}`;
+
+
+    fetch(URL, {
+                method: 'GET',
+                headers: {'Content-Type': 'application/json'}
+            })
+                .then(res => {
+                    if (res.status !== 200 && res.status !== 201)
+                        throw new Error('Failed');
+                    return res.json();
+                })
+                .then(resData => this.setState({
+                   films: [...films, ...resData],
+                   scrolling: false,
+                   totalPage: resData.totalPage,
+                }))
+                .catch(err => {
+                    console.log(err);
+                });
+    }
+
+    loadMoreSearch = () =>{
         this.setState(prevState => ({
             page : prevState.page + 1,
             scrolling: true,
