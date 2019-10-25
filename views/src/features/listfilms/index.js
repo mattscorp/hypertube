@@ -27,39 +27,123 @@ class FilmsList extends Component{
         const pageOffset = window.pageYOffset + window.innerHeight;  
         var bottomOffset = 20;
         if ((pageOffset > lastdivOffset - bottomOffset) && mode === null) this.loadMore();
-        if ((pageOffset > lastdivOffset - bottomOffset) && mode === 1) this.loadMoreSearch();
+        // if ((pageOffset > lastdivOffset - bottomOffset) && mode === 1) this.loadMoreSearch();
     }
 
     loadFilms = () => {
-        const {page, films} = this.state;
+        
         let URL = ''
         if (this.props.homeSearch == "Trending movies") {
+            const {page, films} = this.state;
             URL = `http://localhost:8000/moviedb?action=popular&page=${page}`;
+        
+            fetch(URL, {
+                method: 'GET',
+                headers: {'Content-Type': 'application/json'}
+            })
+                .then(res => {
+                    if (res.status !== 200 && res.status !== 201)
+                        throw new Error('Failed');
+                    return res.json();
+            })
+                .then(resData => {
+                    this.setState({
+                films: [...films, ...resData],
+                scrolling: false,
+                totalPage: resData.totalPage,
+            })}
+            )
+                .catch(err => {
+                    console.log(err);
+            });
+        
         }
         else {
-            let search_query = this.props.homeSearch.split(':')[1].trim();
-            URL = `http://localhost:8000/moviedb?action=search&page=${page}&movie_name=${search_query}`;
+            const {page, films, mode} = this.state;
+            if (mode == null)
+            {
+                console.log(films);
+                this.setState({
+                    films: [],
+                    mode: 1,
+                })
+                console.log(mode);
+                let search_query = this.props.homeSearch.split(':')[1].trim();
+                URL = `http://localhost:8000/moviedb?action=search&page=${page}&movie_name=${search_query}`;
+                fetch(URL, {
+                    method: 'GET',
+                    headers: {'Content-Type': 'application/json'}
+                })
+                    .then(res => {
+                        if (res.status !== 200 && res.status !== 201)
+                            throw new Error('Failed');
+                        return res.json();
+                })
+                    .then(resData => {
+                        this.setState({
+                    films: [...resData],
+                    scrolling: false,
+                    totalPage: resData.totalPage,
+                })}
+                )
+                    .catch(err => {
+                        console.log(err);
+                });
+                this.setState({ state: this.state });
+            }
+            if (mode == 1)
+            {
+                console.log(films);
+                this.setState({
+                    films: [],
+                    mode: 1,
+                })
+                console.log(mode);
+                let search_query = this.props.homeSearch.split(':')[1].trim();
+                URL = `http://localhost:8000/moviedb?action=search&page=${page}&movie_name=${search_query}`;
+                fetch(URL, {
+                    method: 'GET',
+                    headers: {'Content-Type': 'application/json'}
+                })
+                    .then(res => {
+                        if (res.status !== 200 && res.status !== 201)
+                            throw new Error('Failed');
+                        return res.json();
+                })
+                    .then(resData => {
+                        this.setState({
+                    films: [...films, ...resData],
+                    scrolling: false,
+                    totalPage: resData.totalPage,
+                })}
+                )
+                    .catch(err => {
+                        console.log(err);
+                });
+                this.setState({ state: this.state });
+            }
+        
         }
 
-        fetch(URL, {
-            method: 'GET',
-            headers: {'Content-Type': 'application/json'}
-        })
-            .then(res => {
-                if (res.status !== 200 && res.status !== 201)
-                    throw new Error('Failed');
-                return res.json();
-        })
-            .then(resData => {
-                this.setState({
-            films: [...films, ...resData],
-            scrolling: false,
-            totalPage: resData.totalPage,
-        })}
-        )
-            .catch(err => {
-                console.log(err);
-        });
+        // fetch(URL, {
+        //     method: 'GET',
+        //     headers: {'Content-Type': 'application/json'}
+        // })
+        //     .then(res => {
+        //         if (res.status !== 200 && res.status !== 201)
+        //             throw new Error('Failed');
+        //         return res.json();
+        // })
+        //     .then(resData => {
+        //         this.setState({
+        //     films: [...films, ...resData],
+        //     scrolling: false,
+        //     totalPage: resData.totalPage,
+        // })}
+        // )
+        //     .catch(err => {
+        //         console.log(err);
+        // });
     }
 
     loadMore = () =>{
