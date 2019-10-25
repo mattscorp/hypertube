@@ -26,35 +26,40 @@ class FilmsList extends Component{
         const lastdivOffset = lastdiv.offsetTop + lastdiv.clientHeight;
         const pageOffset = window.pageYOffset + window.innerHeight;  
         var bottomOffset = 20;
-        if ((pageOffset > lastdivOffset - bottomOffset) &&   mode === null) this.loadMore();
-        if ((pageOffset > lastdivOffset - bottomOffset) &&   mode === 1) this.loadMoreSearch();
+        if ((pageOffset > lastdivOffset - bottomOffset) && mode === null) this.loadMore();
+        if ((pageOffset > lastdivOffset - bottomOffset) && mode === 1) this.loadMoreSearch();
     }
 
-    loadFilms = () =>{
+    loadFilms = () => {
+        const {page, films} = this.state;
+        let URL = ''
+        if (this.props.homeSearch == "Trending movies") {
+            URL = `http://localhost:8000/moviedb?action=popular&page=${page}`;
+        }
+        else {
+            let search_query = this.props.homeSearch.split(':')[1].trim();
+            URL = `http://localhost:8000/moviedb?action=search&page=${page}&movie_name=${search_query}`;
+        }
 
-        const {page, films } = this.state;
-        const API_KEY = "208ecb5c1ee27eb7b9bc731dc8656bd2";
-
-    const URL = `http://localhost:8000/moviedb?action=popular&page=${page}`;
-
-
-    fetch(URL, {
-                method: 'GET',
-                headers: {'Content-Type': 'application/json'}
-            })
-                .then(res => {
-                    if (res.status !== 200 && res.status !== 201)
-                        throw new Error('Failed');
-                    return res.json();
-                })
-                .then(resData => this.setState({
-                   films: [...films, ...resData],
-                   scrolling: false,
-                   totalPage: resData.totalPage,
-                }))
-                .catch(err => {
-                    console.log(err);
-                });
+        fetch(URL, {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'}
+        })
+            .then(res => {
+                if (res.status !== 200 && res.status !== 201)
+                    throw new Error('Failed');
+                return res.json();
+        })
+            .then(resData => {
+                this.setState({
+            films: [...films, ...resData],
+            scrolling: false,
+            totalPage: resData.totalPage,
+        })}
+        )
+            .catch(err => {
+                console.log(err);
+        });
     }
 
     loadMore = () =>{
@@ -64,47 +69,44 @@ class FilmsList extends Component{
         }), this.loadFilms)
     }
 
-    loadFilmsSearch = () =>{
+    // loadFilmsSearch = () =>{
 
-        const {page, films } = this.state;
-        const API_KEY = "208ecb5c1ee27eb7b9bc731dc8656bd2";
+    //     const {page, films } = this.state;
+    //     const URL = `http://localhost:8000/moviedb?action=popular&page=${page}`;
 
-    const URL = `http://localhost:8000/moviedb?action=popular&page=${page}`;
+    //     fetch(URL, {
+    //             method: 'GET',
+    //             headers: {'Content-Type': 'application/json'}
+    //     })
+    //         .then(res => {
+    //             if (res.status !== 200 && res.status !== 201)
+    //                 throw new Error('Failed');
+    //             return res.json();
+    //         })
+    //         .then(resData => this.setState({
+    //             films: [...films, ...resData],
+    //             scrolling: false,
+    //             totalPage: resData.totalPage,
+    //         }))
+    //         .catch(err => {
+    //             console.log(err);
+    //         });
+    // }
 
-
-    fetch(URL, {
-                method: 'GET',
-                headers: {'Content-Type': 'application/json'}
-            })
-                .then(res => {
-                    if (res.status !== 200 && res.status !== 201)
-                        throw new Error('Failed');
-                    return res.json();
-                })
-                .then(resData => this.setState({
-                   films: [...films, ...resData],
-                   scrolling: false,
-                   totalPage: resData.totalPage,
-                }))
-                .catch(err => {
-                    console.log(err);
-                });
-    }
-
-    loadMoreSearch = () =>{
-        this.setState(prevState => ({
-            page : prevState.page + 1,
-            scrolling: true,
-        }), this.loadFilms)
-    }
+    // loadMoreSearch = () => {
+    //     this.setState(prevState => ({
+    //         page : prevState.page + 1,
+    //         scrolling: true,
+    //     }), this.loadFilms)
+    // }
 
     render (){
         return (
             <div className="container">
-                <div className="row">
+                <div homeSearch={this.props.homeSearch} id="result_list" ref="result_list" className="row">
                     {   
                         this.state.films.map((film, index) => <div onLoad={this.increment_id} key={index} id={index} className="col-sm-3 key" >
-                            <Films {...film}/>
+                                <Films {...film}/>
                             </div>)
                     }
                 </div>

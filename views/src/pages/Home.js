@@ -8,7 +8,7 @@ class HomePage extends Component {
         <div className="row">
           <h1 className="mx-auto pb-4">{this.props.homeSearch}</h1>
           </div>
-        <FilmsList />
+        <FilmsList homeSearch={this.props.homeSearch}/>
       </div>
     );
   }

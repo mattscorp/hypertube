@@ -138,24 +138,23 @@ app.route('/moviedb')
         if (req.query.page)
         page = req.query.page;
         let popular_movies = await films.popular_movies(page, public_category, category);
-        //console.log("ici" + popular_movies);
-
         if (popular_movies == '')
           res.status(204);
         else
           res.status(200);
-        console.log(popular_movies.results);
         res.send(popular_movies.results);
       }
       // ** SEARCH ** --> search movies by name
       //    "movie_name": 
       else if (req.query.action.toLowerCase() == "search") {
-        let search_movies = await films.search_movies(req.query.movie_name);
+        let name = req.query.movie_name;
+        page = req.query.page;
+        let search_movies = await films.search_movies(page, public_category, category, name);
         if (search_movies == '')
           res.status(204);
         else
           res.status(200);
-        res.send(search_movies);
+        res.send(search_movies.results);
       }
       // ** SIMILAR ** --> get movies that are similar to the parameter "movie_ID"
       else if (req.query.action.toLowerCase() == "similar") {
@@ -165,7 +164,7 @@ app.route('/moviedb')
           res.status(204);
         else
           res.status(200);
-        res.send(similar_movies);
+        res.send(similar_movies.results);
       }
       // https://developers.themoviedb.org/3/movies/get-similar-movies
     }

@@ -12,7 +12,11 @@ class App extends Component {
     return (
       <BrowserRouter>
         <React.Fragment>
-          <MainNavigation changeHomeSearch={() => this.props.setHomeSearch("CHANGED BY GO BUTTON YOLO")}/>
+          <MainNavigation 
+            changeHomeSearch={(searchQuery) => {this.props.setHomeSearch(searchQuery)}}
+            changeHomeDiscover={() => {this.props.setHomeDiscover("Trending movies")}}
+            homeSearch={this.props.homeSearch.name}
+          />
           <main className="mt-2">
             <Switch>
               <Redirect from="/" to="/home" exact/>
@@ -42,6 +46,12 @@ const mapDispatchToProps  = (dispatch) => {
       dispatch({
         type: "SET_HOME_SEARCH",
         payload: homeSearch
+      });
+    },
+    setHomeDiscover: (homeDiscover) => {
+      dispatch({
+        type: "SET_HOME_DISCOVER",
+        payload: homeDiscover
       });
     }
   };

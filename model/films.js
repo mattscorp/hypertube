@@ -73,13 +73,16 @@ const popular_movies = async (page, public_category, film_category) => {
 module.exports.popular_movies = popular_movies;
 
 // GET search a movie by name
-const search_movies = async (name) => {
+const search_movies = async (page, public_category, film_category, name) => {
     return new Promise((resolve, reject) => {
-        let sql = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${name}`;
+        let US_CERTIFICATE = '';
+        let CATEGORY = '';
+        if (public_category != 'all')
+            US_CERTIFICATE = `&certification_country=US&certification.lte=${public_category}`;
+        if (film_category != 'all' && genres[film_category.toLowerCase()])
+            CATEGORY = `&with_genres=${genres[film_category.toLowerCase()]}`;
+        let sql = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${name}${US_CERTIFICATE}${CATEGORY}&page=${page}`;
         request(sql, {json: true}, function (error, response, body) {
-            console.log('error:', error); // Print the error if one occurred
-            console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-            console.log('body:', body); // Print the HTML for the Google homepage.
             resolve(body);
         });
     });

@@ -1,13 +1,22 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
-
 import './MainNavigation.css';
 
 class MainNavigation extends Component {
 
-    submitHandler = (event) => {
+    setSearch = (event) => {
         event.preventDefault();
-        this.props.changeHomeSearch('Anna');
+        if (document.forms[0].querySelector('input[name="search_query"]').value !== '') {
+            this.props.changeHomeSearch(document.forms[0].querySelector('input[name="search_query"]').value);
+            
+        }
+        else
+            this.props.changeHomeDiscover();
+    }
+
+    clearSearch = (event) => {
+        event.preventDefault();
+        this.props.changeHomeDiscover();
     }
 
     render() {
@@ -35,10 +44,20 @@ class MainNavigation extends Component {
                         <ul className="navbar-nav ml-auto">
                             <li className="nav-item">
                                 <div className="nav-item">
-                                <form className="form-inline" onClick={this.submitHandler}>
-                                        <input className="form-control mr-sm-2" type="text" placeholder="Search" /> 
-                                        <button className="btn btn-success" type="submit">GO</button>
+                                    <form className="form-inline" onClick={this.setSearch}>
+                                        <input onChange={this.setSearch} 
+                                            className="form-control mr-sm-2" type="text" placeholder="Search" 
+                                            name="search_query"
+                                        /> 
+                                        <button className="btn btn-success" type="submit">
+                                            Search
+                                        </button>
                                     </form>
+                                    {(this.props.homeSearch === "Trending movies") ? null :
+                                        <button className="btn btn-success" type="submit" onClick={this.clearSearch}>
+                                            Clear
+                                        </button>
+                                    }
                                 </div>
                             </li>
                         </ul>
