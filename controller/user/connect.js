@@ -121,7 +121,7 @@ router.post('/auth', async (req, res) => {
           req.session.data = connection;
           console.log('APRES : ' + req.session.data);
           res.status(200);
-          res.send({token: connection});
+          res.send({token: connection}).cookie('token', connection, { httpOnly: true });
       }
       // Account creation
     } else if (action == 'creation') {
@@ -142,7 +142,7 @@ router.post('/auth', async (req, res) => {
         } else {
           user.post_users(last_name, first_name, login, email, password);
           res.status(201);
-          res.send('The user has been created');
+          res.send('The user has been created'); 
         }
       }
     }
