@@ -14,6 +14,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const connection = require('../../model/connection.js');
 const router = express.Router();
 const config = require('../config');
+// to create the token
+const jwt = require('jsonwebtoken');
 
 const user = require('../../model/connection.js');
 
@@ -115,13 +117,14 @@ router.post('/auth', async (req, res) => {
           res.status(401);
           res.send("Connection refused: the login or password is wrong.");
       } else {
-          // console.log("TOKEN : " + connection);
-          // console.log('AVANT : ' + req.session.token);
-
           req.session.data = connection;
-          console.log('APRES : ' + req.session.data);
+          // Issuing authentification token
+          const payload = { connection };
+          const token = jwt.sign(payload, config.SESS_SECRET, {
+            expiresIn: '1h'
+          });
           res.status(200);
-          res.send({token: connection}).cookie('token', connection, { httpOnly: true });
+          res.cookie('token', token, { httpOnly: true }).send({token: token});
       }
       // Account creation
     } else if (action == 'creation') {
