@@ -14,8 +14,8 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // parse requests of content-type - application/json
 app.use(bodyParser.json())
 
-app.options('*', cors())
-app.use(cors());
+app.options("http://localhost:3000", cors());
+app.use(cors({origin: "http://localhost:3000", credentials: true}));
 
 app.use(session({
   secret: config.SESS_SECRET,
