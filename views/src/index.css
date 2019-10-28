@@ -20,6 +20,10 @@ body {
 
 
 /*****      HOME PAGE      ******/
+.image img{
+    height: 80%;
+    width: 80%;
+}
 
 .col-sm-3 h3, .col-sm-3 h4, .col-sm-3 h5{
 	text-align: center;
