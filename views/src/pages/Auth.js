@@ -1,4 +1,11 @@
 import React, { Component } from 'react';
+import { URLSearchParams } from 'url'
+import instagram from '../resources/instagram.png';
+import forty_two from '../resources/42.svg';
+import facebook from '../resources/facebook.png';
+import github from '../resources/github.png';
+import {uuid_42} from '../config_views';
+// import {secret_42} from '../config_views';
 
 class AuthPage extends Component {
     
@@ -15,6 +22,40 @@ class AuthPage extends Component {
         this.passwordEl = React.createRef();
         this.passwordConfirmEl = React.createRef();
 
+    }
+
+    connect_forty_two = (event, next) => {
+        event.preventDefault();
+        alert('connection 42 --> EN COURS');
+        alert(uuid_42);
+        fetch(`https://api.intra.42.fr/oauth/authorize?client_id=${uuid_42}&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fhome&response_type=code`, {
+            credentials: 'include',
+            method: 'GET',
+            origin: 'http://localhost:3000',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .then(res => {
+            alert('res de 42 : ' + res.access_token);
+            console.log('res de 42 : ' + res.access_token);
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }
+
+    connect_facebook = (event) => {
+        event.preventDefault();
+        alert('connection facebook --> TO BE DONE');
+    }
+
+    connect_instagram = (event) => {
+        event.preventDefault();
+        alert('connection instagram --> TO BE DONE');
+    }
+
+    connect_github = (event) => {
+        event.preventDefault();
+        alert('connection github --> TO BE DONE');
     }
 
     switchModeHandler = () => {
@@ -54,17 +95,17 @@ class AuthPage extends Component {
                 body: JSON.stringify(requestBody),
                 headers: {'Content-Type': 'application/json'}
             })
-                .then(res => {
-                    if (res.status !== 200 && res.status !== 201)
-                        throw new Error('Failed');
-                    return res.json();
-                })
-                .then(resData => {
-                    console.log(resData);
-                })
-                .catch(err => {
-                    console.log(err);
-                });
+            .then(res => {
+                if (res.status !== 200 && res.status !== 201)
+                    throw new Error('Failed');
+                return res.json();
+            })
+            .then(resData => {
+                console.log(resData);
+            })
+            .catch(err => {
+                console.log(err);
+            });
         }
     };
     
@@ -80,7 +121,7 @@ class AuthPage extends Component {
                                     <button className="btn btn-secondary" type="button" onClick={this.switchModeHandler}>{this.state.isLogin ? 'Create an account' : "Sign in to your account"}</button>
                                 </div>
                             </div>
-                            <div className="col-md-10 mx-auto">
+                            <div className="col-10 mx-auto pt-2">
                                 <h4 className="text-center">{this.state.isLogin ? 'Connect to your account' : "Create your account"}</h4>
                             </div>    
                         </div>
@@ -133,6 +174,20 @@ class AuthPage extends Component {
                                 <div className="form-actions row">
                                     <div className="mx-auto">
                                         <button className="btn btn-dark" type="submit">{this.state.isLogin ? 'Connect to your account' : "Create your account"}</button>
+                                    </div>
+                                </div>
+                                <div className="row mx-auto mt-3">
+                                    <div onClick={this.connect_facebook} className="mx-auto p-2" >
+                                        <img className="img_auth" src={facebook} title="Connect with Facebook"/>
+                                    </div>
+                                    <div onClick={this.connect_instagram} className="mx-auto p-2" >
+                                        <img className="img_auth" src={instagram} title="Connect with Instagram"/>
+                                    </div>
+                                    <div onClick={this.connect_forty_two} className="mx-auto p-2" >
+                                        <img className="img_auth p-2" src={forty_two} title="Connect with 42"/>
+                                    </div>
+                                    <div onClick={this.connect_github} className="mx-auto p-2" >
+                                        <img className="img_auth" src={github} title="Connect with github"/>
                                     </div>
                                 </div>
                             </form>

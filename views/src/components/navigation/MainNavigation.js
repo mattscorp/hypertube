@@ -19,6 +19,22 @@ class MainNavigation extends Component {
         this.props.changeHomeDiscover();
     }
 
+    logout = (event) => {
+        event.preventDefault();
+        console.log('ICI');
+        fetch(`http://localhost:8000/logout`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {'Content-Type': 'application/json'}
+        })
+        .then(() => {
+            window.location.reload();
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    }
+
     render() {
         return (
             <div className="row sticky-top">
@@ -34,7 +50,7 @@ class MainNavigation extends Component {
                                     <li className="nav-item"><NavLink to="/home">Home</NavLink></li>
                                     <li className="nav-item"><NavLink to="/auth">Authentification</NavLink></li>
                                     <li className="nav-item"><NavLink to="/account">Account</NavLink></li>
-                                    <div>Logout</div>
+                                    <li className="nav-item" onClick={this.logout}><button>Logout</button></li>
                                 </ul>
                             </div>
                         </nav>

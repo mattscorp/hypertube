@@ -39,6 +39,7 @@ class FilmsList extends Component{
         
             fetch(URL, {
                 method: 'GET',
+                credentials: 'include',
                 headers: {'Content-Type': 'application/json'}
             })
                 .then(res => {

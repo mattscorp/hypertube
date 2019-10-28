@@ -3,11 +3,11 @@
 const express = require('express');
 let app = express();
 const ent = require('ent');
-const cors = require('cors')
 const bodyParser = require('body-parser');
-const session = require("express-session");
+const cookieParser = require('cookie-parser');
+// const session = require("express-session");
 const mysql = require('mysql');
-const MySQLStore = require('express-mysql-session')(session); // to store the session data
+// const MySQLStore = require('express-mysql-session')(session); // to store the session data
 const uuidv4 = require('uuid/v4');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -16,88 +16,19 @@ const router = express.Router();
 const config = require('../config');
 // to create the token
 const jwt = require('jsonwebtoken');
-
+const with_auth = require('./authentification_middleware');
 const user = require('../../model/connection.js');
 
-// const options = {
-//   host: config.HOST,
-//   port: config.PORT,
-//   user: config.USER,
-//   password: config.PASSWORD,
-//   database: config.DATABASE,
-//   schema: {
-//     tableName: 'sessions',
-//     columnNames: {
-//         session_id: 'session_id',
-//         expires: 'expires',
-//         data: 'data'
-//     }
-//   }
-// };
-// const session_connection = mysql.createConnection(options); // or mysql.createPool(options);
-// const sessionStore = new MySQLStore({}/* session store options */, session_connection);
+router.use(cookieParser());
+router.use(bodyParser.json());
+router.use(bodyParser.urlencoded({ extended: true }));
 
-// router.options('*', cors())
-// router.use(cors());
-// router.use(session({
-//   key: config.SESS_NAME,
-//   secret: config.SESS_SECRET,
-//   store: sessionStore,
-//   resave: true, //This prevents unnecessary re-saves if the session wasn’t modified.
-//   saveUninitialized: false, // This complies with laws that require permission before setting a cookie.
-//   cookie: {
-//     maxAge: parseInt(config.SESS_LIFETIME)
-//   }
-// }));
+// Allow Cross-origin requests
+const cors = require('cors')
+router.options("http://localhost:3000", cors());
+router.use(cors({origin: "http://localhost:3000", credentials: true}));
 
-
-// const options = {
-//   host: config.HOST,
-//   port: config.PORT,
-//   user: config.USER,
-//   password: config.PASSWORD,
-//   database: config.DATABASE,
-//   charset: 'utf8mb4_bin',
-//   connectionLimit : 1000,
-//   connectTimeout  : 60 * 60 * 1000,
-//   acquireTimeout  : 60 * 60 * 1000,
-//   timeout         : 60 * 60 * 1000,
-// };
-
-// const session_connection = mysql.createConnection(options); // or mysql.createPool(options);
-// const sessionStore = new MySQLStore({}/* session store options */, session_connection);
-
-// connection = mysql.createConnection(db_config); // Recreate the connection, since the old one cannot be reused.
-
-//   connection.connect(function(err) {              // The server is either down
-//     if(err) {                                     // or restarting (takes a while sometimes).
-//       console.log('error when connecting to db:', err);
-//       setTimeout(handleDisconnect, 2000); // We introduce a delay before attempting to reconnect,
-//     }                                     // to avoid a hot loop, and to allow our node script to
-//   });                                     // process asynchronous requests in the meantime.
-//                                           // If you're also serving http, display a 503 error.
-//   connection.on('error', function(err) {
-//     console.log('db error', err);
-//     if(err.code === 'PROTOCOL_CONNECTION_LOST') { // Connection to the MySQL server is usually
-//       handleDisconnect();                         // lost due to either server restart, or a
-//     } else {                                      // connnection idle timeout (the wait_timeout
-//       throw err;                                  // server variable configures this)
-//     }
-//   });
-
-// router.use(session({
-//   key: config.SESS_NAME,
-//   secret: config.SESS_SECRET,
-//   store: sessionStore,
-//   resave: true, //This prevents unnecessary re-saves if the session wasn’t modified.
-//   saveUninitialized: false, // This complies with laws that require permission before setting a cookie.
-//   cookie: {
-//     maxAge: parseInt(config.SESS_LIFETIME)
-//   }
-// }));
-
-
-
+// **** CONNECT OR CREATE AN ACCOUNT (no third-parties) **** //
 router.post('/auth', async (req, res) => {
   const action = req.body.body.split('"')[1];
   const login = (req.body.body.split('login: ')[1]).split('"')[1];
@@ -112,14 +43,13 @@ router.post('/auth', async (req, res) => {
     // Connection to the account
     if (action == 'login') {
       console.log('ICI');
-      let connection = await user.user_connect(login, password);
-      if (connection == '0') {
+      let uuid = await user.user_connect(login, password);
+      if (uuid == '0') {
           res.status(401);
           res.send("Connection refused: the login or password is wrong.");
       } else {
-          req.session.data = connection;
           // Issuing authentification token
-          const payload = { connection };
+          const payload = { uuid };
           const token = jwt.sign(payload, config.SESS_SECRET, {
             expiresIn: '1h'
           });
@@ -137,7 +67,7 @@ router.post('/auth', async (req, res) => {
         res.send('Passwords don\'t match');
       } else {
         if (await user.user_exists_login(login) != 'vide') {
-          res.status(418);;
+          res.status(418);
           res.send('This login is already in use');
         } else if (await user.user_exists_email(email) != 'vide') {
           res.status(418);;
@@ -152,11 +82,20 @@ router.post('/auth', async (req, res) => {
   }
 });
 
-router.post('/logout', async (req, res) => {
+// **** CONNECT OR CREATE AN ACCOUNT (with third-parties) **** //
+
+router.post('/connect', async (req, res) => {
+  if (req.body.third_party == 'forty-two')
+    console.log('42');
+  console.log(req.body);
+});
+
+// **** LOGOUT **** //
+
+router.post('/logout', with_auth, async (req, res) => {
   try {
-    req.session.user = '';
-    req.session.token = '';
-    console.log(req.session.token);
+    console.log(req);
+    res.status(200).cookie('token', null, { httpOnly: true }).send("The user has been successfully disconnected");
   } catch (err) {
     res.status(422).send(err);
   }

@@ -173,6 +173,12 @@ body{
     margin-right: 0;
 }
 
+.img_auth 
+{
+    max-height: 50px;
+    max-width: auto;
+}
+
 /********* ACCOUNT *****/
 
 /*!
