@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { URLSearchParams } from 'url'
-import instagram from '../resources/instagram.png';
-import forty_two from '../resources/42.svg';
-import facebook from '../resources/facebook.png';
-import github from '../resources/github.png';
-import {uuid_42} from '../config_views';
-// import {secret_42} from '../config_views';
+import instagram from '../../resources/instagram.png';
+import forty_two from '../../resources/42.svg';
+import facebook from '../../resources/facebook.png';
+import google from '../../resources/google.png';
+import github from '../../resources/github.png';
+import {uuid_42} from '../../config_views';
+import {client_github} from '../../config_views';
+// import {secret_42} from '../../config_views';
 
 class AuthPage extends Component {
     
@@ -21,41 +23,35 @@ class AuthPage extends Component {
         this.emailEl = React.createRef();
         this.passwordEl = React.createRef();
         this.passwordConfirmEl = React.createRef();
-
     }
 
-    connect_forty_two = (event, next) => {
-        event.preventDefault();
-        alert('connection 42 --> EN COURS');
-        alert(uuid_42);
-        fetch(`https://api.intra.42.fr/oauth/authorize?client_id=${uuid_42}&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fhome&response_type=code`, {
-            credentials: 'include',
-            method: 'GET',
-            origin: 'http://localhost:3000',
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        })
-        .then(res => {
-            alert('res de 42 : ' + res.access_token);
-            console.log('res de 42 : ' + res.access_token);
-        })
-        .catch(err => {
-            console.log(err);
-        });
-    }
-
+    /**** CONNECTION WITH OAUTH ****/
+    // FACEBOOK
     connect_facebook = (event) => {
         event.preventDefault();
         alert('connection facebook --> TO BE DONE');
     }
-
+    // INSTAGRAM
     connect_instagram = (event) => {
         event.preventDefault();
         alert('connection instagram --> TO BE DONE');
     }
-
+    // 42
+    connect_forty_two = (event, next) => {
+        event.preventDefault();
+        let URI = `https://api.intra.42.fr/oauth/authorize?client_id=${uuid_42}&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Foauth_ft&response_type=code`;
+        window.location.assign(URI);
+    }
+    // GITHUB
     connect_github = (event) => {
         event.preventDefault();
-        alert('connection github --> TO BE DONE');
+        let URI = `https://github.com/login/oauth/authorize?client_id=${client_github}&redirect_uri=http://localhost:3000/oauth_github`;
+        window.location.assign(URI);
+    }
+    // GOOGLE
+    connect_google = (event) => {
+        event.preventDefault();
+        alert('connection google --> TO BE DONE');
     }
 
     switchModeHandler = () => {
@@ -184,10 +180,13 @@ class AuthPage extends Component {
                                         <img className="img_auth" src={instagram} title="Connect with Instagram"/>
                                     </div>
                                     <div onClick={this.connect_forty_two} className="mx-auto p-2" >
-                                        <img className="img_auth p-2" src={forty_two} title="Connect with 42"/>
+                                        <img className="img_auth p-1" src={forty_two} title="Connect with 42"/>
                                     </div>
                                     <div onClick={this.connect_github} className="mx-auto p-2" >
                                         <img className="img_auth" src={github} title="Connect with github"/>
+                                    </div>
+                                    <div onClick={this.connect_google} className="mx-auto p-2" >
+                                        <img className="img_auth" src={google} title="Connect with google"/>
                                     </div>
                                 </div>
                             </form>

@@ -1,5 +1,6 @@
 'use strict'
-
+// to post http requests
+const request = require('request');
 // mysql connection credentials
 const db_connect = require('../model/db_connect.js');
 let con = db_connect.con;
@@ -29,7 +30,6 @@ module.exports.film_list = film_list;
 
 //// FROM api.themoviedb.org ////
 
-const request = require('request');
 const API_KEY = "208ecb5c1ee27eb7b9bc731dc8656bd2";
 let genres =  {
     "action": 28,

@@ -3,8 +3,10 @@ import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 import {connect} from 'react-redux';
 
 import Home from './pages/Home.js';
-import AuthPage from './pages/Auth.js';
-import AccountPage from './pages/Account.js';
+import AuthPage from './pages/connection/Auth.js';
+import OAuth_FT from './pages/connection/Oauth_FT.js';
+import OAuth_Github from './pages/connection/Oauth_Github.js';
+import AccountPage from './pages/connection/Account.js';
 import MainNavigation from './components/navigation/MainNavigation';
 
 class App extends Component {
@@ -22,6 +24,8 @@ class App extends Component {
               <Redirect from="/" to="/home" exact/>
               {/* <Redirect from="/" to="/auth" exact/>} */}
               {/* <Redirect from="/auth" to="/account" exact/> */}
+              <Route path="/oauth_ft" component={ OAuth_FT }/>}
+              <Route path="/oauth_github" component={ OAuth_Github }/>}
               <Route path="/auth" component={ AuthPage }/>}
               <Route path="/account" component={ AccountPage }/>
               {/* <Redirect from="/account" to="/auth" exact/> */}

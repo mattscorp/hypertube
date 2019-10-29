@@ -179,6 +179,16 @@ body{
     max-width: auto;
 }
 
+/****** OAuth account ******/
+
+.preloader {
+    display: flex;
+    height: 50vh;
+    transition: opacity 0.3s linear;
+    width: 100%;
+    z-index: 9999;
+}
+
 /********* ACCOUNT *****/
 
 /*!

@@ -28,6 +28,7 @@ CREATE TABLE IF NOT EXISTS `users` (
     `insta` varchar(100) DEFAULT NULL,
     `facebook` varchar(100) DEFAULT NULL,
     `github` varchar(100) DEFAULT NULL,
+    `google` varchar(100) DEFAULT NULL,
     `42` varchar(100) DEFAULT NULL,
     `nb_views` int(11) NOT NULL DEFAULT 0,
     `nb_comments` int(11) NOT NULL  DEFAULT 0,

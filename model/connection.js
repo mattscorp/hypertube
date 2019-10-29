@@ -104,3 +104,14 @@ const post_users = async (last_name, first_name, login, email, password) => {
 }
 module.exports.post_users = post_users;
 
+// Create a user (no OAuth)
+const post_users_oauth = async (login, email, profile_picture, oauth) => {
+    let sql = "INSERT INTO `users` (`uuid`, `language`, `login`, `email`, `profile_picture`, `" + oauth + "`) VALUES (?)";
+    let uuid = uuidv4();
+    let sql_values = [uuid, 'English', login, email, profile_picture, 'yes'];
+    con.query(sql, [sql_values], (err, result) => {
+        if (err)
+            throw err;
+    })
+}
+module.exports.post_users_oauth = post_users_oauth;

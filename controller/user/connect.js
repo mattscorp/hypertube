@@ -1,5 +1,7 @@
 'use strict'
 
+// to post http requests
+const request = require('request');
 const express = require('express');
 let app = express();
 const ent = require('ent');
@@ -83,6 +85,11 @@ router.post('/auth', async (req, res) => {
 });
 
 // **** CONNECT OR CREATE AN ACCOUNT (with third-parties) **** //
+
+router.get('/oauth_ft', async (req, res) => {
+  console.log('*** 42 get ***');
+  console.log(req);
+});
 
 router.post('/connect', async (req, res) => {
   if (req.body.third_party == 'forty-two')

@@ -27,12 +27,8 @@ class MainNavigation extends Component {
             credentials: 'include',
             headers: {'Content-Type': 'application/json'}
         })
-        .then(() => {
-            window.location.reload();
-        })
-        .catch(err => {
-            console.log(err);
-        })
+        .then(() => { window.location.assign('http://localhost:3000'); })
+        .catch((err) => { console.log(err); });
     }
 
     render() {
