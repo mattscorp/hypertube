@@ -22,6 +22,19 @@ app.disable('x-powered-by');
 const connection = require('../model/connection.js');
 const films = require('../model/films.js');
 
+/**** CONNECTION ****/
+// Connection / account creation
+const user = require('./user/connect.js');
+app.use(user);
+// Connection with 42 OAuth2
+const oauth_ft = require('./user/oauth/oauth_ft.js');
+app.use(oauth_ft);
+// Connection with Github OAuth2
+const oauth_github = require('./user/oauth/oauth_github.js');
+app.use(oauth_github);
+// Connection with Google OAuth2
+const oauth_google = require('./user/oauth/oauth_google.js');
+app.use(oauth_google);
 
 
 //////// API ////////
@@ -118,17 +131,6 @@ app.get('/moviedb', with_auth, async (req, res) => {
     // https://developers.themoviedb.org/3/movies/get-similar-movies
   }
 });
-
-/**** CONNECTION ****/
-// Connection / account creation
-const user = require('./user/connect.js');
-app.use(user);
-// Connection with 42 OAuth2
-const oauth_ft = require('./user/oauth/oauth_ft.js');
-app.use(oauth_ft);
-// Connection with Github OAuth2
-const oauth_github = require('./user/oauth/oauth_github.js');
-app.use(oauth_github);
 
 // listen for requests
 app.listen(config.PORT, () => {

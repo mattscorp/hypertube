@@ -12,3 +12,7 @@ module.exports.SECRET_42 = '9b65a3b5deb3f6fc39677684b5b6e7c08980d4e5eccd0fb266b0
 // API GITHUB
 module.exports.CLIENT_GITHUB = 'dfec2b7bc063846a39b4';
 module.exports.SECRET_GITHUB = '5fd518e068d4c64daad114e5c127bd71784f5639';
+
+// API GOOGLE
+module.exports.CLIENT_GOOGLE = '321607071701-la7bhht64qj1s2oep0d9r02lbo1is61o.apps.googleusercontent.com';
+module.exports.SECRET_GOOGLE = 'R6Ns2K8IK5UHsW_XLMg8tr1y';

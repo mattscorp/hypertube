@@ -7,7 +7,7 @@ import google from '../../resources/google.png';
 import github from '../../resources/github.png';
 import {uuid_42} from '../../config_views';
 import {client_github} from '../../config_views';
-// import {secret_42} from '../../config_views';
+import {client_google} from '../../config_views';
 
 class AuthPage extends Component {
     
@@ -51,7 +51,9 @@ class AuthPage extends Component {
     // GOOGLE
     connect_google = (event) => {
         event.preventDefault();
-        alert('connection google --> TO BE DONE');
+        let scope = 'https://www.googleapis.com/auth/userinfo.email';
+        let URI = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${client_google}&redirect_uri=http://localhost:3000/oauth_google&scope=${scope}&response_type=token`;
+        window.location.assign(URI);
     }
 
     switchModeHandler = () => {
