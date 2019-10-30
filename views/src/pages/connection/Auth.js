@@ -15,7 +15,6 @@ class AuthPage extends Component {
     state = {
         isLogin: true
     }
-     
     constructor(props) {
         super(props);
         this.loginEl = React.createRef();
@@ -26,7 +25,7 @@ class AuthPage extends Component {
         this.passwordConfirmEl = React.createRef();
     }
 
-    /**** CONNECTION WITH OAUTH ****/
+    /**** CONNECTION WITH OAUTH2 ****/
     // FACEBOOK
     connect_facebook = (event) => {
         event.preventDefault();
@@ -59,12 +58,14 @@ class AuthPage extends Component {
         window.location.assign(URI);
     }
 
+    // SWITCH FROM CONNECTION TO CREATION
     switchModeHandler = () => {
         this.setState(prevState => {
             return {isLogin: !prevState.isLogin};
         });
     }
 
+    // MANUAL CONNECTION OR CREATION
     submitHandler = event => {
         event.preventDefault();
         if (this.loginEl.current.value.trim().length === 0 || this.passwordEl.current.value.trim().length === 0) {
