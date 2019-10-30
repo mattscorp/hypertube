@@ -19,7 +19,7 @@ class FilmsList extends Component{
 
     handleScroll = (e) => {
         const{ scrolling, totalPage, page, mode} = this.state;
-        const last_id = (this.state.page * 20) - 1;
+        // const last_id = (this.state.page * 20) - 1;
         if(scrolling) return
         if(totalPage <= page) return
         const lastdiv = document.querySelector('div.row > div:last-child');
@@ -33,7 +33,7 @@ class FilmsList extends Component{
     loadFilms = () => {
         
         let URL = ''
-        if (this.props.homeSearch == "Trending movies") {
+        if (this.props.homeSearch === "Trending movies") {
             const {page, films} = this.state;
             URL = `http://localhost:8000/moviedb?action=popular&page=${page}`;
         
@@ -92,7 +92,7 @@ class FilmsList extends Component{
                 });
                 this.setState({ state: this.state });
             }
-            if (mode == 1)
+            if (mode === 1)
             {
                 console.log(films);
                 this.setState({
@@ -188,7 +188,7 @@ class FilmsList extends Component{
     render (){
         return (
             <div className="container">
-                <div homeSearch={this.props.homeSearch} id="result_list" ref="result_list" className="row">
+                <div id="result_list" ref="result_list" className="row">
                     {   
                         this.state.films.map((film, index) => <div onLoad={this.increment_id} key={index} id={index} className="col-sm-3 key" >
                                 <Films {...film}/>

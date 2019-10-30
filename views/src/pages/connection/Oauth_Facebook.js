@@ -10,11 +10,11 @@ class AccountPage extends Component {
             headers: {'Content-Type': 'application/json'}
         })
         .then(res => {
-            if (res.status == 401)
+            if (res.status === 401)
                 alert('Error connecting to Facebook');
-            if (res.status == 201)
+            if (res.status === 201)
                 alert('User created');
-            else if (res.status == 200)
+            else if (res.status === 200)
                 alert('User aleady exists');
             window.location.assign('http://localhost:3000');
         })

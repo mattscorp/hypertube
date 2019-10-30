@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { URLSearchParams } from 'url'
 import instagram from '../../resources/instagram.png';
 import forty_two from '../../resources/42.svg';
 import facebook from '../../resources/facebook.png';
@@ -180,19 +179,19 @@ class AuthPage extends Component {
                                 </div>
                                 <div className="row mx-auto mt-3">
                                     <div onClick={this.connect_facebook} className="mx-auto p-2" >
-                                        <img className="img_auth" src={facebook} title="Connect with Facebook"/>
+                                        <img className="img_auth" src={facebook} alt="Connect with Facebook"/>
                                     </div>
                                     <div onClick={this.connect_instagram} className="mx-auto p-2" >
-                                        <img className="img_auth" src={instagram} title="Connect with Instagram"/>
+                                        <img className="img_auth" src={instagram} alt="Connect with Instagram"/>
                                     </div>
                                     <div onClick={this.connect_forty_two} className="mx-auto p-2" >
-                                        <img className="img_auth p-1" src={forty_two} title="Connect with 42"/>
+                                        <img className="img_auth p-1" src={forty_two} alt="Connect with 42"/>
                                     </div>
                                     <div onClick={this.connect_github} className="mx-auto p-2" >
-                                        <img className="img_auth" src={github} title="Connect with github"/>
+                                        <img className="img_auth" src={github} alt="Connect with github"/>
                                     </div>
                                     <div onClick={this.connect_google} className="mx-auto p-2" >
-                                        <img className="img_auth" src={google} title="Connect with google"/>
+                                        <img className="img_auth" src={google} alt="Connect with google"/>
                                     </div>
                                 </div>
                             </form>

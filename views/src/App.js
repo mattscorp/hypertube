@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 import {connect} from 'react-redux';
+// Redux actions
+import { set_discover, set_search } from './actions/search_action.js'
 
+//Main pages
 import Home from './pages/Home.js';
 import AccountPage from './pages/connection/Account.js';
 import MainNavigation from './components/navigation/MainNavigation';
@@ -12,6 +15,7 @@ import OAuth_Insta from './pages/connection/Oauth_Insta.js';
 import OAuth_Github from './pages/connection/Oauth_Github.js';
 import OAuth_Google from './pages/connection/Oauth_Google.js';
 import OAuth_Facebook from './pages/connection/Oauth_Facebook.js';
+
 
 class App extends Component {
   render() {
@@ -54,16 +58,10 @@ const mapStateToProps  = (state) => {
 const mapDispatchToProps  = (dispatch) => {
   return {
     setHomeSearch: (homeSearch) => {
-      dispatch({
-        type: "SET_HOME_SEARCH",
-        payload: homeSearch
-      });
+      dispatch(set_search(homeSearch));
     },
     setHomeDiscover: (homeDiscover) => {
-      dispatch({
-        type: "SET_HOME_DISCOVER",
-        payload: homeDiscover
-      });
+      dispatch(set_discover(homeDiscover));
     }
   };
 }
