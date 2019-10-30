@@ -115,3 +115,27 @@ const post_users_oauth = async (login, email, profile_picture, oauth) => {
     })
 }
 module.exports.post_users_oauth = post_users_oauth;
+
+// Create a user Insta
+const post_users_oauth_insta = async (login, first_name, last_name, profile_picture) => {
+    let sql = "INSERT INTO `users` (`uuid`, `language`, `login`, `first_name`, `last_name`, `profile_picture`, `insta`) VALUES (?)";
+    let uuid = uuidv4();
+    let sql_values = [uuid, 'English', login, first_name, last_name, profile_picture, 'yes'];
+    con.query(sql, [sql_values], (err, result) => {
+        if (err)
+            throw err;
+    })
+}
+module.exports.post_users_oauth_insta = post_users_oauth_insta;
+
+// Create a user Facebook
+const post_users_oauth_facebook = async (login, first_name, last_name) => {
+    let sql = "INSERT INTO `users` (`uuid`, `language`, `login`, `first_name`, `last_name`, `facebook`) VALUES (?)";
+    let uuid = uuidv4();
+    let sql_values = [uuid, 'English', login, first_name, last_name, 'yes'];
+    con.query(sql, [sql_values], (err, result) => {
+        if (err)
+            throw err;
+    })
+}
+module.exports.post_users_oauth_facebook = post_users_oauth_facebook;

@@ -22,15 +22,12 @@ router.post('/oauth_github', async (req, res) => {
       function(err, httpResponse, body){
         if (err) throw err;
         else {
-            console.log(body);
             let user_token = body.split('=')[1].split('&')[0];
-            console.log(user_token);
             if (user_token == undefined) {
                 console.log('Authorization denied');
                 res.status(401).send('Unauthorized: authentification with Github failed');
             }
             else {
-                console.log('on fait des trucs');
                 let github_req_me = `https://api.github.com/user`;
                 request.get(github_req_me, {headers:{'User-Agent': 'node.js', score: 'user', 'Authorization': `bearer ${user_token}`}}, async (err, httpResponse, body) => {
                     if (err) {

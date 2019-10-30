@@ -8,6 +8,8 @@ import github from '../../resources/github.png';
 import {uuid_42} from '../../config_views';
 import {client_github} from '../../config_views';
 import {client_google} from '../../config_views';
+import {client_instagram} from '../../config_views';
+import {client_facebook} from '../../config_views';
 
 class AuthPage extends Component {
     
@@ -29,12 +31,14 @@ class AuthPage extends Component {
     // FACEBOOK
     connect_facebook = (event) => {
         event.preventDefault();
-        alert('connection facebook --> TO BE DONE');
+        let URI= `https://www.facebook.com/v5.0/dialog/oauth?client_id=${client_facebook}&redirect_uri=http://localhost:3000/oauth_facebook`;
+        window.location.assign(URI);
     }
     // INSTAGRAM
     connect_instagram = (event) => {
         event.preventDefault();
-        alert('connection instagram --> TO BE DONE');
+        let URI = `https://api.instagram.com/oauth/authorize/?client_id=${client_instagram}&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Foauth_insta&response_type=code`;
+        window.location.assign(URI);
     }
     // 42
     connect_forty_two = (event, next) => {
@@ -52,7 +56,7 @@ class AuthPage extends Component {
     connect_google = (event) => {
         event.preventDefault();
         let scope = 'https://www.googleapis.com/auth/userinfo.email';
-        let URI = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${client_google}&redirect_uri=http://localhost:3000/oauth_google&scope=${scope}&response_type=token`;
+        let URI = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${client_google}&redirect_uri=http://localhost:3000/oauth_google&scope=${scope}&response_type=code`;
         window.location.assign(URI);
     }
 

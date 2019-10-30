@@ -1,12 +1,10 @@
 const uuid_42 = '6c052f70112fb5a99b4de55b7191641e92012a9a7e35a3f61d4d3a22bcbbcbd8';
 module.exports.uuid_42 = uuid_42;
-const secret_42 = '9b65a3b5deb3f6fc39677684b5b6e7c08980d4e5eccd0fb266b0a834dedb060d';
-module.exports.secret_42 = secret_42;
 const client_github = 'dfec2b7bc063846a39b4';
 module.exports.client_github = client_github;
-const secret_github = '5fd518e068d4c64daad114e5c127bd71784f5639';
-module.exports.secret_github = secret_github;
 const client_google = '321607071701-la7bhht64qj1s2oep0d9r02lbo1is61o.apps.googleusercontent.com';
 module.exports.client_google = client_google;
-const secret_google = 'R6Ns2K8IK5UHsW_XLMg8tr1y';
-module.exports.secret_google = secret_google;
+const client_instagram = '023c2b2d6cf84735860a7e3cea4641f9';
+module.exports.client_instagram = client_instagram;
+const client_facebook = '420084558677477';
+module.exports.client_facebook = client_facebook;

@@ -22,15 +22,12 @@ router.post('/oauth_ft', async (req, res) => {
       function(err,httpResponse,body){
         if (err) throw err;
         else {
-            console.log(JSON.parse(body));
             let user_token = (JSON.parse(body).access_token);
-            console.log(user_token);
             if (user_token == undefined) {
                 console.log('Authorization denied');
                 res.status(401).send('Unauthorized: authentification with 42 failed');
             }
             else {
-                console.log('on fait des trucs');
                 let ft_req_me = `https://api.intra.42.fr/v2/me`;
                 request.get(ft_req_me, {headers:{Authorization: `Bearer ${user_token}`}}, async (err, httpResponse, body) => {
                     if (err) {

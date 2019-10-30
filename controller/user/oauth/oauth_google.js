@@ -16,49 +16,55 @@ router.post('/oauth_google', async (req, res) => {
     console.log('*** Google POST ***');
     let token = req.body.code;
     console.log('token : ' + token);
+    console.log('config.CLIENT_GOOGLE : ' + config.CLIENT_GOOGLE);
+    console.log('config.SECRET_GOOGLE : ' + config.SECRET_GOOGLE);
     let google_req_token = `https://oauth2.googleapis.com/token`;
+    let redirect_uri = 'http://localhost:3000/oauth_google';
+    let grant_type = "authorization_code";
     request.post(google_req_token,
-      {form:{client_id: config.CLIENT_GOOGLE, client_secret: config.SECRET_GOOGLE, code: `Bearer ${token}`, redirect_uri: 'http://localhost:3000/oauth_google', grant_type: "authorization_code"}},
+      {form:{code: token, client_id: config.CLIENT_GOOGLE, client_secret: config.SECRET_GOOGLE, redirect_uri: redirect_uri, grant_type: grant_type}},
       function(err, httpResponse, body) {
             if (err) throw err;
             else {
-                // console.log(httpResponse);
-                console.log(body);
-                // let user_token = body.split('=')[1].split('&')[0];
-                // console.log(user_token);
-                // if (user_token == undefined) {
-                //     console.log('Authorization denied');
-                //     res.status(401).send('Unauthorized: authentification with Github failed');
-                // }
-                // else {
-                //     console.log('on fait des trucs');
-                //     let github_req_me = `https://api.github.com/user`;
-                //     request.get(github_req_me, {headers:{'User-Agent': 'node.js', score: 'user', 'Authorization': `bearer ${user_token}`}}, async (err, httpResponse, body) => {
-                //         if (err) {
-                //             res.status(401).send('Error connecting to Github');
-                //             throw err;
-                //         }
-                //         else {
-                //             console.log(JSON.parse(body));
-                //             let user_email = JSON.parse(body).email;
-                //             console.log('email : ' + user_email);
-                //             let user_login = JSON.parse(body).login;
-                //             console.log('login : ' + user_login);
-                //             let user_image_url = JSON.parse(body).avatar_url;
-                //             console.log('image_url : ' + user_image_url);
-                //             let user_exists = await model_connect.user_exists_login(user_login);
-                //             if (user_exists == 'vide') {
-                //                 model_connect.post_users_oauth(user_login, user_email, user_image_url, 'github')
-                //                 console.log('UNKNOWN USER --> creating new');
-                //                 res.status(201).send('UNKNOWN USER --> creating new');
-                //             }
-                //             else {
-                //                 console.log('USER EXISTS --> ' + (user_exists));
-                //                 res.status(200).send('USER EXISTS --> ' + (user_exists));
-                //             }
-                //         }
-                //     })
-                // }
+              // let access_token = (JSON.stringify(body)).split('access_token": ""')[1];
+              let user_token = (JSON.parse(body)).access_token;
+              console.log(' RESPONSE FROM GOOGLE : ' + body);
+              console.log(' ACCESS TOKEN : ' + user_token);
+              if (user_token == undefined) {
+                  console.log('Authorization denied');
+                  res.status(401).send('Unauthorized: authentification with Google failed');
+              }
+              else {
+                let google_req_me = `https://openidconnect.googleapis.com/v1/userinfo?`;
+                request.get(google_req_me, {headers:{'Authorization': `Bearer ${user_token}`}}, async (err, httpResponse, body) => {
+                  if (err) {
+                      res.status(401).send('Error connecting to Google');
+                      throw err;
+                  }
+                  else {
+                    let user_image_url = (JSON.parse(body)).picture;
+                    let user_email = (JSON.parse(body)).email;
+                    let user_verfied = (JSON.parse(body)).email_verified;
+                    console.log('email verified : ' + user_verfied);
+                    console.log('email : ' + user_email);
+                    console.log('image_url : ' + user_image_url);
+                    console.log('*******RESPoNSE******\n\n ' + body);
+                    if (user_verfied === false)
+                      res.status(401).send('Error connecting to Google');
+                    else {
+                      let user_exists = await model_connect.user_exists_email(user_email);
+                      if (user_exists == 'vide') {
+                        model_connect.post_users_oauth(user_email, user_email, user_image_url, 'google')
+                        console.log('UNKNOWN USER --> creating new');
+                        res.status(201).send('UNKNOWN USER --> creating new');
+                      } else {
+                        console.log('USER EXISTS --> ' + (user_exists));
+                        res.status(200).send('USER EXISTS --> ' + (user_exists));
+                      }
+                    }
+                  }
+                });
+              }
             }
         });
   });

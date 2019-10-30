@@ -26,6 +26,12 @@ const films = require('../model/films.js');
 // Connection / account creation
 const user = require('./user/connect.js');
 app.use(user);
+// Connection with Facebook OAuth2
+const oauth_facebook = require('./user/oauth/oauth_facebook.js');
+app.use(oauth_facebook);
+// Connection with Instagram OAuth2
+const oauth_insta = require('./user/oauth/oauth_insta.js');
+app.use(oauth_insta);
 // Connection with 42 OAuth2
 const oauth_ft = require('./user/oauth/oauth_ft.js');
 app.use(oauth_ft);
