@@ -5,6 +5,7 @@ class AccountPage extends Component {
     componentWillMount() {
         const insta_code = window.location.href.split('code=')[1].split('&')[0];
         fetch('http://localhost:8000/oauth_insta', {
+            credentials: 'include',
             method: 'POST',
             body: JSON.stringify({code: insta_code}),
             headers: {'Content-Type': 'application/json'}

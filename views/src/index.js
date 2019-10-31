@@ -8,9 +8,7 @@ import App from './App';
 import {Provider} from 'react-redux';
 import store from './store.js';
 
-store.subscribe(() => { 
-
-});
+store.subscribe(() => { });
 
 ReactDOM.render(
     <Provider store={store}>

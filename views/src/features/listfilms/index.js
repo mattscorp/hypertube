@@ -2,13 +2,6 @@ import React, { Component } from 'react';
 import Films from './listfilms.js'; 
 
 class FilmsList extends Component{
-    state = {
-        films: [],
-        page: 1,
-        totalPage: null,
-        scrolling: false,
-        mode: null,
-    }
 
     componentDidMount () {
         this.loadFilms();
@@ -18,179 +11,111 @@ class FilmsList extends Component{
     }
 
     handleScroll = (e) => {
-        const{ scrolling, totalPage, page, mode} = this.state;
+        // const{ scrolling, totalPage, page, mode} = this.state;
         // const last_id = (this.state.page * 20) - 1;
-        if(scrolling) return
-        if(totalPage <= page) return
+        if(this.props.scrolling) {
+            return
+        }
+        else if(this.props.totalPage <= this.props.page) {
+            return
+        }
         const lastdiv = document.querySelector('div.row > div:last-child');
-        const lastdivOffset = lastdiv.offsetTop + lastdiv.clientHeight;
-        const pageOffset = window.pageYOffset + window.innerHeight;  
-        var bottomOffset = 20;
-        if ((pageOffset > lastdivOffset - bottomOffset) && mode === null) this.loadMore();
-        // if ((pageOffset > lastdivOffset - bottomOffset) && mode === 1) this.loadMoreSearch();
+        if (lastdiv) {
+            const lastdivOffset = lastdiv.offsetTop + lastdiv.clientHeight;
+            const pageOffset = window.pageYOffset + window.innerHeight;  
+            var bottomOffset = 20;
+            if ((pageOffset > lastdivOffset - bottomOffset)) {
+                this.loadMore(this.props);
+            }
+            // if ((pageOffset > lastdivOffset - bottomOffset) && mode === 1) this.loadMore();
+        }
     }
 
     loadFilms = () => {
         
         let URL = ''
         if (this.props.homeSearch === "Trending movies") {
-            const {page, films} = this.state;
-            URL = `http://localhost:8000/moviedb?action=popular&page=${page}`;
+            // const {this.props.page, this.props.films, this.props.scrolling} = this.state;
+            URL = `http://localhost:8000/moviedb?action=popular&page=${this.props.page}`;
         
             fetch(URL, {
                 method: 'GET',
                 credentials: 'include',
                 headers: {'Content-Type': 'application/json'}
             })
+            .then(res => {
+                if (res.status !== 200 && res.status !== 201)
+                    throw new Error('Failed');
+                return res.json();
+            })
+            // CASE LOAD_FILMS
+            .then((resData => {this.props.loadFilms(resData)}))
+            .catch(err => {
+                console.log(err);
+            });
+            // this.setState({ state: this.state });
+        }
+        else {
+            // const {page, films, mode} = this.state;
+            if (this.props.mode === null)
+            {
+                // CASE RESET_FILMS_BEFORE_SEARCH
+                this.setState(this.props.resetFilmsBeforeSearch())
+                let search_query = this.props.homeSearch.split(':')[1].trim();
+                URL = `http://localhost:8000/moviedb?action=search&page=${this.props.page}&movie_name=${search_query}`;
+                fetch(URL, {
+                    method: 'GET',
+                    headers: {'Content-Type': 'application/json'}
+                })
                 .then(res => {
                     if (res.status !== 200 && res.status !== 201)
                         throw new Error('Failed');
                     return res.json();
-            })
-                .then(resData => {
-                    this.setState({
-                films: [...films, ...resData],
-                scrolling: false,
-                totalPage: resData.totalPage,
-            })}
-            )
+                })
+                // CASE FIRST_PAGE_SEARCH
+                .then(resData => {this.setState(this.props.firstPageSearch(resData))})
                 .catch(err => {
                     console.log(err);
-            });
-        
-        }
-        else {
-            const {page, films, mode} = this.state;
-            if (mode == null)
+                });
+                // this.setState({ state: this.state });
+            }
+            else if (this.props.mode === 1)
             {
-                console.log(films);
-                this.setState({
-                    films: [],
-                    mode: 1,
-                })
-                console.log(mode);
                 let search_query = this.props.homeSearch.split(':')[1].trim();
-                URL = `http://localhost:8000/moviedb?action=search&page=${page}&movie_name=${search_query}`;
+                URL = `http://localhost:8000/moviedb?action=search&page=${this.props.page}&movie_name=${search_query}`;
                 fetch(URL, {
                     method: 'GET',
                     headers: {'Content-Type': 'application/json'}
                 })
-                    .then(res => {
-                        if (res.status !== 200 && res.status !== 201)
-                            throw new Error('Failed');
-                        return res.json();
+                .then(res => {
+                    if (res.status !== 200 && res.status !== 201)
+                        throw new Error('Failed');
+                    return res.json();
                 })
-                    .then(resData => {
-                        this.setState({
-                    films: [...resData],
-                    scrolling: false,
-                    totalPage: resData.totalPage,
-                })}
-                )
-                    .catch(err => {
-                        console.log(err);
+                // CASE NEXT_PAGE_SEARCH
+                .then(resData => {this.props.nextPageSearch(resData)})
+                .catch(err => {
+                    console.log(err);
                 });
-                this.setState({ state: this.state });
+                // this.setState({ state: this.state });
             }
-            if (mode === 1)
-            {
-                console.log(films);
-                this.setState({
-                    films: [],
-                    mode: 1,
-                })
-                console.log(mode);
-                let search_query = this.props.homeSearch.split(':')[1].trim();
-                URL = `http://localhost:8000/moviedb?action=search&page=${page}&movie_name=${search_query}`;
-                fetch(URL, {
-                    method: 'GET',
-                    headers: {'Content-Type': 'application/json'}
-                })
-                    .then(res => {
-                        if (res.status !== 200 && res.status !== 201)
-                            throw new Error('Failed');
-                        return res.json();
-                })
-                    .then(resData => {
-                        this.setState({
-                    films: [...films, ...resData],
-                    scrolling: false,
-                    totalPage: resData.totalPage,
-                })}
-                )
-                    .catch(err => {
-                        console.log(err);
-                });
-                this.setState({ state: this.state });
-            }
-        
         }
-
-        // fetch(URL, {
-        //     method: 'GET',
-        //     headers: {'Content-Type': 'application/json'}
-        // })
-        //     .then(res => {
-        //         if (res.status !== 200 && res.status !== 201)
-        //             throw new Error('Failed');
-        //         return res.json();
-        // })
-        //     .then(resData => {
-        //         this.setState({
-        //     films: [...films, ...resData],
-        //     scrolling: false,
-        //     totalPage: resData.totalPage,
-        // })}
-        // )
-        //     .catch(err => {
-        //         console.log(err);
-        // });
     }
 
-    loadMore = () =>{
-        this.setState(prevState => ({
-            page : prevState.page + 1,
-            scrolling: true,
-        }), this.loadFilms)
+    loadMore = (props) => {
+        // CASE LOAD_MORE
+        this.setState(prevState => (
+            this.props.loadMore(props)
+        ))
+        this.loadFilms();
     }
-
-    // loadFilmsSearch = () =>{
-
-    //     const {page, films } = this.state;
-    //     const URL = `http://localhost:8000/moviedb?action=popular&page=${page}`;
-
-    //     fetch(URL, {
-    //             method: 'GET',
-    //             headers: {'Content-Type': 'application/json'}
-    //     })
-    //         .then(res => {
-    //             if (res.status !== 200 && res.status !== 201)
-    //                 throw new Error('Failed');
-    //             return res.json();
-    //         })
-    //         .then(resData => this.setState({
-    //             films: [...films, ...resData],
-    //             scrolling: false,
-    //             totalPage: resData.totalPage,
-    //         }))
-    //         .catch(err => {
-    //             console.log(err);
-    //         });
-    // }
-
-    // loadMoreSearch = () => {
-    //     this.setState(prevState => ({
-    //         page : prevState.page + 1,
-    //         scrolling: true,
-    //     }), this.loadFilms)
-    // }
 
     render (){
         return (
             <div className="container">
                 <div id="result_list" ref="result_list" className="row">
                     {   
-                        this.state.films.map((film, index) => <div onLoad={this.increment_id} key={index} id={index} className="col-sm-3 key" >
+                        this.props.films.map((film, index) => <div onLoad={this.increment_id} key={index} id={index} className="col-sm-3 key" >
                                 <Films {...film}/>
                             </div>)
                     }

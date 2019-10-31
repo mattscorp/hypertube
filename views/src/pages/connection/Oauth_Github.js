@@ -5,6 +5,7 @@ class AccountPage extends Component {
     componentWillMount() {
         const code = this.props.location.search.split('=')[1];
         fetch('http://localhost:8000/oauth_github', {
+            credentials: 'include',
             method: 'POST',
             body: JSON.stringify({code: code}),
             headers: {'Content-Type': 'application/json'}

@@ -5,6 +5,7 @@ class AccountPage extends Component {
     componentWillMount() {
         const ft_code = this.props.location.search.split('=')[1];
         fetch('http://localhost:8000/oauth_ft', {
+            credentials: 'include',
             method: 'POST',
             body: JSON.stringify({code: ft_code}),
             headers: {'Content-Type': 'application/json'}

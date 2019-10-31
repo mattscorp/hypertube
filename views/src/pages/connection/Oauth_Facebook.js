@@ -5,6 +5,7 @@ class AccountPage extends Component {
     componentWillMount() {
         const facebook_code = window.location.href.split('code=')[1].split('&')[0];
         fetch('http://localhost:8000/oauth_facebook', {
+            credentials: 'include',
             method: 'POST',
             body: JSON.stringify({code: facebook_code}),
             headers: {'Content-Type': 'application/json'}

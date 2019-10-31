@@ -8,15 +8,50 @@ class MainNavigation extends Component {
         event.preventDefault();
         if (document.forms[0].querySelector('input[name="search_query"]').value !== '') {
             this.props.changeHomeSearch(document.forms[0].querySelector('input[name="search_query"]').value);
-            
+            // this.props.resetFilmsBeforeSearch();
+            this.setState(this.props.resetFilmsBeforeSearch())
+            let search_query = (document.forms[0].querySelector('input[name="search_query"]').value);
+            URL = `http://localhost:8000/moviedb?action=search&page=${this.props.page}&movie_name=${search_query}`;
+            fetch(URL, {
+                method: 'GET',
+                headers: {'Content-Type': 'application/json'}
+            })
+            .then(res => {
+                if (res.status !== 200 && res.status !== 201)
+                    throw new Error('Failed');
+                return res.json();
+            })
+            // CASE FIRST_PAGE_SEARCH
+            .then(resData => {this.setState(this.props.firstPageSearch(resData))})
+            .catch(err => {
+                console.log(err);
+            });
         }
-        else
+        else {
             this.props.changeHomeDiscover();
+        }
     }
 
-    clearSearch = (event) => {
-        event.preventDefault();
+    clearSearch = () => {
         this.props.changeHomeDiscover();
+        this.setState(this.props.resetFilmsBeforeSearch())
+        URL = `http://localhost:8000/moviedb?action=popular&page=${this.props.page}`;
+        fetch(URL, {
+            method: 'GET',
+            credentials: 'include',
+            headers: {'Content-Type': 'application/json'}
+        })
+        .then(res => {
+            if (res.status !== 200 && res.status !== 201)
+                throw new Error('Failed');
+            return res.json();
+        })
+        // CASE LOAD_FILMS
+        .then((resData => {this.props.loadFilms(resData)}))
+        .catch(err => {
+            console.log(err);
+        });
+        document.getElementById("searchInput").value = "";
     }
 
     logout = (event) => {
@@ -56,14 +91,12 @@ class MainNavigation extends Component {
                         <ul className="navbar-nav ml-auto">
                             <li className="nav-item">
                                 <div className="nav-item">
-                                    <form className="form-inline" onClick={this.setSearch}>
+                                    <form id="myForm" className="form-inline" onClick={this.setSearch}>
                                         <input onChange={this.setSearch} 
                                             className="form-control mr-sm-2" type="text" placeholder="Search" 
                                             name="search_query"
-                                        /> 
-                                        <button className="btn btn-success" type="submit">
-                                            Search
-                                        </button>
+                                            id="searchInput"
+                                        />
                                     </form>
                                     {(this.props.homeSearch === "Trending movies") ? null :
                                         <button className="btn btn-success" type="submit" onClick={this.clearSearch}>

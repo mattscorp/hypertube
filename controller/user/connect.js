@@ -3,7 +3,6 @@
 // to post http requests
 const request = require('request');
 const express = require('express');
-let app = express();
 const ent = require('ent');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -11,8 +10,6 @@ const cookieParser = require('cookie-parser');
 const mysql = require('mysql');
 // const MySQLStore = require('express-mysql-session')(session); // to store the session data
 const uuidv4 = require('uuid/v4');
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 const connection = require('../../model/connection.js');
 const router = express.Router();
 const config = require('../config');
@@ -84,24 +81,10 @@ router.post('/auth', async (req, res) => {
   }
 });
 
-// **** CONNECT OR CREATE AN ACCOUNT (with third-parties) **** //
-
-router.get('/oauth_ft', async (req, res) => {
-  console.log('*** 42 get ***');
-  console.log(req);
-});
-
-router.post('/connect', async (req, res) => {
-  if (req.body.third_party == 'forty-two')
-    console.log('42');
-  console.log(req.body);
-});
-
 // **** LOGOUT **** //
 
 router.post('/logout', with_auth, async (req, res) => {
   try {
-    console.log(req);
     res.status(200).cookie('token', null, { httpOnly: true }).send("The user has been successfully disconnected");
   } catch (err) {
     res.status(422).send(err);

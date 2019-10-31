@@ -5,6 +5,13 @@ const express = require('express');
 const router = express.Router();
 const config = require('../../config');
 const model_connect = require('../../../model/connection.js')
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
+
+router.use(cookieParser());
+router.use(bodyParser.json());
+router.use(bodyParser.urlencoded({ extended: true }));
 
 // Allow Cross-origin requests
 const cors = require('cors')
@@ -13,9 +20,7 @@ router.use(cors({origin: "http://localhost:3000", credentials: true}));
 
 // *** Connection with 42 OAuth2 *** //
 router.post('/oauth_ft', async (req, res) => {
-    console.log('*** 42 POST ***');
     let token = req.body.code;
-    console.log('token : ' + config.UUID_42);
     let ft_req_token = `https://api.intra.42.fr/oauth/token`;
     request.post(ft_req_token,
       {form:{grant_type: 'authorization_code', client_id: config.UUID_42, client_secret: config.SECRET_42, code: token, redirect_uri: 'http://localhost:3000/oauth_ft'}},
@@ -36,30 +41,32 @@ router.post('/oauth_ft', async (req, res) => {
                     }
                     else {
                         let user_email = JSON.parse(body).email;
-                        console.log('email : ' + user_email);
                         let user_login = JSON.parse(body).login;
-                        console.log('login : ' + user_login);
                         let user_first_name = JSON.parse(body).first_name;
-                        console.log('first_name : ' + user_first_name);
                         let user_last_name = JSON.parse(body).last_name;
-                        console.log('last_name : ' + user_last_name);
                         let user_image_url = JSON.parse(body).image_url;
-                        console.log('image_url : ' + user_image_url);
                         let user_language = (JSON.parse(body).campus[0]).language.name;
-                        console.log('language : ' + user_language);
                         let user_exists = await model_connect.user_exists_login(user_login);
                         if (user_exists == 'vide') {
-                            model_connect.post_users_oauth(user_last_name, user_first_name, user_login, user_email, user_language, user_image_url, '42')
-                            console.log('UNKNOWN USER --> creating new');
-                            res.status(201).send('UNKNOWN USER --> creating new');
+                            let uuid = await model_connect.post_users_oauth_ft(user_last_name, user_first_name, user_login, user_email, user_language, user_image_url)
+                            // Issuing authentification token
+                            const payload = { uuid } ;
+                            const cookie_token = jwt.sign(payload, config.SESS_SECRET, {
+                            expiresIn: '1h'
+                            });
+                            res.status(201).cookie('token', cookie_token, { httpOnly: true }).send({token: cookie_token});
                         }
                         else {
-                            console.log('USER EXISTS --> ' + (user_exists));
-                            res.status(200).send('USER EXISTS --> ' + (user_exists));
+                            // Issuing authentification token
+                            let uuid = (JSON.parse(user_exists))[0].uuid;
+                            const payload = { uuid } ;
+                            const cookie_token = jwt.sign(payload, config.SESS_SECRET, {
+                            expiresIn: '1h'
+                            });
+                            res.status(200).cookie('token', cookie_token, { httpOnly: true }).send({token: cookie_token});
                         }
                     }
                 })
-                res.status(200).send('ROGER');
             }
         }
       });

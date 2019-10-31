@@ -5,6 +5,13 @@ const express = require('express');
 const router = express.Router();
 const config = require('../../config');
 const model_connect = require('../../../model/connection.js')
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
+
+router.use(cookieParser());
+router.use(bodyParser.json());
+router.use(bodyParser.urlencoded({ extended: true }));
 
 // Allow Cross-origin requests
 const cors = require('cors')
@@ -50,12 +57,21 @@ router.post('/oauth_facebook', async (req, res) => {
                                         let user_infos_first_name = (JSON.parse(body)).first_name;
                                         let user_exists = await model_connect.user_exists_login(user_infos_id);
                                         if (user_exists == 'vide') {
-                                            model_connect.post_users_oauth_facebook(user_infos_id, user_infos_first_name, user_infos_last_name);
-                                            console.log('UNKNOWN USER --> creating new');
-                                            res.status(201).send('UNKNOWN USER --> creating new');
+                                            let uuid = await model_connect.post_users_oauth_facebook(user_infos_id, user_infos_first_name, user_infos_last_name);
+                                            // Issuing authentification token
+                                            const payload = { uuid } ;
+                                            const cookie_token = jwt.sign(payload, config.SESS_SECRET, {
+                                            expiresIn: '1h'
+                                            });
+                                            res.status(201).cookie('token', cookie_token, { httpOnly: true }).send({token: cookie_token});
                                         } else {
-                                            console.log('USER EXISTS --> ' + (user_exists));
-                                            res.status(200).send('USER EXISTS --> ' + (user_exists));
+                                            // Issuing authentification token
+                                            let uuid = (JSON.parse(user_exists))[0].uuid;
+                                            const payload = { uuid } ;
+                                            const cookie_token = jwt.sign(payload, config.SESS_SECRET, {
+                                            expiresIn: '1h'
+                                            });
+                                            res.status(200).cookie('token', cookie_token, { httpOnly: true }).send({token: cookie_token});
                                         }
                                     }
                                 }

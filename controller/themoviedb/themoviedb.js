@@ -6,7 +6,7 @@ const router = express.Router();
 // model functions
 const films = require('../../model/films.js');
 
-router.get('/moviedb', with_auth, async (req, res) => {
+router.get('/moviedb', async (req, res) => {
     if (!req.query.action || (req.query.action != "popular" && req.query.action != "search" && req.query.action != "similar")) {
         res.status(400);
         res.send("Specify the action to be performed: 'popular' to get popular movies, 'search' to get a particular movie");
