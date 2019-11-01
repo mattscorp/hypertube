@@ -1,8 +1,31 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
+import { FrenchFlag } from '../../resources/french_flag.png';
 import './MainNavigation.css';
 
 class MainNavigation extends Component {
+
+    componentDidMount = async () => {
+        let URL = 'http://localhost:8000/user_infos';
+        fetch(URL, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            credentials: 'include'
+        })
+        .then(res => {
+            if (res.status !== 200) {
+                this.props.setUserDisconnect()
+            } else {
+                return res.json();
+            }
+        })
+        .then(resData => {
+            if (resData) {
+                this.props.setUserConnect(resData[0])
+            }
+            
+        })
+    }
 
     setSearch = (event) => {
         event.preventDefault();
@@ -11,7 +34,7 @@ class MainNavigation extends Component {
             // this.props.resetFilmsBeforeSearch();
             this.setState(this.props.resetFilmsBeforeSearch())
             let search_query = (document.forms[0].querySelector('input[name="search_query"]').value);
-            URL = `http://localhost:8000/moviedb?action=search&page=${this.props.page}&movie_name=${search_query}`;
+            let URL = `http://localhost:8000/moviedb?action=search&page=${this.props.page}&movie_name=${search_query}`;
             fetch(URL, {
                 method: 'GET',
                 headers: {'Content-Type': 'application/json'}
@@ -29,13 +52,31 @@ class MainNavigation extends Component {
         }
         else {
             this.props.changeHomeDiscover();
+            this.setState(this.props.resetFilmsBeforeSearch())
+            let URL = `http://localhost:8000/moviedb?action=popular&page=${this.props.page}`;
+            fetch(URL, {
+                method: 'GET',
+                credentials: 'include',
+                headers: {'Content-Type': 'application/json'}
+            })
+            .then(res => {
+                if (res.status !== 200 && res.status !== 201)
+                    throw new Error('Failed');
+                return res.json();
+            })
+            // CASE LOAD_FILMS
+            .then((resData => {this.props.loadFilms(resData)}))
+            .catch(err => {
+                console.log(err);
+            });
+            document.getElementById("searchInput").value = "";
         }
     }
 
     clearSearch = () => {
         this.props.changeHomeDiscover();
         this.setState(this.props.resetFilmsBeforeSearch())
-        URL = `http://localhost:8000/moviedb?action=popular&page=${this.props.page}`;
+        let URL = `http://localhost:8000/moviedb?action=popular&page=${this.props.page}`;
         fetch(URL, {
             method: 'GET',
             credentials: 'include',
@@ -79,9 +120,23 @@ class MainNavigation extends Component {
                             <div className="navbar-collapse collapse" id="collapsingNavbar">
                                 <ul className="navbar-nav">
                                     <li className="nav-item"><NavLink to="/home">Home</NavLink></li>
-                                    <li className="nav-item"><NavLink to="/auth">Authentification</NavLink></li>
-                                    <li className="nav-item"><NavLink to="/account">Account</NavLink></li>
-                                    <li className="nav-item" onClick={this.logout}><button>Logout</button></li>
+                                    {this.props.userConnectState.uuid ? null : <li className="nav-item"><NavLink to="/auth">Authentification</NavLink></li>}
+                                    {this.props.userConnectState.uuid ? <li className="nav-item">
+                                        {this.props.userConnectState.photo_URL == undefined ? <NavLink to="/account">Account</NavLink> : <NavLink to="/account"><img className="navlink_picture" src={this.props.userConnectState.photo_URL}/></NavLink>}
+                                        </li> : null}
+                                    {this.props.userConnectState.uuid ? <li className="nav-item" onClick={this.logout}><button>Logout</button></li> : null}
+                                    <li>
+                                        <select>
+                                            <option value="en">🇬🇧&emsp;English</option>
+                                            <option value="fr">🇫🇷&emsp;French</option>
+                                            <option value="es">🇪🇸&emsp;Español</option>
+                                            <option value="ru">🇷🇺&emsp;русский</option>
+                                            <option value="de">🇩🇪&emsp;Deutsch</option>
+                                            <option value="nl">🇳🇱&emsp;Nederlands</option>
+                                            <option value="jp">🇯🇵&emsp;日本語</option>
+                                            <option value="cn">🇨🇳&emsp;中文</option>
+                                        </select>
+                                    </li>
                                 </ul>
                             </div>
                         </nav>

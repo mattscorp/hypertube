@@ -1,16 +1,10 @@
 'use strict'
 
 // to post http requests
-const request = require('request');
 const express = require('express');
 const ent = require('ent');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-// const session = require("express-session");
-const mysql = require('mysql');
-// const MySQLStore = require('express-mysql-session')(session); // to store the session data
-const uuidv4 = require('uuid/v4');
-const connection = require('../../model/connection.js');
 const router = express.Router();
 const config = require('../config');
 // to create the token
@@ -41,7 +35,6 @@ router.post('/auth', async (req, res) => {
   } else {
     // Connection to the account
     if (action == 'login') {
-      console.log('ICI');
       let uuid = await user.user_connect(login, password);
       if (uuid == '0') {
           res.status(401);

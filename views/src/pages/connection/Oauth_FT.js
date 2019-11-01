@@ -14,9 +14,9 @@ class AccountPage extends Component {
             if (res.status === 401) {
                 alert('Error connecting to 42');
             } if (res.status === 201) {
-                alert('User created');
+                alert('Connection successful');
             } else if (res.status === 200) {
-                alert('User aleady exists');
+                alert('Connection successful');
             }
             window.location.assign('http://localhost:3000');
 
