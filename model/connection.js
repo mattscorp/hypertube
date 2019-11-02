@@ -46,7 +46,7 @@ module.exports.user_connect = user_connect;
 // Return all information (except the password) from users based on the user_uuid
 const get_users = async (user_uuid) => {
     return new Promise((resolve, reject) => {
-        con.query("SELECT `user_ID`, `uuid`, `language`, `last_name`, `first_name`, `login`, `email_confirmation`, `insta`, `facebook`, `github`, `ft`, `nb_views`, `nb_comments`, `nb_ratings`, `profile_picture` FROM `users` WHERE `uuid` = ?", [user_uuid], (err, result) => {
+        con.query("SELECT `user_ID`, `uuid`, `language`, `last_name`, `first_name`, `login`, `email`, `email_confirmation`, `insta`, `facebook`, `github`, `ft`, `google`, `nb_views`, `nb_comments`, `nb_ratings`, `profile_picture` FROM `users` WHERE `uuid` = ?", [user_uuid], (err, result) => {
             if (err)
                 throw err;
             else {

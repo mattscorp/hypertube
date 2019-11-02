@@ -11,8 +11,6 @@ class FilmsList extends Component{
     }
 
     handleScroll = (e) => {
-        // const{ scrolling, totalPage, page, mode} = this.state;
-        // const last_id = (this.state.page * 20) - 1;
         if(this.props.scrolling) {
             return
         }
@@ -27,12 +25,10 @@ class FilmsList extends Component{
             if ((pageOffset > lastdivOffset - bottomOffset)) {
                 this.loadMore(this.props);
             }
-            // if ((pageOffset > lastdivOffset - bottomOffset) && mode === 1) this.loadMore();
         }
     }
 
     loadFilms = () => {
-        
         let URL = ''
         if (this.props.homeSearch === "Trending movies") {
             // const {this.props.page, this.props.films, this.props.scrolling} = this.state;

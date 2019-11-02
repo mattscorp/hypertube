@@ -8,7 +8,6 @@ import { user_connect, user_disconnect } from './actions/user_connect_action.js'
 
 //Main pages
 import Home from './pages/Home.js';
-import AccountPage from './pages/connection/Account.js';
 import MainNavigation from './components/navigation/MainNavigation';
 //Authentification pages
 import AuthPage from './pages/connection/Auth.js';
@@ -40,21 +39,12 @@ class App extends Component {
           <main className="mt-2">
             <Switch>
               <Redirect from="/" to="/home" exact/>
-              {/* <Redirect from="/" to="/auth" exact/>} */}
-              {/* <Redirect from="/auth" to="/account" exact/> */}
               <Route path="/oauth_insta" component={ OAuth_Insta }/>}
               <Route path="/oauth_ft" component={ OAuth_FT }/>}
               <Route path="/oauth_github" component={ OAuth_Github }/>}
               <Route path="/oauth_google" component={ OAuth_Google }/>}
               <Route path="/oauth_facebook" component={ OAuth_Facebook }/>}
               <Route path="/auth" component={ AuthPage }/>}
-              <Route path="/account" render={ 
-                (props) =>
-                <AccountPage
-                  userConnectState={this.props.userConnect}
-                /> 
-              }/>
-              {/* <Redirect from="/account" to="/auth" exact/> */}
               <Route path="/home" render={
                 (props) => 
                   <Home {...props} 

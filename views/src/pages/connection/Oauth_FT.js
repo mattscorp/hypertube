@@ -19,7 +19,6 @@ class AccountPage extends Component {
                 alert('Connection successful');
             }
             window.location.assign('http://localhost:3000');
-
         })
         .catch (err => { console.log(err) })
     }

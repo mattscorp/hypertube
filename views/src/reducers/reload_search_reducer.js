@@ -19,6 +19,7 @@ const reloadSearchReducer = (state = {
                 ...state,
                 films: [],
                 scrolling: false,
+                page: 1,
                 mode: 1
             }
             break;

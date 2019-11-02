@@ -42,11 +42,10 @@ router.post('/auth', async (req, res) => {
       } else {
           // Issuing authentification token
           const payload = { uuid };
-          const token = jwt.sign(payload, config.SESS_SECRET, {
+          const cookie_token = jwt.sign(payload, config.SESS_SECRET, {
             expiresIn: '1h'
           });
-          res.status(200);
-          res.cookie('token', token, { httpOnly: true }).send({token: token});
+          res.status(200).cookie('token', cookie_token, { httpOnly: true }).send({token: cookie_token});
       }
       // Account creation
     } else if (action == 'creation') {
@@ -62,7 +61,7 @@ router.post('/auth', async (req, res) => {
           res.status(418);
           res.send('This login is already in use');
         } else if (await user.user_exists_email(email) != 'vide') {
-          res.status(418);;
+          res.status(418);
           res.send('This email is already in use');
         } else {
           user.post_users(last_name, first_name, login, email, password);
