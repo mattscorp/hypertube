@@ -22,6 +22,34 @@ body {
     border-color: #02fc7e !important;
 }
 
+/*****     ADVANCED SEARCH (FROM NAV)     *****/
+
+.AdvancedSearchDiv {
+    left: 0;
+    text-align: center;
+    color:  #9e9e9ec2 !important;
+    background-color: white !important;
+    position: fixed;
+    height: 100%;
+    z-index: 1;
+    /* CSS ANIMATIONS */
+    -webkit-animation-name: AdvancedSearchDiv; /* Safari 4.0 - 8.0 */
+    -webkit-animation-duration: 1s; /* Safari 4.0 - 8.0 */
+    animation-name: AdvancedSearchDiv;
+    animation-duration: 1s;
+}
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes AdvancedSearchDiv {
+    from {left: -50%;}
+    to {left: 0;}
+}
+
+/* Standard syntax */
+@keyframes AdvancedSearchDiv {
+    from {left: -50%;}
+    to {left: 0;}
+}
+
 /*****     ACCOUNT (FROM NAV)     *****/
 
 .account_input {
@@ -33,9 +61,25 @@ body {
     text-align: center;
     color:  #9e9e9ec2 !important;
     background-color: white !important;
-    position: absolute;
+    position: fixed;
     height: 100%;
     z-index: 1;
+    /* CSS ANIMATIONS */
+    -webkit-animation-name: AccountDiv; /* Safari 4.0 - 8.0 */
+    -webkit-animation-duration: 1s; /* Safari 4.0 - 8.0 */
+    animation-name: AccountDiv;
+    animation-duration: 1s;
+}
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes AccountDiv {
+    from {right: -50%;}
+    to {right: 0;}
+}
+
+/* Standard syntax */
+@keyframes AccountDiv {
+    from {right: -50%;}
+    to {right: 0;}
 }
 
  /* The switch - the box around the slider */

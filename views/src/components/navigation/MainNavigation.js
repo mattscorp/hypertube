@@ -6,13 +6,22 @@ import './MainNavigation.css';
 class MainNavigation extends Component {
 
     state = {
-        isAccount: false
+        isAccount: false,
+        isAdvanced: false
     }
 
     // SWITCH ON/OFF FOR ACCOUNT DIV
     accountModeHandler = () => {
         this.setState(prevState => {
             return {isAccount: !prevState.isAccount};
+        });
+    }
+
+
+    // SWITCH ON/OFF FOR ADVANCED SEARCH DIV
+    advancedSearch = () => {
+        this.setState(prevState => {
+            return {isAdvanced: !prevState.isAdvanced};
         });
     }
 
@@ -84,6 +93,7 @@ class MainNavigation extends Component {
         }
     }
 
+    // Clear the searchbar
     clearSearch = () => {
         this.props.changeHomeDiscover();
         this.setState(this.props.resetFilmsBeforeSearch())
@@ -139,7 +149,7 @@ class MainNavigation extends Component {
                         <div className="col-sm-6 mx-auto">
                             <ul className="navbar-nav row col-12 mx-auto">
                                 <li className="nav-item col-12 mx-auto">
-                                    <div className="nav-item mx-auto">
+                                    <div className="nav-item col-12 mx-auto">
                                         <form id="myForm" className="form-inline mx-auto col-12">
                                             <input onChange={this.setSearch} 
                                                 className="form-control col-sm-5 text-center mx-auto" type="text" placeholder="Search" 
@@ -147,11 +157,18 @@ class MainNavigation extends Component {
                                                 id="searchInput"
                                             />
                                         </form>
-                                        {(this.props.homeSearch === "Trending movies") ? null :
-                                            <button className="btn btn-success" type="submit" onClick={this.clearSearch}>
-                                                Clear
-                                            </button>
-                                        }
+                                        <div className="mx-auto flex-row">
+                                            <div className="mx-auto">
+                                                <button className="btn btn-success mx-auto col-sm-2 text-center" type="submit" onClick={this.advancedSearch}>
+                                                    Advanced search
+                                                </button>
+                                                {(this.props.homeSearch === "Trending movies") ? null :
+                                                    <button className="btn btn-success mx-auto col-sm-1 text-center" type="submit" onClick={this.clearSearch}>
+                                                        Clear
+                                                    </button>
+                                                }
+                                            </div>
+                                        </div>
                                     </div>
                                 </li>
                             </ul>
@@ -166,8 +183,19 @@ class MainNavigation extends Component {
                 </div>
                 {/* ACCOUNT SIDEBAR (Onclick on the profile picture - or if not the account <li>) */}
                 {this.state.isAccount ? 
-                    <Account userConnectState={this.props.userConnectState}
-                    /> : null}
+                    <Account userConnectState={this.props.userConnectState}/>
+                    : null
+                }
+                {/* ADVANCE SEARCH OPTIONS */}
+                {
+                    this.state.isAdvanced ?
+                    <div className="AdvancedSearchDiv col-md-2">
+                        <div className="card-body">
+                            Advanced search
+                        </div>
+                    </div>
+                    : null
+                }
             </React.Fragment>
         )
     }
