@@ -3,7 +3,7 @@
 var mysql = require('mysql');
 
 /* CONNEXION MAISON */
-
+/*
 const HOST = 'localhost';
 module.exports.HOST = HOST;
 const USER = 'paul';
@@ -20,10 +20,10 @@ let con = mysql.createConnection({
   database: DATABASE
 });
 module.exports.con = con;
-
+*/
 
 /* CONNEXION ECOLE */
-/*
+
 const HOST = 'localhost';
 module.exports.HOST = HOST;
 const USER = 'root';
@@ -44,4 +44,3 @@ let con = mysql.createConnection({
   database: DATABASE
 });
 module.exports.con = con;
-*/

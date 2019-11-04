@@ -17,6 +17,7 @@ router.get('/moviedb', async (req, res) => {
         let public_category = (req.query.public && (req.query.public == "G" || req.query.public == "R")) ? req.query.public : "all";
         let category = (req.query.category) ? req.query.category : "all";
         let page = 1;
+        console.log(req.query);
         // ** POPULAR ** --> returns the most popular movies
         if (req.query.action.toLowerCase() == "popular") {
             if (req.query.page)

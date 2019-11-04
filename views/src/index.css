@@ -24,6 +24,7 @@ body {
 
 /*****     ADVANCED SEARCH (FROM NAV)     *****/
 
+/* Make div appear */
 .AdvancedSearchDiv {
     left: 0;
     text-align: center;
@@ -48,6 +49,33 @@ body {
 @keyframes AdvancedSearchDiv {
     from {left: -50%;}
     to {left: 0;}
+}
+
+/* Make div appear */
+.DisappearSearchDiv {
+    left: -50%;
+    text-align: center;
+    color:  #9e9e9ec2 !important;
+    background-color: white !important;
+    position: fixed;
+    height: 100%;
+    z-index: 1;
+    /* CSS ANIMATIONS */
+    -webkit-animation-name: DisappearSearchDiv; /* Safari 4.0 - 8.0 */
+    -webkit-animation-duration: 1s; /* Safari 4.0 - 8.0 */
+    animation-name: DisappearSearchDiv;
+    animation-duration: 1s;
+}
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes DisappearSearchDiv {
+    from {left: 0;}
+    to {left: -50%;}
+}
+
+/* Standard syntax */
+@keyframes DisappearSearchDiv {
+    from {left: 0;}
+    to {left: -50%;}
 }
 
 /*****     ACCOUNT (FROM NAV)     *****/

@@ -29,10 +29,17 @@ class FilmsList extends Component{
     }
 
     loadFilms = () => {
-        let URL = ''
-        if (this.props.homeSearch === "Trending movies") {
+        let research = this.props.homeSearch;
+        let URL = '';
+        let parseResarch = research.split(" ");
+        // Utilisation de parseResearch pour definir si la recherche se fait via un titre ou via une recherche affinnee
+        // si parseResearch[0] === "Categories" => action en fonction
+        // si 
+        let genderSearch = "";
+        genderSearch = `&category=${this.props.advancedSearchState.gender}`;
+        if (research === "Trending movies") {
             // const {this.props.page, this.props.films, this.props.scrolling} = this.state;
-            URL = `http://localhost:8000/moviedb?action=popular&page=${this.props.page}`;
+            URL = `http://localhost:8000/moviedb?action=popular&page=${this.props.page}${genderSearch}`;
         
             fetch(URL, {
                 method: 'GET',
@@ -51,6 +58,10 @@ class FilmsList extends Component{
             });
             // this.setState({ state: this.state });
         }
+
+        // else if (this.props.homeSearch === "Gender :") {
+
+        // }
         else {
             // const {page, films, mode} = this.state;
             if (this.props.mode === null)
@@ -58,7 +69,7 @@ class FilmsList extends Component{
                 // CASE RESET_FILMS_BEFORE_SEARCH
                 this.setState(this.props.resetFilmsBeforeSearch())
                 let search_query = this.props.homeSearch.split(':')[1].trim();
-                URL = `http://localhost:8000/moviedb?action=search&page=${this.props.page}&movie_name=${search_query}`;
+                URL = `http://localhost:8000/moviedb?action=search&page=${this.props.page}&movie_name=${search_query}${genderSearch}`;
                 fetch(URL, {
                     method: 'GET',
                     headers: {'Content-Type': 'application/json'}
@@ -78,7 +89,7 @@ class FilmsList extends Component{
             else if (this.props.mode === 1)
             {
                 let search_query = this.props.homeSearch.split(':')[1].trim();
-                URL = `http://localhost:8000/moviedb?action=search&page=${this.props.page}&movie_name=${search_query}`;
+                URL = `http://localhost:8000/moviedb?action=search&page=${this.props.page}&movie_name=${search_query}${genderSearch}`;
                 fetch(URL, {
                     method: 'GET',
                     headers: {'Content-Type': 'application/json'}

@@ -65,6 +65,7 @@ const popular_movies = async (page, public_category, film_category) => {
         if (film_category != 'all' && genres[film_category.toLowerCase()])
             CATEGORY = `&with_genres=${genres[film_category.toLowerCase()]}`;
         let sql = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&asort_by=popularity.desc${US_CERTIFICATE}${CATEGORY}&page=${page}`
+        console.log(sql);
         request(sql, {json: true}, function (error, response, body) {
             resolve(body);
         });

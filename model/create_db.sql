@@ -14,7 +14,28 @@ CREATE TABLE IF NOT EXISTS `sessions`(
     `data` varchar(255) DEFAULT NULL,
     `expires` datetime
 );
-rs
+
+CREATE TABLE IF NOT EXISTS `users` (
+    `user_ID` INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    `uuid` text,
+    `language` text,
+    `last_name` varchar(255) DEFAULT NULL,
+    `first_name` varchar(255) DEFAULT NULL,
+    `login` varchar(100) DEFAULT NULL,
+    `password` text,
+    `email` varchar(255) DEFAULT NULL,
+    `email_confirmation` text,
+    `insta` varchar(100) DEFAULT NULL,
+    `google` varchar(100) DEFAULT NULL,
+    `facebook` varchar(100) DEFAULT NULL,
+    `github` varchar(100) DEFAULT NULL,
+    `ft` varchar(100) DEFAULT NULL,
+    `nb_views` int(11) NOT NULL DEFAULT 0,
+    `nb_comments` int(11) NOT NULL  DEFAULT 0,
+    `nb_ratings` int(11) NOT NULL  DEFAULT 0,
+    `profile_picture` text,
+    `recup_password` text
+);
 
 CREATE TABLE IF NOT EXISTS `films` (
     `film_ID` INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,

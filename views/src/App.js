@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import { set_discover, set_search } from './actions/search_action.js'
 import { load_films, reset_films_before_search, first_page_search, next_page_search, load_more } from './actions/reload_search_action.js'
 import { user_connect, user_disconnect } from './actions/user_connect_action.js'
+import { modif_advanced_search, reset_advanced_search } from './actions/advanced_search_action.js'
 
 //Main pages
 import Home from './pages/Home.js';
@@ -35,6 +36,9 @@ class App extends Component {
             setUserConnect={(resData) => {this.props.setUserConnect(resData)}}
             setUserDisconnect={(resData) => {this.props.setUserDisconnect(resData)}}
             userConnectState={this.props.userConnect}
+            advancedSearchState={this.props.advancedSearch}
+            modifAdvancedSearch={(resData) => {this.props.modifAdvancedSearch(resData)}}
+            resetAdvancedSearch={() => {this.props.resetAdvancedSearch()}}
           />
           <main className="mt-2">
             <Switch>
@@ -59,6 +63,7 @@ class App extends Component {
                     firstPageSearch={(resData) => {this.props.firstPageSearch(resData)}}
                     nextPageSearch={(resData) => {this.props.nextPageSearch(resData)}}
                     loadMore={(prevState) => {this.props.loadMore(prevState)}}
+                    advancedSearchState={this.props.advancedSearch}
                   />
                 }/>
             </Switch>
@@ -73,7 +78,8 @@ const mapStateToProps  = (state) => {
   return {
     homeSearch: state.homeSearch,
     reloadSearch: state.reloadSearch,
-    userConnect: state.userConnect
+    userConnect: state.userConnect,
+    advancedSearch: state.advancedSearch
   };
 }
 
@@ -105,6 +111,12 @@ const mapDispatchToProps  = (dispatch) => {
     }, 
     setUserDisconnect: (userInfos) => {
       dispatch(user_disconnect(userInfos));
+    },
+    modifAdvancedSearch: (advancedSearch) => {
+      dispatch(modif_advanced_search(advancedSearch));
+    },
+    resetAdvancedSearch: (advancedSearch) => {
+      dispatch(reset_advanced_search(advancedSearch));
     }
   };
 }

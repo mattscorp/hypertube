@@ -26,6 +26,7 @@ class HomePage extends Component {
           firstPageSearch={(resData) => {this.props.firstPageSearch(resData)}}
           nextPageSearch={(resData) => {this.props.nextPageSearch(resData)}}
           loadMore={(prevState) => {this.props.loadMore(prevState)}}
+          advancedSearchState={this.props.advancedSearchState}
           />
       </div>
     );

@@ -5,9 +5,50 @@ import './MainNavigation.css';
 
 class MainNavigation extends Component {
 
+    // Elements from the advance search
+    constructor(props) {
+        super(props);
+        this.watching = React.createRef();
+        this.seen = React.createRef();
+        this.gender = React.createRef();
+        this.forAll = React.createRef();
+        this.rating = React.createRef();
+        this.duration = React.createRef();
+        this.awards = React.createRef();
+        this.decade = React.createRef();
+        this.actor = React.createRef();
+        this.director = React.createRef();
+    }
+
+    // SETS THE ADVANCED SEARCH
+    advanceSearchFunction = (event) => {
+        this.props.modifAdvancedSearch({
+            seen: this.watching.current.value,
+            watching: this.seen.current.value,
+            gender: this.gender.current.value,
+            forAll: this.forAll.current.value,
+            rating: this.rating.current.value,
+            duration: this.duration.current.value,
+            awards: this.awards.current.value,
+            decade: this.decade.current.value,
+            actor: this.actor.current.value,
+            director: this.director.current.value
+        });
+        this.setSearch(event);
+    }
+
+    // RESET THE ADVANCED SEARCH
+    clearAdvancedSearch = (event) => {
+        event.preventDefault();
+        this.props.resetAdvancedSearch();
+        this.gender.current.value = 'All';
+        this.setSearch(event);
+    }
+
     state = {
         isAccount: false,
-        isAdvanced: false
+        isAdvanced: 0,
+        seen: 0
     }
 
     // SWITCH ON/OFF FOR ACCOUNT DIV
@@ -21,7 +62,7 @@ class MainNavigation extends Component {
     // SWITCH ON/OFF FOR ADVANCED SEARCH DIV
     advancedSearch = () => {
         this.setState(prevState => {
-            return {isAdvanced: !prevState.isAdvanced};
+            return {isAdvanced: (this.state.isAdvanced == 1) ? 2 : 1};
         });
     }
 
@@ -43,18 +84,24 @@ class MainNavigation extends Component {
             if (resData) {
                 this.props.setUserConnect(resData[0])
             }
-            
         })
     }
 
     setSearch = (event) => {
         event.preventDefault();
+        let genderSearch = "";
+        // casse la recherche par titre si actif
+        // alert('ICI ' + this.gender.current.value);
+        if (this.gender.current !== null) {
+            if (this.gender.current.value !== '0')
+                genderSearch = `&category=${this.gender.current.value}`;
+        }
         if (document.forms[0].querySelector('input[name="search_query"]').value !== '') {
             this.props.changeHomeSearch(document.forms[0].querySelector('input[name="search_query"]').value);
             // this.props.resetFilmsBeforeSearch();
-            this.setState(this.props.resetFilmsBeforeSearch())
+            this.setState(this.props.resetFilmsBeforeSearch());
             let search_query = (document.forms[0].querySelector('input[name="search_query"]').value);
-            let URL = `http://localhost:8000/moviedb?action=search&page=${this.props.page}&movie_name=${search_query}`;
+            let URL = `http://localhost:8000/moviedb?action=search&page=${this.props.page}&movie_name=${search_query}${genderSearch}`;
             fetch(URL, {
                 method: 'GET',
                 headers: {'Content-Type': 'application/json'}
@@ -73,7 +120,8 @@ class MainNavigation extends Component {
         else {
             this.props.changeHomeDiscover();
             this.setState(this.props.resetFilmsBeforeSearch())
-            let URL = `http://localhost:8000/moviedb?action=popular&page=${this.props.page}`;
+            let URL = `http://localhost:8000/moviedb?action=popular&page=${this.props.page}${genderSearch}`;
+            alert(URL);
             fetch(URL, {
                 method: 'GET',
                 credentials: 'include',
@@ -121,7 +169,7 @@ class MainNavigation extends Component {
             <React.Fragment>
                 {/* NAVBAR */}
                 <div className="row sticky-top">
-                            <header className="col-sm-12 navbar navbar-perso navbar-expand-sm bg-light navbar-light ">
+                    <header className="col-sm-12 navbar navbar-perso navbar-expand-sm bg-light navbar-light ">
                         <div className="col-sm-3"><NavLink to="/">
                                 <h1 className="navbar-brand abs main-navigation-logo">HYPERTUBE</h1></NavLink>
                             <nav className="main-navigation-item">
@@ -188,10 +236,105 @@ class MainNavigation extends Component {
                 }
                 {/* ADVANCE SEARCH OPTIONS */}
                 {
-                    this.state.isAdvanced ?
+                    (this.state.isAdvanced === 1) ?
                     <div className="AdvancedSearchDiv col-md-2">
                         <div className="card-body">
-                            Advanced search
+                            <h2>Advanced search</h2>
+                            <form>
+                                <div>
+                                    <label>Seen</label>
+                                    <select onChange={this.advanceSearchFunction} ref={this.seen} name="seen">
+                                        <option defaultValue>All movies</option>
+                                        <option>Seen</option>
+                                        <option>Not seen yet</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label>Watching</label>
+                                    <select type="checkbox" name="watching" value="watching" ref={this.watching}>
+                                        <option defaultValue>All movies</option>
+                                        <option>Watching</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label>Gender</label>
+                                    <select onChange={this.advanceSearchFunction} ref={this.gender}>
+                                        <option defaultValue value="All">All</option>
+                                        <option value="Action">Action</option>
+                                        <option value="Adventure">Adventure</option>
+                                        <option value="Animation">Animation</option>
+                                        <option value="Comedy">Comedy</option>
+                                        <option value="Crime">Crime</option>
+                                        <option value="Documentary">Documentary</option>
+                                        <option value="Drama">Drama</option>
+                                        <option value="Family">Family</option>
+                                        <option value="Fantasy">Fantasy</option>
+                                        <option value="History">History</option>
+                                        <option value="Horror">Horror</option>
+                                        <option value="Music">Music</option>
+                                        <option value="Mystery">Mystery</option>
+                                        <option value="Romance">Romance</option>
+                                        <option value="Science Fiction">Science Fiction</option>
+                                        <option value="TV Movie">TV Movie</option>
+                                        <option value="Thriller">Thriller</option>
+                                        <option value="War">War</option>
+                                        <option value="Western">Western</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label>For all</label>
+                                    <input ref={this.forAll} type="checkbox" name="forAll" value="forAll"/>
+                                </div>
+                                <div>
+                                    <label>Minimun rating</label>
+                                    <input ref={this.rating} type="range" defaultValue="1" name="rating" min="1" max="10"/>
+                                </div>
+                                <div>
+                                    <label>Maximum duration</label>
+                                    <select ref={this.duration} name="duration">
+                                        <option defaultValue></option>
+                                        <option>Less than 1 hour</option>
+                                        <option>Less than 2 hours</option>
+                                        <option>More than 2 hours</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label>Awards</label>
+                                    <input ref={this.awards} type="checkbox" name="awards" value="awards"/>
+                                </div>
+                                <div>
+                                    <label>Decade</label>
+                                    <select ref={this.decade} name="decade">
+                                        <option></option>
+                                        <option>2010</option>
+                                        <option>2000</option>
+                                        <option>1990</option>
+                                        <option>1980</option>
+                                        <option>1970</option>
+                                        <option>1960</option>
+                                        <option>1950</option>
+                                        <option>1940</option>
+                                        <option>1930</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label>Actor</label>
+                                    <input ref={this.actor} type="text" name="actor"/>
+                                </div>
+                                <div>
+                                    <label>Director</label>
+                                    <input ref={this.director} type="text" name="director"/>
+                                </div>
+                                <button onClick={this.clearAdvancedSearch}>Clear search</button>
+                            </form>
+                        </div>
+                    </div>
+                    : this.state.isAdvanced === 2 ?
+                    <div className="DisappearSearchDiv col-md-2">
+                        <div className="card-body">
+                            <form>
+                                <input type="text"/>
+                            </form>
                         </div>
                     </div>
                     : null
