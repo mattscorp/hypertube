@@ -21,11 +21,7 @@ router.use(cors({origin: "http://localhost:3000", credentials: true}));
 
 // *** Connection with Instagram OAuth2 *** //
 router.post('/oauth_insta', async (req, res) => {
-    console.log('*** Insta POST ***');
     let token = req.body.code;
-    console.log('token : ' + token);
-    console.log('config.CLIENT_INSTA : ' + config.CLIENT_INSTA);
-    console.log('config.SECRET_INSTA : ' + config.SECRET_INSTA);
     let insta_req_token = `https://api.instagram.com/oauth/access_token`;
     let redirect_uri = 'http://localhost:3000/oauth_insta';
     let grant_type = "authorization_code";
@@ -33,7 +29,6 @@ router.post('/oauth_insta', async (req, res) => {
     async function(err, httpResponse, body) {
         if (err) throw err;
         else {
-            console.log(' RESPONSE FROM INSTA : ' + body);
             if ((JSON.parse(body)).user == undefined) {
                 console.log('Authorization denied');
                 res.status(401).send('Unauthorized: authentification with Instagram failed');

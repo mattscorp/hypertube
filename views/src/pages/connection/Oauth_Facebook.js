@@ -14,9 +14,9 @@ class AccountPage extends Component {
             if (res.status === 401)
                 alert('Error connecting to Facebook');
             if (res.status === 201)
-                alert('User created');
+                alert('Connection successful');
             else if (res.status === 200)
-                alert('User aleady exists');
+                alert('Connection successful');
             window.location.assign('http://localhost:3000');
         })
         .catch (err => { console.log(err) });

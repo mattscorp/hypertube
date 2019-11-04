@@ -15,6 +15,7 @@ class AuthPage extends Component {
     state = {
         isLogin: true
     }
+    
     constructor(props) {
         super(props);
         this.loginEl = React.createRef();
@@ -79,7 +80,7 @@ class AuthPage extends Component {
                     body: `{action: "login", login: "${login}", password: "${password}"}`
                 };
             } else {
-                const first_name =  this.firstNameEl.current.value;
+                const first_name = this.firstNameEl.current.value;
                 const last_name = this.lastNameEl.current.value;
                 const email = this.emailEl.current.value;
                 const confirm_password = this.passwordConfirmEl.current.value;
@@ -98,12 +99,14 @@ class AuthPage extends Component {
                 headers: {'Content-Type': 'application/json'}
             })
             .then(res => {
-                if (res.status !== 200 && res.status !== 201)
-                    throw new Error('Failed');
-                return res.json();
-            })
-            .then(resData => {
-                console.log(resData);
+                if (res.status === 201) {
+                    alert('Account successfully created');
+                } else if (res.status === 200) {
+                    alert('Connection successful');
+                    window.location.assign('http://localhost:3000');
+                } else {
+                    alert('Error connecting to 42');
+                } 
             })
             .catch(err => {
                 console.log(err);

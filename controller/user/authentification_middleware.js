@@ -8,15 +8,14 @@ const secret = config.SESS_SECRET;
 
 const with_auth =  (req, res, next) => {
     const token = req.headers.cookie.split('=')[1].split(';')[0];
-    console.log(token);
     if (token == undefined || !token)
         res.status(401).send('Unauthorized: No token provided');
     else {
         jwt.verify(token, secret, (err, decoded) => {
-            if (err)
+            if (err) {
                 res.status(401).send('Unauthorized: Invalid token');
-            else {
-                req.uuid = decoded.connection;
+            } else {
+                req.uuid = decoded.uuid;
                 next();
             }
         });

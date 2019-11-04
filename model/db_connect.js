@@ -3,14 +3,14 @@
 var mysql = require('mysql');
 
 /* CONNEXION MAISON */
-/*
+
 const HOST = 'localhost';
 module.exports.HOST = HOST;
 const USER = 'paul';
 module.exports.USER = USER;
 const PASSWORD = '42Pourlavie!';
 module.exports.PASSWORD = PASSWORD;
-onst DATABASE = 'hypertube';
+const DATABASE = 'hypertube';
 module.exports.DATABASE = DATABASE;
 
 let con = mysql.createConnection({
@@ -21,10 +21,9 @@ let con = mysql.createConnection({
 });
 module.exports.con = con;
 
-*/
 
 /* CONNEXION ECOLE */
-
+/*
 const HOST = 'localhost';
 module.exports.HOST = HOST;
 const USER = 'root';
@@ -45,3 +44,4 @@ let con = mysql.createConnection({
   database: DATABASE
 });
 module.exports.con = con;
+*/

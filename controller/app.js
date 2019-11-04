@@ -36,6 +36,11 @@ app.use(oauth_github);
 const oauth_google = require('./user/oauth/oauth_google.js');
 app.use(oauth_google);
 
+/**** ACCOUNT INFORMATION ****/
+// Get user information (from the cookies)
+const user_infos = require('./user/user_infos.js');
+app.use(user_infos);
+
 /**** API THEMOVIEDB.ORG ****/
 const themoviedb = require('./themoviedb/themoviedb.js');
 app.use(themoviedb);

@@ -4,10 +4,10 @@ import {connect} from 'react-redux';
 // Redux actions
 import { set_discover, set_search } from './actions/search_action.js'
 import { load_films, reset_films_before_search, first_page_search, next_page_search, load_more } from './actions/reload_search_action.js'
+import { user_connect, user_disconnect } from './actions/user_connect_action.js'
 
 //Main pages
 import Home from './pages/Home.js';
-import AccountPage from './pages/connection/Account.js';
 import MainNavigation from './components/navigation/MainNavigation';
 //Authentification pages
 import AuthPage from './pages/connection/Auth.js';
@@ -17,7 +17,6 @@ import OAuth_Github from './pages/connection/Oauth_Github.js';
 import OAuth_Google from './pages/connection/Oauth_Google.js';
 import OAuth_Facebook from './pages/connection/Oauth_Facebook.js';
 // import { Stats } from 'fs';
-
 
 class App extends Component {
   render() {
@@ -33,21 +32,19 @@ class App extends Component {
             resetFilmsBeforeSearch={() => {this.props.resetFilmsBeforeSearch()}}
             firstPageSearch={(resData) => {this.props.firstPageSearch(resData)}}
             homeSearch={this.props.homeSearch.name}
-            // resetFilmsBeforeSearch={() => {this.props.resetFilmsBeforeSearch()}}
+            setUserConnect={(resData) => {this.props.setUserConnect(resData)}}
+            setUserDisconnect={(resData) => {this.props.setUserDisconnect(resData)}}
+            userConnectState={this.props.userConnect}
           />
           <main className="mt-2">
             <Switch>
               <Redirect from="/" to="/home" exact/>
-              {/* <Redirect from="/" to="/auth" exact/>} */}
-              {/* <Redirect from="/auth" to="/account" exact/> */}
               <Route path="/oauth_insta" component={ OAuth_Insta }/>}
               <Route path="/oauth_ft" component={ OAuth_FT }/>}
               <Route path="/oauth_github" component={ OAuth_Github }/>}
               <Route path="/oauth_google" component={ OAuth_Google }/>}
               <Route path="/oauth_facebook" component={ OAuth_Facebook }/>}
               <Route path="/auth" component={ AuthPage }/>}
-              <Route path="/account" component={ AccountPage }/>
-              {/* <Redirect from="/account" to="/auth" exact/> */}
               <Route path="/home" render={
                 (props) => 
                   <Home {...props} 
@@ -75,7 +72,8 @@ class App extends Component {
 const mapStateToProps  = (state) => {
   return {
     homeSearch: state.homeSearch,
-    reloadSearch: state.reloadSearch
+    reloadSearch: state.reloadSearch,
+    userConnect: state.userConnect
   };
 }
 
@@ -101,7 +99,13 @@ const mapDispatchToProps  = (dispatch) => {
     }, 
     loadMore: (loadMore) => {
       dispatch(load_more(loadMore));
+    },
+    setUserConnect: (userInfos) => {
+      dispatch(user_connect(userInfos));
     }, 
+    setUserDisconnect: (userInfos) => {
+      dispatch(user_disconnect(userInfos));
+    }
   };
 }
 
