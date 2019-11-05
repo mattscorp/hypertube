@@ -13,7 +13,57 @@ class HomePage extends Component {
       <div className="container">
         <div className="row">
           <h1 onChange={this.setSearch} className="mx-auto pb-4">{this.props.homeSearch}</h1>
-          </div>
+        </div>
+        {this.props.advancedSearchState.seen !== 'All movies' ? 
+          <div className="row advanced p-2">
+            <h4>Seen: {this.props.advancedSearchState.seen}</h4>
+          </div> : null
+        }
+        {this.props.advancedSearchState.watching !== 'All movies' ? 
+          <div className="row advanced p-2">
+            <h4>Watching: {this.props.advancedSearchState.watching}</h4>
+          </div> : null
+        }
+        {this.props.advancedSearchState.gender !== 'All' ? 
+          <div className="row advanced p-2">
+            <h4>Gender: {this.props.advancedSearchState.gender}</h4>
+          </div> : null
+        }
+        {this.props.advancedSearchState.public !== 'All movies' ? 
+          <div className="row advanced p-2">
+            <h4>Public: {this.props.advancedSearchState.public}</h4>
+          </div> : null
+        }
+        {this.props.advancedSearchState.rating !== '1' ? 
+          <div className="row advanced p-2">
+            <h4>Minimum rating: {this.props.advancedSearchState.rating}</h4>
+          </div> : null
+        }
+        {this.props.advancedSearchState.duration !== '' ? 
+          <div className="row advanced p-2">
+            <h4>Maximum duration: {this.props.advancedSearchState.duration}</h4>
+          </div> : null
+        }
+        {this.props.advancedSearchState.awards !== "" ? 
+          <div className="row advanced p-2">
+            <h4>Awards: {this.props.advancedSearchState.awards}</h4>
+          </div> : null
+        }
+        {this.props.advancedSearchState.decade !== '' ? 
+          <div className="row advanced p-2">
+            <h4>Decade: {this.props.advancedSearchState.decade}</h4>
+          </div> : null
+        }
+        {this.props.advancedSearchState.actor !== '' ? 
+          <div className="row advanced p-2">
+            <h4>Actor: {this.props.advancedSearchState.actor}</h4>
+          </div> : null
+        }
+        {this.props.advancedSearchState.director !== '' ? 
+          <div className="row advanced p-2">
+            <h4>Director: {this.props.advancedSearchState.director}</h4>
+          </div> : null
+        }
         <FilmsList 
           homeSearch={this.props.homeSearch}
           films={this.props.films}

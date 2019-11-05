@@ -56,15 +56,27 @@ let genres =  {
 // GET the most popular movies
 //      --> film public: 'all' if not specified, 'G' for General Audiences
 //      --> film category: 'all if not specified, 
-const popular_movies = async (page, public_category, film_category) => {
+const popular_movies = async (page, public_category, film_category, rating, duration, decade) => {
     return new Promise((resolve, reject) => {
         let US_CERTIFICATE = '';
         let CATEGORY = '';
+        let rating_URL = '';
+        let duration_URL = '';
+        let decade_URL = '';
+        let decadeTop = 0;
         if (public_category != 'all')
             US_CERTIFICATE = `&certification_country=US&certification.lte=${public_category}`;
         if (film_category != 'all' && genres[film_category.toLowerCase()])
             CATEGORY = `&with_genres=${genres[film_category.toLowerCase()]}`;
-        let sql = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&asort_by=popularity.desc${US_CERTIFICATE}${CATEGORY}&page=${page}`
+        if (rating != '1')
+            rating_URL = `&vote_average.gte=${rating}`;
+        if (duration != '')
+            duration_URL = `&with_runtime.lte=${duration}`;
+        if (decade != '') {
+            decadeTop = +decade + +10;
+            decade_URL = `&release_date.gte=${decade}-01-01&release_date.lte=${decadeTop}-01-01`;
+        }
+        let sql = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&asort_by=popularity.desc&vote_count.gte=10${duration_URL}${decade_URL}${rating_URL}${US_CERTIFICATE}${CATEGORY}&page=${page}`
         console.log(sql);
         request(sql, {json: true}, function (error, response, body) {
             resolve(body);
@@ -74,15 +86,26 @@ const popular_movies = async (page, public_category, film_category) => {
 module.exports.popular_movies = popular_movies;
 
 // GET search a movie by name
-const search_movies = async (page, public_category, film_category, name) => {
+const search_movies = async (page, public_category, film_category, name, rating, duration, decade) => {
     return new Promise((resolve, reject) => {
         let US_CERTIFICATE = '';
         let CATEGORY = '';
+        let rating_URL = '';
+        let duration_URL = '';
+        let decade_URL = '';
         if (public_category != 'all')
             US_CERTIFICATE = `&certification_country=US&certification.lte=${public_category}`;
         if (film_category != 'all' && genres[film_category.toLowerCase()])
             CATEGORY = `&with_genres=${genres[film_category.toLowerCase()]}`;
-        let sql = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${name}${US_CERTIFICATE}${CATEGORY}&page=${page}`;
+        if (rating != '1')
+            rating_URL = `&vote_average.gte=${rating}`;
+        if (duration != '' && duration != undefined)
+            duration_URL = `&with_runtime.lte=${duration}`;
+        if (decade != '') {
+            decadeTop = +decade + +10;
+            decade_URL = `&release_date.gte=${decade}-01-01&release_date.lte=${decadeTop}-01-01`;
+        }
+        let sql = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&vote_count.gte=10&query=${name}${duration_URL}${decade_URL}${rating_URL}${US_CERTIFICATE}${CATEGORY}&page=${page}`;
         request(sql, {json: true}, function (error, response, body) {
             resolve(body);
         });

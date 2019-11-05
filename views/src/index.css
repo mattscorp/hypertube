@@ -84,6 +84,7 @@ body {
     height: 50px;
 }
 
+/* Make the div appear */
 .AccountDiv {
     right: 0;
     text-align: center;
@@ -108,6 +109,33 @@ body {
 @keyframes AccountDiv {
     from {right: -50%;}
     to {right: 0;}
+}
+
+/* Make the div disappear */
+.DisappearAccountDiv {
+    right: -50%;
+    text-align: center;
+    color:  #9e9e9ec2 !important;
+    background-color: white !important;
+    position: fixed;
+    height: 100%;
+    z-index: 1;
+    /* CSS ANIMATIONS */
+    -webkit-animation-name: DisappearAccountDiv; /* Safari 4.0 - 8.0 */
+    -webkit-animation-duration: 1s; /* Safari 4.0 - 8.0 */
+    animation-name: DisappearAccountDiv;
+    animation-duration: 1s;
+}
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes DisappearAccountDiv {
+    from {right: 0;}
+    to {right: -50%;}
+}
+
+/* Standard syntax */
+@keyframes DisappearAccountDiv {
+    from {right: 0;}
+    to {right: -50%;}
 }
 
  /* The switch - the box around the slider */

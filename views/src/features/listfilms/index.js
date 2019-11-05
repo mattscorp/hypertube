@@ -40,7 +40,6 @@ class FilmsList extends Component{
         if (research === "Trending movies") {
             // const {this.props.page, this.props.films, this.props.scrolling} = this.state;
             URL = `http://localhost:8000/moviedb?action=popular&page=${this.props.page}${genderSearch}`;
-        
             fetch(URL, {
                 method: 'GET',
                 credentials: 'include',
@@ -67,23 +66,27 @@ class FilmsList extends Component{
             if (this.props.mode === null)
             {
                 // CASE RESET_FILMS_BEFORE_SEARCH
-                this.setState(this.props.resetFilmsBeforeSearch())
-                let search_query = this.props.homeSearch.split(':')[1].trim();
-                URL = `http://localhost:8000/moviedb?action=search&page=${this.props.page}&movie_name=${search_query}${genderSearch}`;
-                fetch(URL, {
-                    method: 'GET',
-                    headers: {'Content-Type': 'application/json'}
+                this.setState(this.props.resetFilmsBeforeSearch()).then(() => {
+                    let search_query = this.props.homeSearch.split(':')[1].trim();
+                    URL = `http://localhost:8000/moviedb?action=search&page=1&movie_name=${search_query}${genderSearch}`;
+                    fetch(URL, {
+                        method: 'GET',
+                        headers: {'Content-Type': 'application/json'}
+                    })
+                    .then(res => {
+                        if (res.status !== 200 && res.status !== 201)
+                            throw new Error('Failed');
+                        return res.json();
+                    })
+                    // CASE FIRST_PAGE_SEARCH
+                    .then(resData => {
+                        console.log('ICI : ' + resData);
+                        this.setState(this.props.firstPageSearch(resData))
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
                 })
-                .then(res => {
-                    if (res.status !== 200 && res.status !== 201)
-                        throw new Error('Failed');
-                    return res.json();
-                })
-                // CASE FIRST_PAGE_SEARCH
-                .then(resData => {this.setState(this.props.firstPageSearch(resData))})
-                .catch(err => {
-                    console.log(err);
-                });
                 // this.setState({ state: this.state });
             }
             else if (this.props.mode === 1)

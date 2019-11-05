@@ -20,8 +20,7 @@ const reloadSearchReducer = (state = {
                 films: [],
                 page: 1,
                 scrolling: false,
-                page: 1,
-                mode: 1
+                mode: null
             }
             break;
         case "FIRST_PAGE_SEARCH":

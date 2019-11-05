@@ -14,15 +14,18 @@ router.get('/moviedb', async (req, res) => {
         // Optional [public] --> 'G' for general public, 'R' for restricted. Default is 'all'
         // Optional [page] --> return the n-page
         // Optional [category] --> 'drama', 'western', etc. By default 'all'
-        let public_category = (req.query.public && (req.query.public == "G" || req.query.public == "R")) ? req.query.public : "all";
+        let public_category = req.query.public && (req.query.public == "G") ? req.query.public : "all";
         let category = (req.query.category) ? req.query.category : "all";
+        let rating = (req.query.rating) ? req.query.rating : '1';
+        let duration = (req.query.duration) ? req.query.duration : '';
+        let decade = (req.query.decade) ? req.query.decade : '';
         let page = 1;
         console.log(req.query);
         // ** POPULAR ** --> returns the most popular movies
         if (req.query.action.toLowerCase() == "popular") {
             if (req.query.page)
                 page = req.query.page;
-            let popular_movies = await films.popular_movies(page, public_category, category);
+            let popular_movies = await films.popular_movies(page, public_category, category, rating, duration, decade);
             if (popular_movies == '')
                 res.status(204);
             else
@@ -34,7 +37,7 @@ router.get('/moviedb', async (req, res) => {
         else if (req.query.action.toLowerCase() == "search") {
             let name = req.query.movie_name;
             page = req.query.page;
-            let search_movies = await films.search_movies(page, public_category, category, name);
+            let search_movies = await films.search_movies(page, public_category, category, name, rating, duration, decade);
             if (search_movies == '')
                 res.status(204);
             else

@@ -1,12 +1,12 @@
 const advancedSearchReducer = (state = {
-    seen: 'all',
-    watching: 'all',
-    gender: 'all',
-    forAll: 'all',
+    seen: 'All movies',
+    watching: 'All movies',
+    gender: 'All',
+    public: 'All movies',
     rating: '1',
-    duration: 'all',
-    awards: 'all',
-    decade: 'all',
+    duration: '',
+    awards: '',
+    decade: '',
     actor: '',
     director: ''
 }, action) => {
@@ -17,7 +17,7 @@ const advancedSearchReducer = (state = {
                 seen: action.payload.seen,
                 watching: action.payload.watching,
                 gender: action.payload.gender,
-                forAll: action.payload.forAll,
+                public: action.payload.public,
                 rating: action.payload.rating,
                 duration: action.payload.duration,
                 awards: action.payload.awards,
@@ -29,14 +29,14 @@ const advancedSearchReducer = (state = {
         case "RESET_ADVANCED_SEARCH":
             state = {
                 ...state,
-                seen: 'all',
-                watching: 'all',
-                gender: 'all',
-                forAll: 'all',
+                seen: 'All movies',
+                watching: 'All movies',
+                gender: 'All',
+                public: 'All movies',
                 rating: '1',
-                duration: 'all',
-                awards: 'all',
-                decade: 'all',
+                duration: '',
+                awards: '',
+                decade: '',
                 actor: '',
                 director: ''
             }

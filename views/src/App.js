@@ -27,8 +27,9 @@ class App extends Component {
           <MainNavigation 
             changeHomeSearch={(searchQuery) => {this.props.setHomeSearch(searchQuery)}}
             changeHomeDiscover={() => {this.props.setHomeDiscover("Trending movies")}}
-            films={this.props.reloadSearch.films}
-            page={this.props.reloadSearch.page}
+            reloadSearch = {this.props.reloadSearch}
+            // films={this.props.reloadSearch.films}
+            // page={this.props.reloadSearch.page}
             loadFilms={(resData) => {this.props.loadFilms(resData)}}
             resetFilmsBeforeSearch={() => {this.props.resetFilmsBeforeSearch()}}
             firstPageSearch={(resData) => {this.props.firstPageSearch(resData)}}
