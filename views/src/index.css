@@ -30,7 +30,8 @@ body {
     text-align: center;
     color:  #9e9e9ec2 !important;
     background-color: white !important;
-    position: fixed;
+    /*position: fixed;*/
+    padding-top: 84px;
     height: 100%;
     z-index: 1;
     /* CSS ANIMATIONS */
@@ -50,7 +51,12 @@ body {
     from {left: -50%;}
     to {left: 0;}
 }
+.card-body {
+    text-align: right !important;
+    box-shadow: 0 20px 40px rgba(0,0,0,.04) !important;
 
+
+}
 /* Make div appear */
 .DisappearSearchDiv {
     left: -50%;
@@ -323,6 +329,7 @@ body{
 
 .navbar-perso
 {
+    margin-bottom: 0;
     box-shadow: 0 2px 4px rgba(0,0,0,.04);
 }
 

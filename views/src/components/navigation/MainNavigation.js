@@ -259,7 +259,7 @@ class MainNavigation extends Component {
                 }
                 {/* ADVANCE SEARCH OPTIONS */}
                 {(this.state.isAdvanced === 1 || this.state.isAdvanced === 2) ?
-                    <div className={this.state.isAdvanced === 1 ? "AdvancedSearchDiv col-md-2" : "DisappearSearchDiv col-md-2"}>
+                    <div className={this.state.isAdvanced === 1 ? "AdvancedSearchDiv col-md-2 sticky-top" : "DisappearSearchDiv col-md-2"}>
                         <AdvancedSearch
                             advanceSearchFunction={this.advanceSearchFunction}
                             seen={this.seen}
