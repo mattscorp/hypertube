@@ -104,8 +104,10 @@ class AuthPage extends Component {
                 } else if (res.status === 200) {
                     alert('Connection successful');
                     window.location.assign('http://localhost:3000');
-                } else {
-                    alert('Error connecting to 42');
+                } else if (res.status === 418) {
+                    alert('This email is already used');
+                } else if (res.status === 419) {
+                    alert('This login is already used');
                 } 
             })
             .catch(err => {

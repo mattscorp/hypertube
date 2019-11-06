@@ -68,13 +68,6 @@ class AdvancedSearch extends Component {
                         </select>
                     </div>
                     <div>
-                        <label>Awards</label>
-                        <select onChange={this.props.advanceSearchFunction} ref={this.props.awards} name="awards">
-                            <option defaultValue></option>
-                            <option>Only awarded movies</option>
-                        </select>
-                    </div>
-                    <div>
                         <label>Decade</label>
                         <select onChange={this.props.advanceSearchFunction} ref={this.props.decade} name="decade">
                             <option></option>
@@ -88,14 +81,6 @@ class AdvancedSearch extends Component {
                             <option>1940</option>
                             <option>1930</option>
                         </select>
-                    </div>
-                    <div>
-                        <label>Actor</label>
-                        <input onChange={this.props.advanceSearchFunction} ref={this.props.actor} type="text" name="actor"/>
-                    </div>
-                    <div>
-                        <label>Director</label>
-                        <input onChange={this.props.advanceSearchFunction} ref={this.props.director} type="text" name="director"/>
                     </div>
                     <button onClick={this.props.clearAdvancedSearch}>Clear search</button>
                 </form>

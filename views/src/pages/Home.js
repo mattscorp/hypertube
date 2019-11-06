@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import FilmsList from '../features/listfilms'; 
+import FilmsList from '../components/listfilms/index.js'; 
 
 class HomePage extends Component {
 
   setSearch = (event) => {
-    alert('SALUT toi');
     this.props.resetFilmsBeforeSearch();
   }
 
@@ -44,24 +43,9 @@ class HomePage extends Component {
             <h4>Maximum duration: {this.props.advancedSearchState.duration}</h4>
           </div> : null
         }
-        {this.props.advancedSearchState.awards !== "" ? 
-          <div className="row advanced p-2">
-            <h4>Awards: {this.props.advancedSearchState.awards}</h4>
-          </div> : null
-        }
         {this.props.advancedSearchState.decade !== '' ? 
           <div className="row advanced p-2">
             <h4>Decade: {this.props.advancedSearchState.decade}</h4>
-          </div> : null
-        }
-        {this.props.advancedSearchState.actor !== '' ? 
-          <div className="row advanced p-2">
-            <h4>Actor: {this.props.advancedSearchState.actor}</h4>
-          </div> : null
-        }
-        {this.props.advancedSearchState.director !== '' ? 
-          <div className="row advanced p-2">
-            <h4>Director: {this.props.advancedSearchState.director}</h4>
           </div> : null
         }
         <FilmsList 

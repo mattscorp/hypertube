@@ -58,7 +58,7 @@ router.post('/auth', async (req, res) => {
         res.send('Passwords don\'t match');
       } else {
         if (await user.user_exists_login(login) != 'vide') {
-          res.status(418);
+          res.status(419);
           res.send('This login is already in use');
         } else if (await user.user_exists_email(email) != 'vide') {
           res.status(418);

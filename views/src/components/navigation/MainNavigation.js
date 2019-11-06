@@ -15,10 +15,7 @@ class MainNavigation extends Component {
         this.public = React.createRef();
         this.rating = React.createRef();
         this.duration = React.createRef();
-        this.awards = React.createRef();
         this.decade = React.createRef();
-        this.actor = React.createRef();
-        this.director = React.createRef();
     }
 
     // SETS THE ADVANCED SEARCH
@@ -30,10 +27,7 @@ class MainNavigation extends Component {
             public: this.public.current.value,
             rating: this.rating.current.value,
             duration: this.duration.current.value,
-            awards: this.awards.current.value,
             decade: this.decade.current.value,
-            actor: this.actor.current.value,
-            director: this.director.current.value
         });
         this.setSearch(event);
     }
@@ -49,10 +43,7 @@ class MainNavigation extends Component {
         this.public.current.value = 'All movies';
         this.rating.current.value = '1';
         this.duration.current.value = '';
-        this.awards.current.value = '';
         this.decade.current.value = '';
-        this.actor.current.value = '';
-        this.director.current.value = '';
         this.setSearch(event);
     }
 
@@ -124,8 +115,8 @@ class MainNavigation extends Component {
             if(this.decade.current.value !== '')
                 decade = `&decade=${this.decade.current.value}`;
         }
-        if (document.forms[0].querySelector('input[name="search_query"]').value !== '') {
-            this.props.changeHomeSearch(document.forms[0].querySelector('input[name="search_query"]').value);
+        if (document.forms[0].querySelector('input[name="search_query"]').value.trim() !== '') {
+            this.props.changeHomeSearch(document.forms[0].querySelector('input[name="search_query"]').value.trim());
             // this.props.resetFilmsBeforeSearch();
             this.setState(this.props.resetFilmsBeforeSearch());
             let search_query = (document.forms[0].querySelector('input[name="search_query"]').value);
@@ -265,10 +256,7 @@ class MainNavigation extends Component {
                             public={this.public}
                             rating={this.rating}
                             duration={this.duration}
-                            awards={this.awards}
                             decade={this.decade}
-                            actor={this.actor}
-                            director={this.director}
                             clearAdvancedSearch={this.clearAdvancedSearch}
                         />
                     </div>

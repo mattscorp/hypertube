@@ -5,10 +5,7 @@ const advancedSearchReducer = (state = {
     public: 'All movies',
     rating: '1',
     duration: '',
-    awards: '',
     decade: '',
-    actor: '',
-    director: ''
 }, action) => {
     switch (action.type) {
         case "MODIF_ADVANCED_SEARCH":
@@ -20,10 +17,7 @@ const advancedSearchReducer = (state = {
                 public: action.payload.public,
                 rating: action.payload.rating,
                 duration: action.payload.duration,
-                awards: action.payload.awards,
                 decade: action.payload.decade,
-                actor: action.payload.actor,
-                director: action.payload.director
             }
             break;
         case "RESET_ADVANCED_SEARCH":
@@ -35,10 +29,7 @@ const advancedSearchReducer = (state = {
                 public: 'All movies',
                 rating: '1',
                 duration: '',
-                awards: '',
                 decade: '',
-                actor: '',
-                director: ''
             }
             break;
     }

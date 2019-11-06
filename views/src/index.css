@@ -6,7 +6,7 @@ body {
 /*** NAV ***/
 
 .navlink_picture {
-    max-height: 50px;;
+    max-height: 50px;
     max-width: auto;
 }
 
@@ -142,6 +142,43 @@ body {
 @keyframes DisappearAccountDiv {
     from {right: 0;}
     to {right: -50%;}
+}
+
+.profile_picture_row {
+    height: 210px;
+}
+
+.profile_picture {
+    max-height: 200px;
+    max-width: auto;
+    border-radius: 3%;
+}
+
+.profile_picture:hover {
+    
+}
+
+.profile_picture_div:hover {
+    opacity: 0.3;
+    filter: alpha(opacity=30);
+}
+
+.text {
+    color: black;
+    font-size: 18px;
+    position: absolute;
+    display: none;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    text-align: center;
+} 
+
+.profile_picture_div:hover .text {
+    display: inline-block;
+    z-index: 999;
 }
 
  /* The switch - the box around the slider */

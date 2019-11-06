@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Films from './listfilms.js'; 
+import Films from './ListFilms.js'; 
 
 class FilmsList extends Component{
 

@@ -11,12 +11,12 @@ import { modif_advanced_search, reset_advanced_search } from './actions/advanced
 import Home from './pages/Home.js';
 import MainNavigation from './components/navigation/MainNavigation';
 //Authentification pages
-import AuthPage from './pages/connection/Auth.js';
-import OAuth_FT from './pages/connection/Oauth_FT.js';
-import OAuth_Insta from './pages/connection/Oauth_Insta.js';
-import OAuth_Github from './pages/connection/Oauth_Github.js';
-import OAuth_Google from './pages/connection/Oauth_Google.js';
-import OAuth_Facebook from './pages/connection/Oauth_Facebook.js';
+import AuthPage from './components/connection/Auth.js';
+import OAuth_FT from './components/connection/Oauth_FT.js';
+import OAuth_Insta from './components/connection/Oauth_Insta.js';
+import OAuth_Github from './components/connection/Oauth_Github.js';
+import OAuth_Google from './components/connection/Oauth_Google.js';
+import OAuth_Facebook from './components/connection/Oauth_Facebook.js';
 // import { Stats } from 'fs';
 
 class App extends Component {

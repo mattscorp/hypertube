@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import NoPhoto from '../resources/no_image.jpeg'
 
 class Account extends Component {
 
@@ -59,6 +60,10 @@ class Account extends Component {
     // CHANGE PASSWORD
 
     // CHANGE PHOTO
+    updateProfilePicture = (event) => {
+        event.preventDefault();
+        alert('SALUT');
+    }
 
     render() {
         return (
@@ -66,6 +71,15 @@ class Account extends Component {
                 {this.props.userConnectState.uuid ? <div className="nav-item" onClick={this.logout}><button>Logout</button></div> : null}
                 <div className="form-group row">
                     <h1 className="mb-2">Your account</h1>
+                </div>
+                <div className="form-group profile_picture_row row account_input">
+                    <label className="col-md-5 col-form-label text-md-right" htmlFor="darkMode">Profile picture</label>
+                    <div onClick={this.updateProfilePicture} className="profile_picture_div col-md-5">
+                        {this.props.userConnectState.photo_URL === undefined ? <img className="profile_picture" src={NoPhoto}/> : <img className="profile_picture" src={this.props.userConnectState.photo_URL}/>}
+                        <div class="text_overlay">
+                            <div class="text">Update your profile picture</div>
+                        </div>
+                    </div>
                 </div>
                 {/* Dark mode toggle */}
                 <div className="form-group row account_input">
@@ -110,7 +124,7 @@ class Account extends Component {
                     </div>
                 </form>
                 {/* Password section (not available for Oauth2 accounts) */}
-                {(this.props.userConnectState.insta === 'null' && this.props.userConnectState.google === 'null' && this.props.userConnectState.facebook === 'null' && this.props.userConnectState.github === 'null' && this.props.userConnectState.ft === 'null') ?
+                {(this.props.userConnectState.insta === "" && this.props.userConnectState.google === "" && this.props.userConnectState.facebook === "" && this.props.userConnectState.github === "" && this.props.userConnectState.ft === "") ?
                 <form>
                     <div className="form-group row">
                         <label className="col-md-5 col-form-label text-md-right" htmlFor="password_confirm">New password</label>
