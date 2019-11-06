@@ -57,6 +57,24 @@ const get_users = async (user_uuid) => {
 }
 module.exports.get_users = get_users;
 
+
+// Return all information (except the password) from users based on the login
+const user_exists_login_oauth = async (login, oauth) => {
+    return new Promise((resolve, reject) => {
+        con.query("SELECT `user_ID`, `uuid`, `language`, `last_name`, `first_name`, `login`, `email_confirmation`, `insta`, `facebook`, `github`, `ft`, `nb_views`, `nb_comments`, `nb_ratings`, `profile_picture` FROM `users` WHERE `" + oauth + "` = ?", [login], (err, result) => {
+            if (err)
+                throw err;
+            else {
+                if (result == '') {
+                    resolve('vide');
+                } else
+                    resolve(JSON.stringify(result));
+            }
+        });
+    });
+}
+module.exports.user_exists_login_oauth = user_exists_login_oauth;
+
 // Return all information (except the password) from users based on the login
 const user_exists_login = async (login) => {
     return new Promise((resolve, reject) => {
@@ -104,12 +122,12 @@ const post_users = async (last_name, first_name, login, email, password) => {
 }
 module.exports.post_users = post_users;
 
-// Create a user (no OAuth)
+// Create a user (with OAuth)
 const post_users_oauth = async (login, email, profile_picture, oauth) => {
     return new Promise((resolve, reject) => {
         let sql = "INSERT INTO `users` (`uuid`, `language`, `login`, `email`, `profile_picture`, `" + oauth + "`) VALUES (?)";
         let uuid = uuidv4();
-        let sql_values = [uuid, 'English', login, email, profile_picture, 'yes'];
+        let sql_values = [uuid, 'English', login, email, profile_picture, login];
         con.query(sql, [sql_values], (err, result) => {
             if (err)
                 throw err;
@@ -125,7 +143,7 @@ const post_users_oauth_ft = async (last_name, first_name, login, email, language
     return new Promise((resolve, reject) => {
         let sql = "INSERT INTO `users` (`uuid`, `first_name`, `last_name`, `language`, `login`, `email`, `profile_picture`, `ft`) VALUES (?)";
         let uuid = uuidv4();
-        let sql_values = [uuid, first_name, last_name, language, login, email, profile_picture, 'yes'];
+        let sql_values = [uuid, first_name, last_name, language, login, email, profile_picture, login];
         con.query(sql, [sql_values], (err, result) => {
             if (err)
                 throw err;
@@ -141,7 +159,7 @@ const post_users_oauth_insta = async (login, first_name, last_name, profile_pict
     return new Promise((resolve, reject) => {
         let sql = "INSERT INTO `users` (`uuid`, `language`, `login`, `first_name`, `last_name`, `profile_picture`, `insta`) VALUES (?)";
         let uuid = uuidv4();
-        let sql_values = [uuid, 'English', login, first_name, last_name, profile_picture, 'yes'];
+        let sql_values = [uuid, 'English', login, first_name, last_name, profile_picture, login];
         con.query(sql, [sql_values], (err, result) => {
             if (err)
                 throw err;
@@ -156,7 +174,8 @@ const post_users_oauth_facebook = async (login, first_name, last_name) => {
     return new Promise((resolve, reject) => {
         let sql = "INSERT INTO `users` (`uuid`, `language`, `login`, `first_name`, `last_name`, `facebook`) VALUES (?)";
         let uuid = uuidv4();
-        let sql_values = [uuid, 'English', login, first_name, last_name, 'yes'];
+        let new_login = first_name + '_' + last_name;
+        let sql_values = [uuid, 'English', new_login, first_name, last_name, login];
         con.query(sql, [sql_values], (err, result) => {
             if (err)
                 throw err;

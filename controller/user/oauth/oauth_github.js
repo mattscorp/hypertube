@@ -42,7 +42,7 @@ router.post('/oauth_github', async (req, res) => {
                         let user_email = JSON.parse(body).email;
                         let user_login = JSON.parse(body).login;
                         let user_image_url = JSON.parse(body).avatar_url;
-                        let user_exists = await model_connect.user_exists_login(user_login);
+                        let user_exists = await model_connect.user_exists_login_oauth(user_login, 'github');
                         if (user_exists == 'vide') {
                             let uuid = await model_connect.post_users_oauth(user_login, user_email, user_image_url, 'github')
                             // Issuing authentification token

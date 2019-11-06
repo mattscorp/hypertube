@@ -110,7 +110,7 @@ class Account extends Component {
                     </div>
                 </form>
                 {/* Password section (not available for Oauth2 accounts) */}
-                {(this.props.userConnectState.insta !== 'yes' && this.props.userConnectState.google !== 'yes' && this.props.userConnectState.facebook !== 'yes' && this.props.userConnectState.github !== 'yes' && this.props.userConnectState.ft !== 'yes') ?
+                {(this.props.userConnectState.insta === 'null' && this.props.userConnectState.google === 'null' && this.props.userConnectState.facebook === 'null' && this.props.userConnectState.github === 'null' && this.props.userConnectState.ft === 'null') ?
                 <form>
                     <div className="form-group row">
                         <label className="col-md-5 col-form-label text-md-right" htmlFor="password_confirm">New password</label>

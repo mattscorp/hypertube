@@ -29,17 +29,35 @@ class FilmsList extends Component{
     }
 
     loadFilms = () => {
+        let genderSearch = "";
+        let public_category = "";
+        let rating = "";
+        let duration = "";
+        let decade = "";
+        if (this.props.advancedSearchState.gender !== 'All') {
+            genderSearch = `&category=${this.props.advancedSearchState.gender}`;
+        }
+        if (this.props.advancedSearchState.public !== 'All movies') {
+            public_category = `&public=G`;
+        }
+        if (this.props.advancedSearchState.rating !== '1') {
+            rating = `&rating=${this.props.advancedSearchState.rating}`;
+        }
+        if (this.props.advancedSearchState.duration !== '') {
+            duration = `&duration=${this.props.advancedSearchState.duration}`;
+        }
+        if (this.props.advancedSearchState.decade !== '') {
+            decade = `&decade=${this.props.advancedSearchState.decade}`;
+        }
         let research = this.props.homeSearch;
         let URL = '';
         let parseResarch = research.split(" ");
         // Utilisation de parseResearch pour definir si la recherche se fait via un titre ou via une recherche affinnee
         // si parseResearch[0] === "Categories" => action en fonction
         // si 
-        let genderSearch = "";
-        genderSearch = `&category=${this.props.advancedSearchState.gender}`;
         if (research === "Trending movies") {
             // const {this.props.page, this.props.films, this.props.scrolling} = this.state;
-            URL = `http://localhost:8000/moviedb?action=popular&page=${this.props.page}${genderSearch}`;
+            URL = `http://localhost:8000/moviedb?action=popular&page=${this.props.page}${decade}${genderSearch}${public_category}${rating}${duration}`;
             fetch(URL, {
                 method: 'GET',
                 credentials: 'include',
@@ -68,7 +86,7 @@ class FilmsList extends Component{
                 // CASE RESET_FILMS_BEFORE_SEARCH
                 this.setState(this.props.resetFilmsBeforeSearch()).then(() => {
                     let search_query = this.props.homeSearch.split(':')[1].trim();
-                    URL = `http://localhost:8000/moviedb?action=search&page=1&movie_name=${search_query}${genderSearch}`;
+                    URL = `http://localhost:8000/moviedb?action=search&page=1&movie_name=${search_query}${decade}${genderSearch}${public_category}${rating}${duration}`;
                     fetch(URL, {
                         method: 'GET',
                         headers: {'Content-Type': 'application/json'}
@@ -80,7 +98,6 @@ class FilmsList extends Component{
                     })
                     // CASE FIRST_PAGE_SEARCH
                     .then(resData => {
-                        console.log('ICI : ' + resData);
                         this.setState(this.props.firstPageSearch(resData))
                     })
                     .catch(err => {
@@ -92,7 +109,7 @@ class FilmsList extends Component{
             else if (this.props.mode === 1)
             {
                 let search_query = this.props.homeSearch.split(':')[1].trim();
-                URL = `http://localhost:8000/moviedb?action=search&page=${this.props.page}&movie_name=${search_query}${genderSearch}`;
+                URL = `http://localhost:8000/moviedb?action=search&page=${this.props.page}&movie_name=${decade}${genderSearch}${public_category}${rating}${duration}`;
                 fetch(URL, {
                     method: 'GET',
                     headers: {'Content-Type': 'application/json'}

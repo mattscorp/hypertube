@@ -55,7 +55,7 @@ router.post('/oauth_facebook', async (req, res) => {
                                     else {
                                         let user_infos_last_name = (JSON.parse(body)).last_name;
                                         let user_infos_first_name = (JSON.parse(body)).first_name;
-                                        let user_exists = await model_connect.user_exists_login(user_infos_id);
+                                        let user_exists = await model_connect.user_exists_login_oauth(user_infos_id, 'facebook');
                                         if (user_exists == 'vide') {
                                             let uuid = await model_connect.post_users_oauth_facebook(user_infos_id, user_infos_first_name, user_infos_last_name);
                                             // Issuing authentification token

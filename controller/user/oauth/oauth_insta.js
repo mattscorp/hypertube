@@ -37,7 +37,7 @@ router.post('/oauth_insta', async (req, res) => {
                 let image_url = (JSON.parse(body)).user.profile_picture;
                 let user_first_name = (JSON.parse(body)).user.full_name.split(' ')[0];
                 let user_last_name = (JSON.parse(body)).user.full_name.split(' ')[1];
-                let user_exists = await model_connect.user_exists_login(user_login);
+                let user_exists = await model_connect.user_exists_login_oauth(user_login, 'insta');
                 if (user_exists == 'vide') {
                     let user_login = (JSON.parse(body)).user.username;
                     let uuid = await model_connect.post_users_oauth_insta(user_login, user_first_name, user_last_name, image_url)

@@ -47,7 +47,7 @@ router.post('/oauth_google', async (req, res) => {
             if (user_verfied === false)
               res.status(401).send('Error connecting to Google');
             else {
-              let user_exists = await model_connect.user_exists_email(user_email);
+              let user_exists = await model_connect.user_exists_login_oauth(user_email, 'google');
               if (user_exists == 'vide') {
                 let uuid = await model_connect.post_users_oauth(user_email, user_email, user_image_url, 'google');
                 // Issuing authentification token

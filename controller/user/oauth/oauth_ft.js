@@ -46,7 +46,7 @@ router.post('/oauth_ft', async (req, res) => {
                         let user_last_name = JSON.parse(body).last_name;
                         let user_image_url = JSON.parse(body).image_url;
                         let user_language = (JSON.parse(body).campus[0]).language.name;
-                        let user_exists = await model_connect.user_exists_login(user_login);
+                        let user_exists = await model_connect.user_exists_login_oauth(user_login, 'ft');
                         if (user_exists == 'vide') {
                             let uuid = await model_connect.post_users_oauth_ft(user_last_name, user_first_name, user_login, user_email, user_language, user_image_url)
                             // Issuing authentification token

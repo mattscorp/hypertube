@@ -64,7 +64,7 @@ class AdvancedSearch extends Component {
                             <option defaultValue></option>
                             <option value="60">Less than 1 hour</option>
                             <option value="120">Less than 2 hours</option>
-                            <option value="180">More than 2 hours</option>
+                            <option value="180">Less than 3 hours</option>
                         </select>
                     </div>
                     <div>

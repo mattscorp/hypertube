@@ -104,8 +104,6 @@ class MainNavigation extends Component {
         let rating = "";
         let duration = "";
         let decade = "";
-        // casse la recherche par titre si actif
-        // alert('ICI ' + this.gender.current.value);
         if (this.gender.current !== null) {
             if (this.gender.current.value !== '0')
                 genderSearch = `&category=${this.gender.current.value}`;
@@ -152,7 +150,6 @@ class MainNavigation extends Component {
             // this.setState(this.props.resetFilmsBeforeSearch());
             this.props.resetFilmsBeforeSearch();
             let URL = `http://localhost:8000/moviedb?action=popular&page=1${genderSearch}${public_category}${rating}${duration}${decade}`;
-            alert(URL);
             fetch(URL, {
                 method: 'GET',
                 credentials: 'include',

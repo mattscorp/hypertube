@@ -77,7 +77,6 @@ const popular_movies = async (page, public_category, film_category, rating, dura
             decade_URL = `&release_date.gte=${decade}-01-01&release_date.lte=${decadeTop}-01-01`;
         }
         let sql = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&asort_by=popularity.desc&vote_count.gte=10${duration_URL}${decade_URL}${rating_URL}${US_CERTIFICATE}${CATEGORY}&page=${page}`
-        console.log(sql);
         request(sql, {json: true}, function (error, response, body) {
             resolve(body);
         });

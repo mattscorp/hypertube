@@ -31,7 +31,7 @@ class HomePage extends Component {
         }
         {this.props.advancedSearchState.public !== 'All movies' ? 
           <div className="row advanced p-2">
-            <h4>Public: {this.props.advancedSearchState.public}</h4>
+            <h4>Public: Family friendly</h4>
           </div> : null
         }
         {this.props.advancedSearchState.rating !== '1' ? 
