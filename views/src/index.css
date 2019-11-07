@@ -4,12 +4,33 @@ body {
 }
 
 /*** NAV ***/
+.navbar-perso
+{
+    margin-bottom: 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,.04);
+    display: inline;
+}
+.right-element {
+    display: inline;
+    margin-right: 10px ;
+    text-decoration: none;
+}
+.center-element{
+    padding-right: 25vw;
+    padding-left: 28vw;
+}
 
+.navbar-brand , .nav-link, .my-form, .login-form
+{
+    font-family: Raleway, sans-serif;
+}
 .navlink_picture {
     max-height: 50px;
     max-width: auto;
 }
-
+.btn-style{
+    margin : 0 0 0 0 !important;
+}
 .btn-success {
     color:  #9e9e9ec2 !important;
     background-color: white !important;
@@ -364,16 +385,7 @@ body{
     background-color: #f5f8fa;
 }
 
-.navbar-perso
-{
-    margin-bottom: 0;
-    box-shadow: 0 2px 4px rgba(0,0,0,.04);
-}
 
-.navbar-brand , .nav-link, .my-form, .login-form
-{
-    font-family: Raleway, sans-serif;
-}
 
 .my-form
 {
