@@ -10,8 +10,9 @@ class Account extends Component {
         this.firstNameEl = React.createRef();
         this.lastNameEl = React.createRef();
         this.emailEl = React.createRef();
-        this.passwordEl = React.createRef();
+        this.passwordOldEl = React.createRef();
         this.passwordConfirmEl = React.createRef();
+        this.passwordNewEl = React.createRef();
     }
 
     // LOGOUT
@@ -60,15 +61,50 @@ class Account extends Component {
             .then(res => {
                 if (res.status === 201)
                     alert('Information updated');
+                else
+                    alert('An error has occured');
             })
             .catch(err => {
                 console.log(err);
             })
-
         }
     }
 
     // CHANGE PASSWORD
+    submitPasswordForm = (event) => {
+        event.preventDefault();
+        if (this.passwordConfirmEl.current.value.trim().length === 0 || this.passwordNewEl.current.value.trim().length === 0 || this.passwordOldEl.current.value.trim().length === 0) {
+            alert("Values can't be empty");
+            return;
+        } if (this.passwordConfirmEl.current.value.trim() !== this.passwordNewEl.current.value.trim()) {
+            alert('Passwords don\'t match');
+            return;
+        } else {
+            let URL = 'http://localhost:8000/update_password';
+            let requestBody = {
+                body: `{login: "${this.props.userConnectState.login}", new_password: "${this.passwordNewEl.current.value.trim()}", confirm_password: "${this.passwordConfirmEl.current.value.trim()}", old_password: "${this.passwordOldEl.current.value.trim()}"}`
+            };
+            fetch(URL, {
+                credentials: 'include',
+                method: 'POST',
+                body: JSON.stringify(requestBody),
+                headers: {'Content-Type': 'application/json'}
+            })
+            .then(res => {
+                if (res.status === 201)
+                    alert('Password has been successfully changed');
+                else if (res.status === 418)
+                    alert('Passwords don\'t match');
+                else if (res.status === 401)
+                    alert('The old password is incorrect')
+                else
+                    alert('An error has occured');
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        }
+    }
 
     // CHANGE PHOTO
     updateProfilePicture = (event) => {
@@ -136,11 +172,11 @@ class Account extends Component {
                 </form>
                 {/* Password section (not available for Oauth2 accounts) */}
                 {(this.props.userConnectState.insta === "" && this.props.userConnectState.google === "" && this.props.userConnectState.facebook === "" && this.props.userConnectState.github === "" && this.props.userConnectState.ft === "") ?
-                <form>
+                <form onSubmit={this.submitPasswordForm}>
                     <div className="form-group row">
                         <label className="col-md-5 col-form-label text-md-right" htmlFor="password_confirm">New password</label>
                         <div className="col-md-6">
-                            <input title="Must containe 8 characters, small and capital letters, numbers and special characters." required className="form-control" type="password" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" id="password_confirm" ref={this.passwordConfirmEl}/>
+                            <input title="Must containe 8 characters, small and capital letters, numbers and special characters." required className="form-control" type="password" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" id="password_new" ref={this.passwordNewEl}/>
                         </div>
                     </div>
                     <div className="form-group row">
@@ -152,7 +188,7 @@ class Account extends Component {
                     <div className="form-group row">
                         <label className="col-md-5 col-form-label text-md-right" htmlFor="password_confirm">Old password</label>
                         <div className="col-md-6">
-                            <input title="Must containe 8 characters, small and capital letters, numbers and special characters." required className="form-control" type="password" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" id="password_confirm" ref={this.passwordConfirmEl}/>
+                            <input title="Must containe 8 characters, small and capital letters, numbers and special characters." required className="form-control" type="password" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" id="password_old" ref={this.passwordOldEl}/>
                         </div>
                     </div>
                     <div className="form-actions row">

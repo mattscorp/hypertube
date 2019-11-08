@@ -17,6 +17,7 @@ const crypted_password = async (password) => {
         });
     });
 }
+module.exports.crypted_password = crypted_password;
 
 // Checks whether the user credentials are valid
 //      --> if successful, resolves the uuid

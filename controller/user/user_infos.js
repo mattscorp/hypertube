@@ -33,6 +33,26 @@ router.post('/update_account', with_auth, async (req, res) => {
     res.status(201).send('User information updated');
 });
 
+// **** CHANGE PASSWORD **** //
+router.post('/update_password', with_auth, async (req, res) => {
+    let new_password = req.body.body.split('new_password: "')[1].split('"')[0];
+    let confirm_password = req.body.body.split('confirm_password: "')[1].split('"')[0];
+    let old_password = req.body.body.split('old_password: "')[1].split('"')[0];
+    let login = req.body.body.split('login: "')[1].split('"')[0];
+    if (new_password !== confirm_password)
+        res.status(418).send('Passwords don\'t match');
+    else {
+        let uuid = await user.user_connect(login, old_password);
+        if (uuid == '0') {
+          res.status(401);
+          res.send("Connection refused: the password is wrong.");
+        } else {
+            user_infos.update_password(new_password, req.uuid);
+            res.status(201).send('User information updated');
+        }
+    }
+});
+
 // **** UPDATE DARK MODE **** //
 router.post('/dark_mode', with_auth, async(req, res) => {
     let infos = await user.get_users(req.uuid);
