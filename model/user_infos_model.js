@@ -14,3 +14,14 @@ const update_user_infos = (login, first_name, last_name, email, uuid) => {
     });
 }
 module.exports.update_user_infos = update_user_infos;
+
+// Update the dark_mode
+const dark_mode_update = (dark_mode, uuid) => {
+    let sql = "UPDATE `users` SET `dark_mode` = ? WHERE `uuid` = ?";
+    let values = [(dark_mode === 1 ? 0 : 1), uuid];
+    con.query(sql, values, (err, result) => {
+        if (err)
+            throw err;
+    });
+}
+module.exports.dark_mode_update = dark_mode_update;

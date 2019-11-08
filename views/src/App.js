@@ -6,6 +6,7 @@ import { set_discover, set_search } from './actions/search_action.js'
 import { load_films, reset_films_before_search, first_page_search, next_page_search, load_more } from './actions/reload_search_action.js'
 import { user_connect, user_disconnect } from './actions/user_connect_action.js'
 import { modif_advanced_search, reset_advanced_search } from './actions/advanced_search_action.js'
+import { set_dark_mode, stop_dark_mode } from './actions/dark_mode_action.js'
 
 //Main pages
 import Home from './pages/Home.js';
@@ -20,6 +21,7 @@ import OAuth_Facebook from './components/connection/Oauth_Facebook.js';
 // import { Stats } from 'fs';
 
 class App extends Component {
+
   render() {
     return (
       <BrowserRouter>
@@ -28,8 +30,6 @@ class App extends Component {
             changeHomeSearch={(searchQuery) => {this.props.setHomeSearch(searchQuery)}}
             changeHomeDiscover={() => {this.props.setHomeDiscover("Trending movies")}}
             reloadSearch = {this.props.reloadSearch}
-            // films={this.props.reloadSearch.films}
-            // page={this.props.reloadSearch.page}
             loadFilms={(resData) => {this.props.loadFilms(resData)}}
             resetFilmsBeforeSearch={() => {this.props.resetFilmsBeforeSearch()}}
             firstPageSearch={(resData) => {this.props.firstPageSearch(resData)}}
@@ -40,10 +40,14 @@ class App extends Component {
             advancedSearchState={this.props.advancedSearch}
             modifAdvancedSearch={(resData) => {this.props.modifAdvancedSearch(resData)}}
             resetAdvancedSearch={() => {this.props.resetAdvancedSearch()}}
+            setDarkMode={() => {this.props.setDarkMode()}}
+            stopDarkMode={() => {this.props.stopDarkMode()}}
+            darkModeState = {this.props.darkModeState.dark_mode}
           />
-          <main className="mt-2">
+          <main className={this.props.darkModeState.dark_mode ? "mt-2 bg-secondary" : "mt-2"}>
             <Switch>
-              <Redirect from="/" to="/home" exact/>
+              {this.props.userConnect.uuid ? <Redirect from="/" to="/home" exact/> : <Redirect from="/" to="/auth" exact/>}
+              {this.props.userConnect.uuid ? <Redirect from="/auth" to="/home" exact/> : <Redirect from="/home" to="/auth" exact/>}
               <Route path="/oauth_insta" component={ OAuth_Insta }/>}
               <Route path="/oauth_ft" component={ OAuth_FT }/>}
               <Route path="/oauth_github" component={ OAuth_Github }/>}
@@ -65,7 +69,8 @@ class App extends Component {
                     nextPageSearch={(resData) => {this.props.nextPageSearch(resData)}}
                     loadMore={(prevState) => {this.props.loadMore(prevState)}}
                     advancedSearchState={this.props.advancedSearch}
-                  />
+                    darkModeState = {this.props.darkModeState.dark_mode}
+                    />
                 }/>
             </Switch>
           </main>
@@ -80,7 +85,8 @@ const mapStateToProps  = (state) => {
     homeSearch: state.homeSearch,
     reloadSearch: state.reloadSearch,
     userConnect: state.userConnect,
-    advancedSearch: state.advancedSearch
+    advancedSearch: state.advancedSearch,
+    darkModeState: state.darkMode
   };
 }
 
@@ -118,6 +124,12 @@ const mapDispatchToProps  = (dispatch) => {
     },
     resetAdvancedSearch: (advancedSearch) => {
       dispatch(reset_advanced_search(advancedSearch));
+    },
+    setDarkMode: () => {
+      dispatch(set_dark_mode());
+    },
+    stopDarkMode: () => {
+      dispatch(stop_dark_mode());
     }
   };
 }

@@ -5,6 +5,7 @@ class Account extends Component {
 
     constructor(props) {
         super(props);
+        this.darkModeEl = React.createRef();
         this.loginEl = React.createRef();
         this.firstNameEl = React.createRef();
         this.lastNameEl = React.createRef();
@@ -27,7 +28,17 @@ class Account extends Component {
     }
 
     // SWITCH ON/OFF DARK MODE
-
+    setDarkMode = (event) => {
+        this.props.darkModeState ? this.props.stopDarkMode() : this.props.setDarkMode();
+        fetch(`http://localhost:8000/dark_mode`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {'Content-Type': 'application/json'}
+        })
+        .then((res) => { console.log(res) })
+        .catch((err) => { console.log(err); });
+        console.log('dark mode value : ' + this.darkModeEl.current.value);
+    }
 
     // UPDATE ACCOUNT DATA (login, email, first and last names)
     submitAccountForm = (event) => {
@@ -75,9 +86,9 @@ class Account extends Component {
                 <div className="form-group profile_picture_row row account_input">
                     <label className="col-md-5 col-form-label text-md-right" htmlFor="darkMode">Profile picture</label>
                     <div onClick={this.updateProfilePicture} className="profile_picture_div col-md-5">
-                        {this.props.userConnectState.photo_URL === undefined ? <img className="profile_picture" src={NoPhoto}/> : <img className="profile_picture" src={this.props.userConnectState.photo_URL}/>}
-                        <div class="text_overlay">
-                            <div class="text">Update your profile picture</div>
+                        {!this.props.userConnectState.photo_URL ? <img className="profile_picture" src={NoPhoto}/> : <img className="profile_picture" src={this.props.userConnectState.photo_URL}/>}
+                        <div className="text_overlay">
+                            <div className="text">Update your profile picture</div>
                         </div>
                     </div>
                 </div>
@@ -86,7 +97,7 @@ class Account extends Component {
                     <label className="col-md-5 col-form-label text-md-right" htmlFor="darkMode">Dark mode</label>
                     <div className="col-md-5">
                         <label className="switch">
-                            <input type="checkbox"/>
+                            <input onClick={this.setDarkMode} type="checkbox" ref={this.darkModeEl} defaultChecked={this.props.darkModeState}/>
                             <span className="slider round"></span>
                         </label>
                     </div>

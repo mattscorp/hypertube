@@ -143,7 +143,10 @@ class FilmsList extends Component{
                 <div id="result_list" ref="result_list" className="row">
                     {   
                         this.props.films.map((film, index) => <div onLoad={this.increment_id} key={index} id={index} className="col-sm-3 key" >
-                                <Films {...film}/>
+                                <Films 
+                                    {...film}
+                                    darkModeState={this.props.darkModeState}
+                                />
                             </div>)
                     }
                 </div>

@@ -34,7 +34,8 @@ CREATE TABLE IF NOT EXISTS `users` (
     `nb_comments` int(11) NOT NULL  DEFAULT 0,
     `nb_ratings` int(11) NOT NULL  DEFAULT 0,
     `profile_picture` text,
-    `recup_password` text
+    `recup_password` text,
+    `dark_mode` INT(11) DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS `films` (

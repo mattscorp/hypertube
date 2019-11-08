@@ -50,7 +50,6 @@ body {
     left: 0;
     text-align: center;
     color:  #9e9e9ec2 !important;
-    background-color: white !important;
     /*position: fixed;*/
     padding-top: 84px;
     height: 100%;
@@ -83,7 +82,6 @@ body {
     left: -50%;
     text-align: center;
     color:  #9e9e9ec2 !important;
-    background-color: white !important;
     position: fixed;
     height: 100%;
     z-index: 1;
@@ -116,7 +114,6 @@ body {
     right: 0;
     text-align: center;
     color:  #9e9e9ec2 !important;
-    background-color: white !important;
     position: fixed;
     height: 100%;
     z-index: 1;
@@ -143,7 +140,6 @@ body {
     right: -50%;
     text-align: center;
     color:  #9e9e9ec2 !important;
-    background-color: white !important;
     position: fixed;
     height: 100%;
     z-index: 1;
@@ -166,12 +162,12 @@ body {
 }
 
 .profile_picture_row {
-    height: 210px;
+    height: 200px;
 }
 
 .profile_picture {
-    max-height: 200px;
-    max-width: auto;
+    max-width: 100%;
+    max-height: 150px;
     border-radius: 3%;
 }
 

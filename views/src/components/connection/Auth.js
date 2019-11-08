@@ -101,6 +101,7 @@ class AuthPage extends Component {
             .then(res => {
                 if (res.status === 201) {
                     alert('Account successfully created');
+                    this.switchModeHandler();
                 } else if (res.status === 200) {
                     alert('Connection successful');
                     window.location.assign('http://localhost:3000');

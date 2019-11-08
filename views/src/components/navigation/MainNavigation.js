@@ -3,6 +3,9 @@ import { NavLink } from 'react-router-dom';
 import Account from '../Account.js';
 import './MainNavigation.css';
 import AdvancedSearch from '../AdvancedSearch.js';
+// import GOOGLE_TRANSLATE from '../../config_views';
+// import { googleTranslate } from "../../utils/googleTranslate";
+// const googleTranslate = require("google-translate")(GOOGLE_TRANSLATE);
 
 class MainNavigation extends Component {
 
@@ -83,9 +86,16 @@ class MainNavigation extends Component {
         })
         .then(resData => {
             if (resData) {
-                this.props.setUserConnect(resData[0])
+                this.props.setUserConnect(resData[0]);
+                if (resData[0].dark_mode === 1)
+                    this.props.setDarkMode();
             }
         })
+
+        // googleTranslate.detectLanguage('Gracias', function(err, detection) {
+        //     console.log(detection.language);
+        //     // =>  es
+        //   });
     }
 
     setSearch = (event) => {
@@ -188,9 +198,9 @@ class MainNavigation extends Component {
             <React.Fragment>
                 {/* NAVBAR */}
                 <header className="navbar-perso sticky-top">
-                    <nav className="navbar  navbar-expand-sm bg-light navbar-light">
+                    <nav className={this.props.darkModeState ? "navbar navbar-expand-sm bg-light navbar-light bg-dark": "navbar navbar-expand-sm bg-light navbar-light"}>
                             <div className=""><NavLink to="/">
-                                <h1 className="navbar-brand abs main-navigation-logo">HYPERTUBE</h1></NavLink>
+                                <h1 className= {this.props.darkModeState ? "navbar-brand abs main-navigation-logo text-white" : "navbar-brand abs main-navigation-logo"}>HYPERTUBE</h1></NavLink>
                                 
                             </div>
                         <button className="btn btn-success btn-style mx-auto" type="submit" onClick={this.advancedSearch}>
@@ -212,7 +222,7 @@ class MainNavigation extends Component {
                                 </div>
                             </form>
                         </div>
-                                            {this.props.userConnectState.uuid ? null : <div className="float-right"><NavLink to="/auth" className="text-center">Authentification</NavLink></div>}
+                            {this.props.userConnectState.uuid ? null : <div className="float-right"><NavLink to="/auth" className="text-center">Authentification</NavLink></div>}
                             {this.props.userConnectState.uuid ? <div className="float-right" onClick={this.accountModeHandler}>
                             {(this.props.userConnectState.photo_URL === undefined || this.props.userConnectState.photo_URL === '') ? <button>Account</button> : <button><img title="Account" className="navlink_picture rounded-circle" src={this.props.userConnectState.photo_URL}/></button>}
                             </div> : null}
@@ -235,17 +245,20 @@ class MainNavigation extends Component {
 
                 {/* ACCOUNT SIDEBAR (Onclick on the profile picture - or if not the account <li>) */}
                 {this.state.isAccount === 1 || this.state.isAccount === 2 ? 
-                    <div className={this.state.isAccount === 1 ? "AccountDiv col-md-2" : "DisappearAccountDiv col-md-2"}>
+                    <div className={this.state.isAccount === 1 ? (this.props.darkModeState ? "bg-dark AccountDiv col-md-2" : "bg-white AccountDiv col-md-2") : (this.props.darkModeState ? "bg-dark DisappearAccountDiv col-md-2" : "bg-white DisappearAccountDiv col-md-2")}>
                         <Account
                             userConnectState={this.props.userConnectState}
                             isAccount={this.state.isAccount}
+                            darkModeState = {this.props.darkModeState}
+                            setDarkMode={() => {this.props.setDarkMode()}}
+                            stopDarkMode={() => {this.props.stopDarkMode()}}
                         />
                     </div>
                     : null
                 }
                 {/* ADVANCE SEARCH OPTIONS */}
                 {(this.state.isAdvanced === 1 || this.state.isAdvanced === 2) ?
-                    <div className={this.state.isAdvanced === 1 ? "AdvancedSearchDiv col-md-2 sticky-top" : "DisappearSearchDiv col-md-2"}>
+                    <div className={this.state.isAdvanced === 1 ? (this.props.darkModeState ? "bg-dark AdvancedSearchDiv col-md-2 sticky-top" : "bg-white AdvancedSearchDiv col-md-2 sticky-top") : (this.props.darkModeState ? "bg-dark DisappearSearchDiv col-md-2" : "bg-white DisappearSearchDiv col-md-2")}>
                         <AdvancedSearch
                             advanceSearchFunction={this.advanceSearchFunction}
                             seen={this.seen}
@@ -255,6 +268,7 @@ class MainNavigation extends Component {
                             rating={this.rating}
                             duration={this.duration}
                             decade={this.decade}
+                            darkModeState = {this.props.darkModeState}
                             clearAdvancedSearch={this.clearAdvancedSearch}
                         />
                     </div>

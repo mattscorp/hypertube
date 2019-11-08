@@ -20,13 +20,11 @@ router.get('/moviedb', async (req, res) => {
         let duration = (req.query.duration) ? req.query.duration : '';
         let decade = (req.query.decade) ? req.query.decade : '';
         let page = 1;
-        console.log(req.query);
         // ** POPULAR ** --> returns the most popular movies
         if (req.query.action.toLowerCase() == "popular") {
             if (req.query.page)
                 page = req.query.page;
             let popular_movies = await films.popular_movies(page, public_category, category, rating, duration, decade);
-            console.log(popular_movies);
             if (popular_movies == '')
                 res.status(204);
             else
@@ -47,7 +45,6 @@ router.get('/moviedb', async (req, res) => {
         }
         // ** SIMILAR ** --> get movies that are similar to the parameter "movie_ID"
         else if (req.query.action.toLowerCase() == "similar") {
-            console.log(req.query.movie_ID);
             let similar_movies = await films.similar_movies(req.query.movie_ID);
             if (similar_movies == '')
                 res.status(204);

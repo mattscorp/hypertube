@@ -33,5 +33,11 @@ router.post('/update_account', with_auth, async (req, res) => {
     res.status(201).send('User information updated');
 });
 
+// **** UPDATE DARK MODE **** //
+router.post('/dark_mode', with_auth, async(req, res) => {
+    let infos = await user.get_users(req.uuid);
+    user_infos.dark_mode_update((JSON.parse(infos))[0].dark_mode, req.uuid);
+})
+
 
 module.exports = router;

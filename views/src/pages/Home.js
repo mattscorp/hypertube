@@ -9,43 +9,43 @@ class HomePage extends Component {
 
   render () {
     return (
-      <div className="container">
+      <div className={this.props.darkModeState ? "container bg-dark" : "container bg-white"}>
         <div className="row">
-          <h1 onChange={this.setSearch} className="mx-auto pb-4">{this.props.homeSearch}</h1>
+          <h1 onChange={this.setSearch} className={this.props.darkModeState ? "text-white mx-auto pb-4" : "text-dark mx-auto pb-4"}>{this.props.homeSearch}</h1>
         </div>
         {this.props.advancedSearchState.seen !== 'All movies' ? 
           <div className="row advanced p-2">
-            <h4>Seen: {this.props.advancedSearchState.seen}</h4>
+            <h4 className={this.props.darkModeState ? "text-white" : "text-dark"}>Seen: {this.props.advancedSearchState.seen}</h4>
           </div> : null
         }
         {this.props.advancedSearchState.watching !== 'All movies' ? 
           <div className="row advanced p-2">
-            <h4>Watching: {this.props.advancedSearchState.watching}</h4>
+            <h4 className={this.props.darkModeState ? "text-white" : "text-dark"}>Watching: {this.props.advancedSearchState.watching}</h4>
           </div> : null
         }
         {this.props.advancedSearchState.gender !== 'All' ? 
           <div className="row advanced p-2">
-            <h4>Gender: {this.props.advancedSearchState.gender}</h4>
+            <h4 className={this.props.darkModeState ? "text-white" : "text-dark"}>Gender: {this.props.advancedSearchState.gender}</h4>
           </div> : null
         }
         {this.props.advancedSearchState.public !== 'All movies' ? 
           <div className="row advanced p-2">
-            <h4>Public: Family friendly</h4>
+            <h4 className={this.props.darkModeState ? "text-white" : "text-dark"}>Public: Family friendly</h4>
           </div> : null
         }
         {this.props.advancedSearchState.rating !== '1' ? 
           <div className="row advanced p-2">
-            <h4>Minimum rating: {this.props.advancedSearchState.rating}</h4>
+            <h4 className={this.props.darkModeState ? "text-white" : "text-dark"}>Minimum rating: {this.props.advancedSearchState.rating}</h4>
           </div> : null
         }
         {this.props.advancedSearchState.duration !== '' ? 
           <div className="row advanced p-2">
-            <h4>Maximum duration: {this.props.advancedSearchState.duration}</h4>
+            <h4 className={this.props.darkModeState ? "text-white" : "text-dark"}>Maximum duration: {this.props.advancedSearchState.duration}</h4>
           </div> : null
         }
         {this.props.advancedSearchState.decade !== '' ? 
           <div className="row advanced p-2">
-            <h4>Decade: {this.props.advancedSearchState.decade}</h4>
+            <h4 className={this.props.darkModeState ? "text-white" : "text-dark"}>Decade: {this.props.advancedSearchState.decade}</h4>
           </div> : null
         }
         <FilmsList 
@@ -61,6 +61,7 @@ class HomePage extends Component {
           nextPageSearch={(resData) => {this.props.nextPageSearch(resData)}}
           loadMore={(prevState) => {this.props.loadMore(prevState)}}
           advancedSearchState={this.props.advancedSearchState}
+          darkModeState={this.props.darkModeState}
           />
       </div>
     );
