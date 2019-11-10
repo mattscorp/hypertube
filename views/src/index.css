@@ -171,16 +171,12 @@ body {
     border-radius: 3%;
 }
 
-.profile_picture:hover {
-    
-}
-
-.profile_picture_div:hover {
+/* .profile_picture_div:hover {
     opacity: 0.3;
     filter: alpha(opacity=30);
-}
+} */
 
-.text {
+/* .text {
     color: black;
     font-size: 18px;
     position: absolute;
@@ -196,7 +192,7 @@ body {
 .profile_picture_div:hover .text {
     display: inline-block;
     z-index: 999;
-}
+} */
 
  /* The switch - the box around the slider */
  .switch {

@@ -116,9 +116,11 @@ class Account extends Component {
         return (
             <div>
                 {this.props.userConnectState.uuid ? <div className="nav-item" onClick={this.logout}><button>Logout</button></div> : null}
+                {/* Title */}
                 <div className="form-group row">
-                    <h1 className="mb-2">Your account</h1>
+                    <h1 className="mb-2 mx-auto">Your account</h1>
                 </div>
+                {/* Profile picture */}
                 <div className="form-group profile_picture_row row account_input">
                     <label className="col-md-5 col-form-label text-md-right" htmlFor="darkMode">Profile picture</label>
                     <div onClick={this.updateProfilePicture} className="profile_picture_div col-md-5">
@@ -126,6 +128,9 @@ class Account extends Component {
                         <div className="text_overlay">
                             <div className="text">Update your profile picture</div>
                         </div>
+                    </div>
+                    <div className="mx-auto m-1">
+                        <input type="file" title="Update picture"/>
                     </div>
                 </div>
                 {/* Dark mode toggle */}

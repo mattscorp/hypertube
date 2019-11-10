@@ -17,3 +17,11 @@ module.exports.client_instagram = client_instagram;
 // CLIENT_ID FACEBOOK
 const client_facebook = '420084558677477';
 module.exports.client_facebook = client_facebook;
+
+// GOOGLE RECAPTCHA V2 ID PUBLIC
+const google_recaptcha_public = '6Ldc-MEUAAAAAHHL6HBdseQHoxbpBlKBqQUdNeEI';
+module.exports.google_recaptcha_public = google_recaptcha_public;
+
+// GOOGLE RECAPTCHA V2 ID PRIVATE
+const google_recaptcha_private = '6Ldc-MEUAAAAAHpnD8dR7-p8kSyArySli_0ZmKjL';
+module.exports.google_recaptcha_private = google_recaptcha_private;

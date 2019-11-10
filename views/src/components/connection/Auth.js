@@ -9,11 +9,15 @@ import {client_github} from '../../config_views';
 import {client_google} from '../../config_views';
 import {client_instagram} from '../../config_views';
 import {client_facebook} from '../../config_views';
+import {google_recaptcha_public} from '../../config_views';
+import ReCAPTCHA from 'react-google-recaptcha'
 
 class AuthPage extends Component {
     
     state = {
-        isLogin: true
+        isLogin: true,
+        forgottenPassword: false,
+        recaptchaResponse: 0,
     }
     
     constructor(props) {
@@ -24,6 +28,9 @@ class AuthPage extends Component {
         this.emailEl = React.createRef();
         this.passwordEl = React.createRef();
         this.passwordConfirmEl = React.createRef();
+        this.forgottenPasswordEl = React.createRef();
+        this.recaptchaEl = React.createRef();
+        this.handleCaptchaResponseChange = this.handleCaptchaResponseChange.bind(this);
     }
 
     /**** CONNECTION WITH OAUTH2 ****/
@@ -66,6 +73,49 @@ class AuthPage extends Component {
         });
     }
 
+    // SWITCH FROM CONNECTION TO CREATION
+    switchModePassword = (event) => {
+        event.preventDefault();
+        this.setState(prevState => {
+            return {forgottenPassword: !prevState.forgottenPassword};
+        });
+    }
+
+    // FORGOTTEN PASSWORD
+    forgottenPassword = (event) => {
+        event.preventDefault();
+        if (this.forgottenPasswordEl.current.value.trim() === null || this.forgottenPasswordEl.current.value.trim() === undefined || this.forgottenPasswordEl.current.value.trim() == "")
+            alert('Invalid email address');
+        else {
+            const requestBody = {
+                body: `{email: ${this.forgottenPasswordEl.current.value.trim()}}`
+            };
+            fetch('http://localhost:8000/forgotten_password', {
+                credentials: 'include',
+                method: 'POST',
+                body: JSON.stringify(requestBody),
+                headers: {'Content-Type': 'application/json'}
+            })
+            .then(res => {
+                if (res.status === 401)
+                  alert("Your email address is not in our database, please create an account.");
+                else if (res.status === 200)
+                   alert("Please check your mailbox to reset your password.");
+                else
+                    alert("An error has occured, please try again later");
+            })
+            .catch(err => {
+                alert("An error has occured, please try again later");
+            }); 
+        }
+    }
+
+    handleCaptchaResponseChange(response) {
+        this.setState({
+          recaptchaResponse: response,
+        });
+      }
+
     // MANUAL CONNECTION OR CREATION
     submitHandler = event => {
         event.preventDefault();
@@ -80,16 +130,21 @@ class AuthPage extends Component {
                     body: `{action: "login", login: "${login}", password: "${password}"}`
                 };
             } else {
-                const first_name = this.firstNameEl.current.value;
-                const last_name = this.lastNameEl.current.value;
-                const email = this.emailEl.current.value;
-                const confirm_password = this.passwordConfirmEl.current.value;
-                requestBody = {
-                    body: `{action: "creation", login: "${login}", password: "${password}", first_name: "${first_name}", last_name: "${last_name}", email: "${email}", confirm_password: "${confirm_password}"}`
-                };
-                if (password !== confirm_password) {
-                    alert('Passwords don\'t match');
-                    return;
+                if (this.state.recaptchaResponse === 0) {
+                    alert('Please tick the Google Recaptcha to prove you are not a robot');
+                    return ;
+                } else {
+                    const first_name = this.firstNameEl.current.value;
+                    const last_name = this.lastNameEl.current.value;
+                    const email = this.emailEl.current.value;
+                    const confirm_password = this.passwordConfirmEl.current.value;
+                    requestBody = {
+                        body: `{action: "creation", login: "${login}", password: "${password}", first_name: "${first_name}", last_name: "${last_name}", email: "${email}", confirm_password: "${confirm_password}"}`
+                    };
+                    if (password !== confirm_password) {
+                        alert('Passwords don\'t match');
+                        return;
+                    }
                 }
             }
             fetch('http://localhost:8000/auth', {
@@ -109,7 +164,10 @@ class AuthPage extends Component {
                     alert('This email is already used');
                 } else if (res.status === 419) {
                     alert('This login is already used');
-                } 
+                } else if (res.status === 401) {
+                    alert('Invalid login or password');
+                } else
+                    alert('An error has occured. Please try again later');
             })
             .catch(err => {
                 console.log(err);
@@ -135,6 +193,7 @@ class AuthPage extends Component {
                         </div>
                         <div className="card-body">
                             <form onSubmit={this.submitHandler}>
+                                {/* First Name */}
                                 {this.state.isLogin ? null : (
                                 <div className="form-group row">
                                     <label className="col-md-4 col-form-label text-md-right" htmlFor="firstName">First name</label>
@@ -143,6 +202,7 @@ class AuthPage extends Component {
                                     </div>
                                 </div>
                                 )}
+                                {/* Last Name */}
                                 {this.state.isLogin ? null : (
                                 <div className="form-group row">
                                     <label className="col-md-4 col-form-label text-md-right" htmlFor="lastName">Last name</label>
@@ -151,12 +211,14 @@ class AuthPage extends Component {
                                     </div>
                                 </div>
                                 )}
+                                {/* Login */}
                                 <div className="form-group row">
                                     <label className="col-md-4 col-form-label text-md-right" htmlFor="login">Login</label>
                                     <div className="col-md-6">
                                         <input required className="form-control" title="Only letters, '-' and '_', minimum 4" type="login" pattern="(?=^.{4,}$)[A-Za-z0-9-_]+" id="login" ref={this.loginEl}/>
                                     </div>
                                 </div>
+                                {/* Email */}
                                 {this.state.isLogin ? null : (
                                 <div className="form-group row">
                                     <label className="col-md-4 col-form-label text-md-right" htmlFor="email">Email</label>
@@ -165,12 +227,14 @@ class AuthPage extends Component {
                                     </div>
                                 </div>
                                 )}
+                                {/* Password */}
                                 <div className="form-group row">
                                     <label className="col-md-4 col-form-label text-md-right" htmlFor="password">Password</label>
                                     <div className="col-md-6">
                                         <input title="Must containe 8 characters, small and capital letters, numbers and special characters." required className="form-control" type="password" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" id="password" ref={this.passwordEl}/>
                                     </div>
                                 </div>
+                                {/* Confirm password */}
                                 {this.state.isLogin ? null : (
                                 <div className="form-group row">
                                     <label className="col-md-4 col-form-label text-md-right" htmlFor="password_confirm">Confirm your password</label>
@@ -179,11 +243,23 @@ class AuthPage extends Component {
                                     </div>
                                 </div>
                                 )}
+                                {/* GOOGLE RECAPTCHA V2 */}
+                                {this.state.isLogin ? null : (
+                                    <div className="mx-auto">
+                                        <ReCAPTCHA
+                                            ref={this.recaptchaEl}
+                                            sitekey={google_recaptcha_public}
+                                            onChange={this.handleCaptchaResponseChange}
+                                        />
+                                    </div>
+                                )}
+                                {/* Submit button */}
                                 <div className="form-actions row">
                                     <div className="mx-auto">
-                                        <button className="btn btn-dark" type="submit">{this.state.isLogin ? 'Connect to your account' : "Create your account"}</button>
+                                        <button className="btn btn-dark m-2" type="submit">{this.state.isLogin ? 'Connect to your account' : "Create your account"}</button>
                                     </div>
                                 </div>
+                                {/* Oauth strategies */}
                                 <div className="row mx-auto mt-3">
                                     <div onClick={this.connect_facebook} className="mx-auto p-2" >
                                         <img className="img_auth" src={facebook} alt="Connect with Facebook"/>
@@ -201,6 +277,30 @@ class AuthPage extends Component {
                                         <img className="img_auth" src={google} alt="Connect with google"/>
                                     </div>
                                 </div>
+                            </form>
+                            {/* Reset password button */}
+                            <div className="form-actions row">
+                                <div className="mx-auto">
+                                    {this.state.isLogin ? <button onClick={this.switchModePassword} className="btn btn-dark m-2" type="submit">Forgotten password</button> : null}
+                                </div>
+                            </div>
+                            <form onSubmit={this.forgottenPassword} >
+                                {/* Reset password email input */}
+                                {this.state.forgottenPassword ? (
+                                    <div className="form-actions row">
+                                        <div className="mx-auto">
+                                            <label className="col-md-4 col-form-label text-md-right" htmlFor="email">Email</label>
+                                            <div className="col-md-6">
+                                                <input required className="form-control" title="Enter a valid email" type="email" id="email" ref={this.forgottenPasswordEl}/>
+                                            </div>
+                                            <div className="form-group row">
+                                                <div className="mx-auto">
+                                                    <button className="btn btn-dark m-2" type="submit">Validate</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ) : null}
                             </form>
                         </div>
                     </div>

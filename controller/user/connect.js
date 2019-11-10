@@ -11,6 +11,7 @@ const config = require('../config');
 const jwt = require('jsonwebtoken');
 const with_auth = require('./authentification_middleware');
 const user = require('../../model/connection.js');
+const email = require('../../model/email.js');
 
 router.use(cookieParser());
 router.use(bodyParser.json());
@@ -73,8 +74,18 @@ router.post('/auth', async (req, res) => {
   }
 });
 
-// **** LOGOUT **** //
+// **** FORGOTTEN PASSWORD **** //
+router.post('/forgotten_password', async (req, res) => {
+  const forgotten_email = await user.user_exists_email(req.body.body.split("email: ")[1].split('}')[0]);
+  if (forgotten_email === 'vide')
+    res.status(401).send("This email is not attached to an account");
+  else {
+    email.forgotten_password(forgotten_email);
+    res.status(200).send("Email has been sent");
+  }
+});
 
+// **** LOGOUT **** //
 router.post('/logout', with_auth, async (req, res) => {
   try {
     res.status(200).cookie('token', null, { httpOnly: true }).send("The user has been successfully disconnected");
