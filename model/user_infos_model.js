@@ -30,6 +30,18 @@ const update_password = async (password, uuid) => {
 }
 module.exports.update_password = update_password;
 
+// Update the profile picture
+const update_picture = (profile_picture, uuid) => {
+    console.log(profile_picture);
+    let sql = "UPDATE `users` SET `profile_picture` = ? WHERE `uuid` = ?";
+    let values = [profile_picture, uuid];
+    con.query(sql, values, (err, result) => {
+        if (err)
+            throw err;
+    });
+}
+module.exports.update_picture = update_picture;
+
 // Update the dark_mode
 const dark_mode_update = (dark_mode, uuid) => {
     let sql = "UPDATE `users` SET `dark_mode` = ? WHERE `uuid` = ?";

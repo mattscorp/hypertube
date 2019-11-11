@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import NoPhoto from '../resources/no_image.jpeg'
+import axios from "axios";
 
 class Account extends Component {
 
@@ -13,7 +14,24 @@ class Account extends Component {
         this.passwordOldEl = React.createRef();
         this.passwordConfirmEl = React.createRef();
         this.passwordNewEl = React.createRef();
+        this.profilePictureEl = React.createRef();
+        this.state ={
+            file: null
+        };
+        this.profilePictureForm = this.profilePictureForm.bind(this);
+        this.onChangePicture = this.onChangePicture.bind(this);
     }
+
+    // state = {
+    //     photo: ''
+    // }
+
+    // componentDidMount = async () => {
+    //     this.setState(prevState => {
+    //         // return {photo: this.props.userConnectState.photo_URL.replace('views/src', './..')};
+    //         return {photo: './favicon.ico'};
+    //     });
+    // }
 
     // LOGOUT
     logout = (event) => {
@@ -80,8 +98,8 @@ class Account extends Component {
             alert('Passwords don\'t match');
             return;
         } else {
-            let URL = 'http://localhost:8000/update_password';
-            let requestBody = {
+            const URL = 'http://localhost:8000/update_password';
+            const requestBody = {
                 body: `{login: "${this.props.userConnectState.login}", new_password: "${this.passwordNewEl.current.value.trim()}", confirm_password: "${this.passwordConfirmEl.current.value.trim()}", old_password: "${this.passwordOldEl.current.value.trim()}"}`
             };
             fetch(URL, {
@@ -107,9 +125,63 @@ class Account extends Component {
     }
 
     // CHANGE PHOTO
-    updateProfilePicture = (event) => {
+    onChangePicture(e) {
+        this.setState({file:e.target.files[0]});
+    }
+    profilePictureForm = (event) => {
         event.preventDefault();
-        alert('SALUT');
+        alert(this.profilePictureEl.current.value);
+        const formData = new FormData();
+        formData.append('myImage',this.state.file);
+        console.log(formData);
+        const URL = 'http://localhost:8000/profile_picture';
+        const config = {
+            // credentials: 'include',
+            withCredentials: true,
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+        };
+        axios.post(URL, formData, config)
+        // const requestBody = {
+        //     body: `{file: "${formData}"}`
+        // };
+        // fetch(URL, {
+        //     credentials: 'include',
+        //     method: 'POST',
+        //     body: JSON.stringify(requestBody),
+        //     headers: {'Content-Type': 'multipart/form-data'}
+        // })
+        .then(res => {
+            if (res.status === 401) {
+                alert('Error : you need to reconnect');
+                window.location.assign('http://localhost:3000');
+            } else if (res.status === 400) {
+                alert('Only jpeg, jpg and png files are supported.');
+            } else if (res.status === 200) {
+                let URL = 'http://localhost:8000/user_infos';
+                fetch(URL, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    credentials: 'include'
+                })
+                .then(res => {
+                    if (res.status !== 200) {
+                        this.props.setUserDisconnect()
+                    } else {
+                        return res.json();
+                    }
+                })
+                .then(resData => {
+                    if (resData) {
+                        this.props.setUserConnect(resData[0]);
+                        if (resData[0].dark_mode === 1)
+                            this.props.setDarkMode();
+                    }
+                })
+                alert('Your profile picture has been successfully updated');
+            }
+        })
     }
 
     render() {
@@ -123,15 +195,19 @@ class Account extends Component {
                 {/* Profile picture */}
                 <div className="form-group profile_picture_row row account_input">
                     <label className="col-md-5 col-form-label text-md-right" htmlFor="darkMode">Profile picture</label>
-                    <div onClick={this.updateProfilePicture} className="profile_picture_div col-md-5">
-                        {!this.props.userConnectState.photo_URL ? <img className="profile_picture" src={NoPhoto}/> : <img className="profile_picture" src={this.props.userConnectState.photo_URL}/>}
-                        <div className="text_overlay">
-                            <div className="text">Update your profile picture</div>
+                    <div className="profile_picture_div col-md-5">
+                        {/* {!this.props.userConnectState.photo_URL ? <img className="profile_picture" src={NoPhoto}/> : <img className="profile_picture" src={this.state.photo}/>} */}
+                        {!this.props.userConnectState.photo_URL ? <img className="profile_picture" src={NoPhoto}/> : <img className="profile_picture" src={this.props.userConnectState.photo_URL.replace('views/public', '.')}/>}
+                    </div>
+                    {/* Update profile picture */}
+                    <form onSubmit={this.profilePictureForm}>
+                        <div className="mx-auto m-1">
+                            <input onChange={this.onChangePicture} required type="file" accept="image/png, image/jpeg, image/jpg" title="Update picture" ref={this.profilePictureEl}/>
                         </div>
-                    </div>
-                    <div className="mx-auto m-1">
-                        <input type="file" title="Update picture"/>
-                    </div>
+                        <div className="mx-auto">
+                            <button className="btn btn-dark" type="submit">Update your profile picture</button>
+                        </div>
+                    </form>
                 </div>
                 {/* Dark mode toggle */}
                 <div className="form-group row account_input">

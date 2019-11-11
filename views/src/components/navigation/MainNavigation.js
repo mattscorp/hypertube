@@ -224,7 +224,7 @@ class MainNavigation extends Component {
                         </div>
                             {this.props.userConnectState.uuid ? null : <div className="float-right"><NavLink to="/auth" className="text-center">Authentification</NavLink></div>}
                             {this.props.userConnectState.uuid ? <div className="float-right" onClick={this.accountModeHandler}>
-                            {(this.props.userConnectState.photo_URL === undefined || this.props.userConnectState.photo_URL === '') ? <button>Account</button> : <button><img title="Account" className="navlink_picture rounded-circle" src={this.props.userConnectState.photo_URL}/></button>}
+                            {(this.props.userConnectState.photo_URL === undefined || this.props.userConnectState.photo_URL === '') ? <button>Account</button> : <button><img title="Account" className="navlink_picture rounded-circle" src={this.props.userConnectState.photo_URL.replace('views/public', '.')}/></button>}
                             </div> : null}
                             <select>
                                     <option value="en">🇬🇧&emsp;English</option>
@@ -252,6 +252,8 @@ class MainNavigation extends Component {
                             darkModeState = {this.props.darkModeState}
                             setDarkMode={() => {this.props.setDarkMode()}}
                             stopDarkMode={() => {this.props.stopDarkMode()}}
+                            setUserConnect={(resData) => {this.props.setUserConnect(resData)}}
+                            setUserDisconnect={(resData) => {this.props.setUserDisconnect(resData)}}
                         />
                     </div>
                     : null

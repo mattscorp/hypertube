@@ -7,10 +7,28 @@ const router = express.Router();
 const with_auth = require('./authentification_middleware');
 const user = require('../../model/connection.js');
 const user_infos = require('../../model/user_infos_model.js');
+const uuid = require('uuid/v4');
+const fs = require('fs');
 
 router.use(cookieParser());
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
+
+// To upload the profile picture
+const path = require("path");
+const multer = require("multer");
+const uuid_photo = uuid();
+const storage = multer.diskStorage({
+    destination: "./views/public/profile_pictures",
+    filename: function(req, file, cb){
+       cb(null,"IMAGE-" + Date.now() + uuid_photo + path.extname(file.originalname));
+    }
+});
+// const upload = multer({dest: __dirname + '/../public/images'});
+const upload = multer({
+    storage: storage,
+    limits:{fileSize: 1000000},
+}).single("myImage");
 
 // Allow Cross-origin requests
 const cors = require('cors')
@@ -52,6 +70,30 @@ router.post('/update_password', with_auth, async (req, res) => {
         }
     }
 });
+
+// **** UPDATE PROFILE PICTURE **** //
+// router.post('/profile_picture', with_auth, async(req, res) => {
+//     console.log('in profile picture : ' + req.file);
+//     res.status(200).send('OK');
+// });
+router.post("/profile_picture", with_auth, (req, res) => {
+    let uuid_user = req.uuid;
+    upload(req, res, (err) => {
+        // console.log("Request file ---", req.file);//Here you get file.
+        // console.log('mimtype : ' + req.file.mimetype)
+        if (req.file.mimetype !== 'image/jpg' & req.file.mimetype !== 'image/jpeg' & req.file.mimetype !== 'image/png')
+            res.status(400).send('Wrong file format: only jpg, jpeg and png are accepted');
+        else if (err) {
+            res.status(400).send('An error has occured, please try again later');
+        }
+        else {
+            let file_path = req.file.path;
+            fs.chmodSync(file_path, '777');
+            user_infos.update_picture(file_path, uuid_user);
+            res.status(200).send('Your profile picture has been successfully updated');
+        }
+    });
+ });
 
 // **** UPDATE DARK MODE **** //
 router.post('/dark_mode', with_auth, async(req, res) => {

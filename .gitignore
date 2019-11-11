@@ -1,2 +1,4 @@
 node_modules
 views/.env
+views/public/profile_pictures
+
