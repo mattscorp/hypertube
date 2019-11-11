@@ -130,28 +130,16 @@ class Account extends Component {
     }
     profilePictureForm = (event) => {
         event.preventDefault();
-        alert(this.profilePictureEl.current.value);
         const formData = new FormData();
         formData.append('myImage',this.state.file);
-        console.log(formData);
         const URL = 'http://localhost:8000/profile_picture';
         const config = {
-            // credentials: 'include',
             withCredentials: true,
             headers: {
                 'content-type': 'multipart/form-data'
             }
         };
         axios.post(URL, formData, config)
-        // const requestBody = {
-        //     body: `{file: "${formData}"}`
-        // };
-        // fetch(URL, {
-        //     credentials: 'include',
-        //     method: 'POST',
-        //     body: JSON.stringify(requestBody),
-        //     headers: {'Content-Type': 'multipart/form-data'}
-        // })
         .then(res => {
             if (res.status === 401) {
                 alert('Error : you need to reconnect');
@@ -196,7 +184,6 @@ class Account extends Component {
                 <div className="form-group profile_picture_row row account_input">
                     <label className="col-md-5 col-form-label text-md-right" htmlFor="darkMode">Profile picture</label>
                     <div className="profile_picture_div col-md-5">
-                        {/* {!this.props.userConnectState.photo_URL ? <img className="profile_picture" src={NoPhoto}/> : <img className="profile_picture" src={this.state.photo}/>} */}
                         {!this.props.userConnectState.photo_URL ? <img className="profile_picture" src={NoPhoto}/> : <img className="profile_picture" src={this.props.userConnectState.photo_URL.replace('views/public', '.')}/>}
                     </div>
                     {/* Update profile picture */}
