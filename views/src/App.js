@@ -10,6 +10,7 @@ import { set_dark_mode, stop_dark_mode } from './actions/dark_mode_action.js'
 
 //Main pages
 import Home from './pages/Home.js';
+import Play from './pages/Play.js';
 import MainNavigation from './components/navigation/MainNavigation';
 //Authentification pages
 import AuthPage from './components/connection/Auth.js';
@@ -54,6 +55,7 @@ class App extends Component {
               <Route path="/oauth_google" component={ OAuth_Google }/>}
               <Route path="/oauth_facebook" component={ OAuth_Facebook }/>}
               <Route path="/auth" component={ AuthPage }/>}
+              <Route path="/play" component={ Play }/>}
               <Route path="/home" render={
                 (props) => 
                   <Home {...props} 

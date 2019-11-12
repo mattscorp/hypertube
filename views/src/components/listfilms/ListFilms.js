@@ -1,4 +1,5 @@
 import  React from 'react';
+import { NavLink } from 'react-router-dom';
 
 const url_img = 'https://image.tmdb.org/t/p/w185_and_h278_bestv2';
 const Films = (props) => (
@@ -23,9 +24,11 @@ const Films = (props) => (
                         )
                     }
                     <div className="play_hover">
-                        <a href="#" className="btn btn-info btn-lg">
-                        <span className="glyphicon glyphicon-play"></span> Play
-                        </a>
+                        <NavLink to={"play?movie=" + props.id}>
+                            <a className="btn btn-info btn-lg">
+                                <span className="glyphicon glyphicon-play"></span> Play
+                            </a>
+                        </NavLink>
                     </div>         
                 </div>
             </div>
