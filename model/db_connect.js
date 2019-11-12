@@ -3,7 +3,7 @@
 var mysql = require('mysql');
 
 /* CONNEXION MAISON */
-
+/*
 const HOST = 'localhost';
 module.exports.HOST = HOST;
 const USER = 'paul';
@@ -20,16 +20,16 @@ let con = mysql.createConnection({
   database: DATABASE
 });
 module.exports.con = con;
-
+*/
 
 /* CONNEXION ECOLE */
-/*
+
 const HOST = 'localhost';
 module.exports.HOST = HOST;
 const USER = 'root';
 module.exports.USER = USER;
-//const PASSWORD = '123456';
-const PASSWORD = 'pvictor';
+const PASSWORD = '123456';
+//const PASSWORD = 'pvictor';
 module.exports.PASSWORD = PASSWORD;
 const PORT = 3306;
 module.exports.PORT = PORT;
@@ -44,4 +44,3 @@ let con = mysql.createConnection({
   database: DATABASE
 });
 module.exports.con = con;
-*/
