@@ -40,6 +40,9 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 CREATE TABLE IF NOT EXISTS `films` (
     `film_ID` INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    `moviedb_ID` INT(11),
+    `path` text,
+    `extension` varchar(10),
     `name` varchar(100),
     `year` int(5),
     `picture` text,

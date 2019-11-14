@@ -10,20 +10,22 @@ let con = db_connect.con;
 // GET 20 the films from the db
 //      --> "order" is the column to sort the movies by
 //      --> "offset" is the number of asnwers to skip
-const film_list = async (order, offset) => {
+const film_db = async (movie_ID) => {
     return new Promise((resolve, reject) => {
-        let values = [offset];
-        let sql = "SELECT `film_ID`, `name`, `year`, `picture`, `director`, `casting`, `producer`, `summary`, `duration`, `date` FROM `films` ORDER BY `" + order + "` DESC LIMIT 20 OFFSET " + offset;
-        con.query(sql, (err, result) => {
+        let sql = "SELECT * FROM `films` WHERE `moviedb_ID` = ?";
+        con.query(sql, [movie_ID], (err, result) => {
             if (err)
                 throw err;
             else {
-                resolve(JSON.stringify(result));
+                if (result == '')
+                    resolve('vide');
+                else
+                    resolve(JSON.stringify(result));
             }
         });
     });
 }
-module.exports.film_list = film_list;
+module.exports.film_db = film_db;
 
 
 
@@ -111,6 +113,16 @@ const search_movies = async (page, public_category, film_category, name, rating,
     });
 }
 module.exports.search_movies = search_movies;
+
+const movie_infos = async (movie_id) => {
+    return new Promise((resolve, reject) => {
+        let url = `https://api.themoviedb.org/3/movie/${movie_id}?api_key=${API_KEY}&language=en-US`;
+        request(url, {json: true}, function (error, response, body) {
+            resolve(body);
+        });
+    });
+}
+module.exports.movie_infos = movie_infos;
 
 // GET search similar movies
 const similar_movies = async (movie_ID) => {

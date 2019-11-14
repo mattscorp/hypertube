@@ -5,8 +5,9 @@ const express = require('express');
 const router = express.Router();
 // model functions
 const films = require('../../model/films.js');
+const torrents = require('../torrent/torrent.js');
 
-router.get('/moviedb', async (req, res) => {
+router.get('/moviedb', with_auth, async (req, res) => {
     if (!req.query.action || (req.query.action != "popular" && req.query.action != "search" && req.query.action != "similar")) {
         res.status(400);
         res.send("Specify the action to be performed: 'popular' to get popular movies, 'search' to get a particular movie");
@@ -53,6 +54,39 @@ router.get('/moviedb', async (req, res) => {
             res.send(similar_movies.results);
         }
         // https://developers.themoviedb.org/3/movies/get-similar-movies
+    }
+});
+
+router.get('/movie_infos', with_auth, async (req, res) => {
+    if (req.query.movie_id && req.query.movie !== "") {
+        let movie_infos = await films.movie_infos(req.query.movie_id);
+        if (movie_infos == '')
+            res.status(204);
+        else
+            res.status(200).send(movie_infos);
+    }
+});
+
+/*
+a. Si il est telechargé (fini), on renvoie le {status: 'finish', movie_infos: movie_infos}
+b. Si il est telecharge (en cours), on renvoie {status: 'downloading', movie_infos: movie_infos}
+c. Sinon on cherche le film :
+    i. Si on le trouve (verification des infos), on commence a telecharger (celui avec le plus de seeders) 
+            et on renvoie {status: 'downloading', movie_infos: movie_infos}
+    ii. Sinon on renvoie {status: 'not found', movie_infos: ''} et on l'ajoute en BDD dans une table 'to_download'
+*/
+router.get('/movie_in_db', with_auth, async (req, res) => {
+    if (req.query.movie_id && req.query.movie !== "") {
+        let movie_infos_db = await films.film_db(req.query.movie_id);
+        if (movie_infos_db == 'vide') {
+            let movie_infos_api = await films.movie_infos(req.query.movie_id);
+            res.status(204).send('The movie needs to be downloaded');
+            // On prend les providers
+            torrents.ft_torrent(movie_infos_api, 'Rarbg');
+        }
+        else {
+            res.status(200).send(movie_infos_db);
+        }
     }
 });
 
