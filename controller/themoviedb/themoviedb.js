@@ -67,6 +67,16 @@ router.get('/movie_infos', with_auth, async (req, res) => {
     }
 });
 
+router.get('/movie_cast', with_auth, async (req, res) => {
+    if (req.query.movie_id && req.query.movie !== "") {
+        let movie_cast = await films.movie_cast(req.query.movie_id);
+        if (movie_cast == '')
+            res.status(204);
+        else
+            res.status(200).send(movie_cast);
+    }
+});
+
 /*
 a. Si il est telechargé (fini), on renvoie le {status: 'finish', movie_infos: movie_infos}
 b. Si il est telecharge (en cours), on renvoie {status: 'downloading', movie_infos: movie_infos}

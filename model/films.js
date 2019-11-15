@@ -138,3 +138,15 @@ const similar_movies = async (movie_ID) => {
     });
 }
 module.exports.similar_movies = similar_movies;
+
+
+
+const movie_cast= async (movie_id) => {
+    return new Promise((resolve, reject) => {
+        let url = `https://api.themoviedb.org/3/movie/${movie_id}/credits?api_key=${API_KEY}`;
+        request(url, {json: true}, function (error, response, body) {
+            resolve(body);
+        });
+    });
+}
+module.exports.movie_cast = movie_cast;
