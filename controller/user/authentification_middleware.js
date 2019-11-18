@@ -9,7 +9,7 @@ const secret = config.SESS_SECRET;
 const with_auth =  (req, res, next) => {
     if (req.headers.cookie) {
         const token = req.headers.cookie.split('=')[1].split(';')[0];
-        if (token == undefined || !token)
+    if (token == undefined || !token)
             res.status(401).send('Unauthorized: No token provided');
         else {
             jwt.verify(token, secret, (err, decoded) => {

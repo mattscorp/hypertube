@@ -25,9 +25,9 @@ const Films = (props) => (
                     }
                     <div className="play_hover">
                         <NavLink to={"play?movie=" + props.id}>
-                            <a className="btn btn-info btn-lg">
+                            <p className="btn btn-info btn-lg">
                                 <span className="glyphicon glyphicon-play"></span> Play
-                            </a>
+                            </p>
                         </NavLink>
                     </div>         
                 </div>

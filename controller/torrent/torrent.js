@@ -25,7 +25,7 @@ const ft_1 = async (movie_infos) => {
             console.log('****************************');
     return new Promise(async (resolve, reject) => {
         const torrents = await TorrentSearchApi.search(movie_infos.title, 'Movies', 20)
-        console.log(torrents);
+        // console.log(torrents);
         resolve(torrents);
         // const details = await TorrentSearchApi.getMagnet(torrents);
         // console.log("*********************");

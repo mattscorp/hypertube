@@ -11,3 +11,10 @@ export function cast_infos(castInfos) {
         payload: castInfos
     };
 }
+
+export function similar_movies(similarMovies) {
+    return {
+        type: "SET_SIMILAR_MOVIES",
+        payload: similarMovies
+    };
+}

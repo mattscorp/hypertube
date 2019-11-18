@@ -7,7 +7,7 @@ import { load_films, reset_films_before_search, first_page_search, next_page_sea
 import { user_connect, user_disconnect } from './actions/user_connect_action.js'
 import { modif_advanced_search, reset_advanced_search } from './actions/advanced_search_action.js'
 import { set_dark_mode, stop_dark_mode } from './actions/dark_mode_action.js'
-import { film_infos, cast_infos } from './actions/film_infos_action.js'
+import { film_infos, cast_infos, similar_movies } from './actions/film_infos_action.js'
 
 //Main pages
 import Home from './pages/Home.js';
@@ -62,6 +62,8 @@ class App extends Component {
                     filmInfosState={this.props.filmInfosState}
                     setFilmInfos={(resData) => {this.props.setFilmInfos(resData)}}
                     setCastInfos={(resData) => {this.props.setCastInfos(resData)}}
+                    setSimilarMovies={(resData) => {this.props.setSimilarMovies(resData)}}
+                    darkModeState = {this.props.darkModeState.dark_mode}
                   />
               }/>
               <Route path="/home" render={
@@ -147,6 +149,9 @@ const mapDispatchToProps  = (dispatch) => {
     },
     setCastInfos: (filmInfos) => {
       dispatch(cast_infos(filmInfos));
+    },
+    setSimilarMovies: (filmInfos) => {
+      dispatch(similar_movies(filmInfos));
     }
   };
 }

@@ -133,6 +133,7 @@ class MainNavigation extends Component {
             let URL = `http://localhost:8000/moviedb?action=search&page=${this.props.reloadSearch.page}&movie_name=${search_query}${decade}${genderSearch}${public_category}${rating}${duration}`;
             fetch(URL, {
                 method: 'GET',
+                credentials: 'include',
                 headers: {'Content-Type': 'application/json'}
             })
             .then(res => {

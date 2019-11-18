@@ -46,7 +46,8 @@ router.get('/moviedb', with_auth, async (req, res) => {
         }
         // ** SIMILAR ** --> get movies that are similar to the parameter "movie_ID"
         else if (req.query.action.toLowerCase() == "similar") {
-            let similar_movies = await films.similar_movies(req.query.movie_ID);
+            let similar_movies = await films.similar_movies(req.query.movie_id);
+            console.log('+++++++++++++++++++++++ : ' + req.query.movie_id);
             if (similar_movies == '')
                 res.status(204);
             else
