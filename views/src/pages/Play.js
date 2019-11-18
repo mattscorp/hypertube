@@ -86,7 +86,7 @@ class Play extends Component {
         // alert(this.state.film_cast.cast);
         return (
             <React.Fragment>
-                <div>
+                <div className="container">
                     {this.props.filmInfosState.film_infos.id !== parseInt(this.props.location.search.split('movie=')[1].trim()) ? null :
                         <div className = "row">
                             <h1>{this.props.filmInfosState.film_infos.title}</h1>
