@@ -7,6 +7,7 @@ import { load_films, reset_films_before_search, first_page_search, next_page_sea
 import { user_connect, user_disconnect } from './actions/user_connect_action.js'
 import { modif_advanced_search, reset_advanced_search } from './actions/advanced_search_action.js'
 import { set_dark_mode, stop_dark_mode } from './actions/dark_mode_action.js'
+import { film_infos, cast_infos } from './actions/film_infos_action.js'
 
 //Main pages
 import Home from './pages/Home.js';
@@ -55,7 +56,14 @@ class App extends Component {
               <Route path="/oauth_google" component={ OAuth_Google }/>}
               <Route path="/oauth_facebook" component={ OAuth_Facebook }/>}
               <Route path="/auth" component={ AuthPage }/>}
-              <Route path="/play" component={ Play }/>}
+              <Route path="/play" render={
+                (props) =>
+                  <Play {...props}
+                    filmInfosState={this.props.filmInfosState}
+                    setFilmInfos={(resData) => {this.props.setFilmInfos(resData)}}
+                    setCastInfos={(resData) => {this.props.setCastInfos(resData)}}
+                  />
+              }/>
               <Route path="/home" render={
                 (props) => 
                   <Home {...props} 
@@ -88,7 +96,8 @@ const mapStateToProps  = (state) => {
     reloadSearch: state.reloadSearch,
     userConnect: state.userConnect,
     advancedSearch: state.advancedSearch,
-    darkModeState: state.darkMode
+    darkModeState: state.darkMode,
+    filmInfosState: state.filmInfo
   };
 }
 
@@ -132,6 +141,12 @@ const mapDispatchToProps  = (dispatch) => {
     },
     stopDarkMode: () => {
       dispatch(stop_dark_mode());
+    },
+    setFilmInfos: (filmInfos) => {
+      dispatch(film_infos(filmInfos));
+    },
+    setCastInfos: (filmInfos) => {
+      dispatch(cast_infos(filmInfos));
     }
   };
 }

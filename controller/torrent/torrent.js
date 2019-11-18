@@ -34,9 +34,9 @@ const ft_1 = async (movie_infos) => {
 }
 
 const ft_2 = async (torrents) => {
-    console.log('IN FT_2 : ' + torrents[0].title);
+    // console.log('IN FT_2 : ' + torrents[0].title);
     const magnet = await TorrentSearchApi.getMagnet(torrents[0]);
-    console.log('MAGNET ****' + magnet);
+    // console.log('MAGNET ****' + magnet);
 }
 
 const ft_torrent = async (movie_infos, source) => {
