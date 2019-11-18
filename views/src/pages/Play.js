@@ -135,17 +135,33 @@ class Play extends Component {
                                     <p>{this.props.filmInfosState.film_infos.imdb_id}</p>
                                 </div> 
                             : null}
-                            {this.props.filmInfosState.cast_infos.id ?
+                            {this.props.filmInfosState.cast_infos.cast ?
                             <div className = 'col-1'>
-                                <h3>CAST TEST : {this.props.filmInfosState.cast_infos.id}</h3>
+                                <h3>Cast:</h3>
+                                {this.props.filmInfosState.cast_infos.cast.slice(0, 5).map((elem, index) => 
+                                    <p key={index} >{elem.name} as {elem.character}</p>
+                                )}
                             </div>
                             : null
                             }
-                            {this.props.filmInfosState.cast_infos.cast ?
-                                this.props.filmInfosState.cast_infos.cast.map((elem, index) => 
-                                <div className = 'col-1'>
-                                    <h3>{elem.name} as {elem.character}</h3>
-                                </div>)
+                            {this.props.filmInfosState.cast_infos.crew ?
+                            <div className = 'col-1'>
+                                <h3>Writer:</h3>
+                                {this.props.filmInfosState.cast_infos.crew.map((elem, index) => 
+                                elem.job === "Writer" ? (
+                                    <p key={index} >{elem.name}</p>
+                                ): null )}
+                                </div>
+                            : null
+                            }
+                            {this.props.filmInfosState.cast_infos.crew ?
+                            <div className = 'col-1'>
+                                <h3>Director:</h3>
+                                {this.props.filmInfosState.cast_infos.crew.map((elem, index) => 
+                                elem.job === "Director" ? (
+                                    <p key={index} >{elem.name}</p>
+                                ): null )}
+                                </div>
                             : null
                             }
                             <div className = 'col-1'>
