@@ -198,55 +198,145 @@ class MainNavigation extends Component {
             <React.Fragment>
                 {/* NAVBAR */}
                 <header className="navbar-perso sticky-top">
-                    <nav className={this.props.darkModeState ? "navbar navbar-expand-sm bg-light navbar-light bg-dark": "navbar navbar-expand-sm bg-light navbar-light"}>
-                    <div className="container-fluid">
-                            <div className="col-1"><NavLink to="/">
-                                <h1 className= {this.props.darkModeState ? "navbar-brand abs main-navigation-logo text-white" : "navbar-brand abs main-navigation-logo"}>HYPERTUBE</h1></NavLink>
-                                
-                                </div>
-                        
-                        <div className="col-1"> 
-                            <button className="btn btn-success btn-style mx-auto" type="submit" onClick={this.advancedSearch}>
-                                Advanced search
-                            </button>
-                        </div>
-                        
-                        
-                        <div className="col-6">
-                            <form id="myForm" >
-                                <input onChange={this.setSearch} 
-                                    className="form-control text-center mx-auto" type="text" placeholder="Search" 
-                                    name="search_query"
-                                    id="searchInput"
-                                />
-                                <div className="mx-auto">
-                                    {(this.props.homeSearch === "Trending movies") ? null :
-                                                <button className="btn btn-success mx-auto  text-center" type="submit" onClick={this.clearSearch}>
-                                                    Clear
-                                                </button>
-                                    }    
-                                </div>
-                            </form>
-                        </div>
-                                {this.props.userConnectState.uuid ? null : <div className="float-right col-1"><NavLink to="/auth" className="text-center">Authentification</NavLink></div>}
+
+
+
+
+
+<nav className={this.props.darkModeState ? "navbar navbar-expand-sm bg-light navbar-light bg-dark": "navbar navbar-expand-sm bg-light navbar-light"}>
+    <div className="col-1" href="/">
+        <NavLink to="/"> 
+            <h1 className= {this.props.darkModeState ? "navbar-brand abs main-navigation-logo text-white" : "navbar-brand abs main-navigation-logo"}>HYPERTUBE</h1>
+        </NavLink>
+    </div>
+
+  <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span className="navbar-toggler-icon"></span>
+  </button>
+
+  <div className="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul className="navbar-nav mr-auto">
+      <li className="nav-item">
+        {/* <a className="nav-link" href="/">Home <span className="sr-only">(current)</span></a> */}
+        {this.props.userConnectState.uuid ? null : 
+        <div className="float-right col-1">
+            <NavLink to="/auth" className="text-center">
+                Authentification
+            </NavLink>
+        </div>}
                                 {this.props.userConnectState.uuid ? <div className="float-right col-1" onClick={this.accountModeHandler}>
                                 {(this.props.userConnectState.photo_URL === undefined || this.props.userConnectState.photo_URL === '') ? <button>Account</button> : <button><img title="Account" className="navlink_picture rounded-circle" src={this.props.userConnectState.photo_URL.replace('views/public', '.')}/></button>}
                                 </div> : null}
-                            
-                            <div className="col-1">
-                                <select>
-                                    <option value="en">🇬🇧&emsp;English</option>
-                                    <option value="fr">🇫🇷&emsp;French</option>
-                                    <option value="es">🇪🇸&emsp;Español</option>
-                                    <option value="ru">🇷🇺&emsp;русский</option>
-                                    <option value="de">🇩🇪&emsp;Deutsch</option>
-                                    <option value="nl">🇳🇱&emsp;Nederlands</option>
-                                    <option value="jp">🇯🇵&emsp;日本語</option>
-                                    <option value="cn">🇨🇳&emsp;中文</option>
-                                </select>
-                            </div>
+      </li>
+      <li className="nav-item">
+      <button className="btn btn-success btn-style mx-auto" type="submit" onClick={this.advancedSearch}>
+                                        Advanced search
+       </button>
+        {/* <a className="nav-link" href="#">Link</a> */}
+      </li>
+      
+      <li className="nav-item">
+        {/* <a className="nav-link disabled" href="#">Disabled</a> */}
+      <button className="btn btn-success btn-style mx-auto" type="submit" onClick={this.advancedSearch}>
+       
+        <select>
+                                        <option value="en">🇬🇧&emsp;English</option>
+                                        <option value="fr">🇫🇷&emsp;French</option>
+                                        <option value="es">🇪🇸&emsp;Español</option>
+                                        <option value="ru">🇷🇺&emsp;русский</option>
+                                        <option value="de">🇩🇪&emsp;Deutsch</option>
+                                        <option value="nl">🇳🇱&emsp;Nederlands</option>
+                                        <option value="jp">🇯🇵&emsp;日本語</option>
+                                        <option value="cn">🇨🇳&emsp;中文</option>
+                                    </select>
+                                    </button>
+      </li>
+    </ul>
+    <form id="myForm" >
+        <input onChange={this.setSearch} 
+            className="form-control text-center mx-auto" type="text" placeholder="Search" 
+            name="search_query"
+            id="searchInput"
+        />
+        <div className="mx-auto">
+            {(this.props.homeSearch === "Trending movies") ? null :
+                        <button className="btn btn-success mx-auto  text-center" type="submit" onClick={this.clearSearch}>
+                            Clear
+                        </button>
+            }    
+        </div>
+    </form>
+    {/* <form className="form-inline my-2 my-lg-0">
+      <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form> */}
+  </div>
+</nav>
 
 
+
+
+
+
+
+{/* 
+
+
+
+                    <nav className={this.props.darkModeState ? "navbar navbar-expand-sm bg-light navbar-light bg-dark": "navbar navbar-expand-sm bg-light navbar-light"}>
+                        <div className="container-fluid">
+                            <div className="col-1"><NavLink to="/">
+                                <h1 className= {this.props.darkModeState ? "navbar-brand abs main-navigation-logo text-white" : "navbar-brand abs main-navigation-logo"}>HYPERTUBE</h1></NavLink>
+                                
+                                </div> 
+                        <ul>
+                            <li>
+                                <div className="col-1"> 
+                                    <button className="btn btn-success btn-style mx-auto" type="submit" onClick={this.advancedSearch}>
+                                        Advanced search
+                                    </button>
+                                </div>
+                            </li>
+                            <li>
+                                <div className="col-6">
+                                     <form id="myForm" >
+                                        <input onChange={this.setSearch} 
+                                            className="form-control text-center mx-auto" type="text" placeholder="Search" 
+                                            name="search_query"
+                                            id="searchInput"
+                                        />
+                                        <div className="mx-auto">
+                                            {(this.props.homeSearch === "Trending movies") ? null :
+                                                        <button className="btn btn-success mx-auto  text-center" type="submit" onClick={this.clearSearch}>
+                                                            Clear
+                                                        </button>
+                                            }    
+                                        </div>
+                                    </form> 
+                                </div>
+                            </li>
+                            <li>
+                                {this.props.userConnectState.uuid ? null : <div className="float-right col-1"><NavLink to="/auth" className="text-center">Authentification</NavLink></div>}
+                                {this.props.userConnectState.uuid ? <div className="float-right col-1" onClick={this.accountModeHandler}>
+                                {(this.props.userConnectState.photo_URL === undefined || this.props.userConnectState.photo_URL === '') ? <button>Account</button> : <button><img title="Account" className="navlink_picture rounded-circle" src={this.props.userConnectState.photo_URL.replace('views/public', '.')}/></button>}
+                                </div> : null}              
+                            </li>
+                            <li>
+                                <div className="col-1">
+                                    <select>
+                                        <option value="en">🇬🇧&emsp;English</option>
+                                        <option value="fr">🇫🇷&emsp;French</option>
+                                        <option value="es">🇪🇸&emsp;Español</option>
+                                        <option value="ru">🇷🇺&emsp;русский</option>
+                                        <option value="de">🇩🇪&emsp;Deutsch</option>
+                                        <option value="nl">🇳🇱&emsp;Nederlands</option>
+                                        <option value="jp">🇯🇵&emsp;日本語</option>
+                                        <option value="cn">🇨🇳&emsp;中文</option>
+                                    </select>
+                                </div>
+                            </li>
+                        </ul>
+                        
 
                         </div>
                        
@@ -254,7 +344,7 @@ class MainNavigation extends Component {
                                 
                                 
                         
-                    </nav>
+                    </nav> */}
                 </header>
 
                 {/* ACCOUNT SIDEBAR (Onclick on the profile picture - or if not the account <li>) */}
