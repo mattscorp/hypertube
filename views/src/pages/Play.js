@@ -88,8 +88,13 @@ class Play extends Component {
             <React.Fragment>
                 <div className="container">
                     {this.props.filmInfosState.film_infos.id !== parseInt(this.props.location.search.split('movie=')[1].trim()) ? null :
-                        <div className = "row">
-                            <h1>{this.props.filmInfosState.film_infos.title}</h1>
+                       
+                        <div className = "main">
+                            <div className ="row">
+                                
+                                <h1 className="col-12 text-center">{this.props.filmInfosState.film_infos.title}</h1>
+                            </div>
+                            
                             {/* Infos about {this.props.filmInfosState.film_infos.title} : */}
                             {this.props.filmInfosState.film_infos.release_date ?
                                 <div className = 'col-1'>
@@ -97,6 +102,7 @@ class Play extends Component {
                                     <p>{this.props.filmInfosState.film_infos.release_date}</p>
                                 </div> 
                             : null}
+                            
 
                             {this.props.filmInfosState.film_infos.overview ?
                                 <div className = 'col-1'>
