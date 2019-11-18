@@ -15,7 +15,9 @@ body {
     margin-right: 10px ;
     text-decoration: none;
 }
+
 .center-element{
+    text-align: center;
     padding-right: 25vw;
     padding-left: 28vw;
 }
@@ -544,4 +546,11 @@ body{
         width: 100% !important;
         right: 0 !important;
     }
+}
+
+
+/* ||||||||||||||| PLAY PAGE ||||||||||||||||| */
+
+.poster {
+    text-align: center;
 }

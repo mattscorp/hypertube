@@ -22,17 +22,6 @@ class Account extends Component {
         this.onChangePicture = this.onChangePicture.bind(this);
     }
 
-    // state = {
-    //     photo: ''
-    // }
-
-    // componentDidMount = async () => {
-    //     this.setState(prevState => {
-    //         // return {photo: this.props.userConnectState.photo_URL.replace('views/src', './..')};
-    //         return {photo: './favicon.ico'};
-    //     });
-    // }
-
     // LOGOUT
     logout = (event) => {
         event.preventDefault();
