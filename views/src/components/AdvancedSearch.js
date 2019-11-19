@@ -4,7 +4,7 @@ import './navigation/MainNavigation.css';
 class AdvancedSearch extends Component {
     render () {
         return (
-            <div className="card-body">
+            <div className="col-xs-12">
                 <h2>Advanced search</h2>
                 <form>
                     <div>
