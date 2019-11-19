@@ -11,7 +11,8 @@ const config = require('../config');
 const jwt = require('jsonwebtoken');
 const with_auth = require('./authentification_middleware');
 const user = require('../../model/connection.js');
-const email = require('../../model/email.js');
+const email_model = require('../../model/email.js');
+const user_infos = require('../../model/user_infos_model.js')
 
 router.use(cookieParser());
 router.use(bodyParser.json());
@@ -54,6 +55,7 @@ router.post('/auth', async (req, res) => {
       let last_name = (req.body.body.split('last_name: ')[1]).split('"')[1];
       let email = (req.body.body.split('email: ')[1]).split('"')[1];
       let confirm_password = (req.body.body.split('confirm_password: ')[1]).split('"')[1];
+      let created_user_account = "";
       if (confirm_password != password) {
         res.status(200);
         res.send('Passwords don\'t match');
@@ -65,9 +67,10 @@ router.post('/auth', async (req, res) => {
           res.status(418);
           res.send('This email is already in use');
         } else {
-          user.post_users(last_name, first_name, login, email, password);
+          created_user_account = await user.post_users(last_name, first_name, login, email, password);
           res.status(201);
-          res.send('The user has been created'); 
+          res.send('The user has been created');
+          email_model.email_create_account(created_user_account, email);
         }
       }
     }
@@ -80,9 +83,27 @@ router.post('/forgotten_password', async (req, res) => {
   if (forgotten_email === 'vide')
     res.status(401).send("This email is not attached to an account");
   else {
-    email.forgotten_password(forgotten_email);
+    email_model.forgotten_password(forgotten_email);
     res.status(200).send("Email has been sent");
   }
+});
+
+// **** RESET PASSWORD **** //
+router.post('/reset_password', async (req, res) => {
+  let updated = false;
+  const password = req.body.body.split('password: ')[1].split(',')[0];
+  const uuid = req.body.body.split('uuid: ')[1].split('&')[0];
+  updated = user_infos.reset_password(password, uuid);
+  if (updated)
+    res.status(200).send('Password has been successfully updated');
+  else
+    res.status(400).send('The password could not be updated');
+})
+
+// **** CONFIRM EMAIL **** //
+router.post('/confirm_email', (req, res) => {
+  user_infos.confirm_email(req.body.body.split("uuid: ")[1].split('}')[0]);
+  res.status(200).send('Email confirmed');
 });
 
 // **** LOGOUT **** //

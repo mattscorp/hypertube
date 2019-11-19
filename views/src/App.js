@@ -13,6 +13,8 @@ import { film_infos, cast_infos, similar_movies } from './actions/film_infos_act
 import Home from './pages/Home.js';
 import Play from './pages/Play.js';
 import MainNavigation from './components/navigation/MainNavigation';
+import ResetPassword from './components/connection/ResetPassword.js';
+import ConfirmEmail from './components/connection/ConfirmEmail.js';
 //Authentification pages
 import AuthPage from './components/connection/Auth.js';
 import OAuth_FT from './components/connection/Oauth_FT.js';
@@ -48,14 +50,16 @@ class App extends Component {
           />
           <main className={this.props.darkModeState.dark_mode ? "mt-2 bg-secondary" : "mt-2"}>
             <Switch>
-              {this.props.userConnect.uuid ? <Redirect from="/" to="/home" exact/> : <Redirect from="/" to="/auth" exact/>}
-              {this.props.userConnect.uuid ? <Redirect from="/auth" to="/home" exact/> : <Redirect from="/home" to="/auth" exact/>}
+              {this.props.userConnect.uuid ? (this.props.userConnect.email_confirmation !== "" ? <Redirect from="/" to="/confirm_email" exact/> : <Redirect from="/" to="/home" exact/>) : <Redirect from="/" to="/auth" exact/>}
+              {this.props.userConnect.uuid ? (this.props.userConnect.email_confirmation ? <Redirect from="/auth" to="/confirm_email" exact/> : <Redirect from="/auth" to="/home" exact/>) : <Redirect from="/home" to="/auth" exact/>}
               <Route path="/oauth_insta" component={ OAuth_Insta }/>}
               <Route path="/oauth_ft" component={ OAuth_FT }/>}
               <Route path="/oauth_github" component={ OAuth_Github }/>}
               <Route path="/oauth_google" component={ OAuth_Google }/>}
               <Route path="/oauth_facebook" component={ OAuth_Facebook }/>}
               <Route path="/auth" component={ AuthPage }/>}
+              <Route path="/reset_password" component={ ResetPassword }/>}
+              <Route path="/confirm_email" component={ ConfirmEmail }/>}
               <Route path="/play" render={
                 (props) =>
                   <Play {...props}

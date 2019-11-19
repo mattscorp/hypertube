@@ -62,7 +62,7 @@ module.exports.get_users = get_users;
 // Return all information (except the password) from users based on the login
 const user_exists_login_oauth = async (login, oauth) => {
     return new Promise((resolve, reject) => {
-        con.query("SELECT `user_ID`, `uuid`, `language`, `last_name`, `first_name`, `login`, `email_confirmation`, `insta`, `facebook`, `github`, `ft`, `nb_views`, `nb_comments`, `nb_ratings`, `profile_picture` FROM `users` WHERE `" + oauth + "` = ?", [login], (err, result) => {
+        con.query("SELECT `user_ID`, `uuid`, `language`, `last_name`, `first_name`, `login`, `email`, `email_confirmation`, `insta`, `facebook`, `github`, `ft`, `google`, `nb_views`, `nb_comments`, `nb_ratings`, `profile_picture` FROM `users` WHERE `" + oauth + "` = ?", [login], (err, result) => {
             if (err)
                 throw err;
             else {
@@ -79,7 +79,7 @@ module.exports.user_exists_login_oauth = user_exists_login_oauth;
 // Return all information (except the password) from users based on the login
 const user_exists_login = async (login) => {
     return new Promise((resolve, reject) => {
-        con.query("SELECT `user_ID`, `uuid`, `language`, `last_name`, `first_name`, `login`, `email_confirmation`, `insta`, `facebook`, `github`, `ft`, `nb_views`, `nb_comments`, `nb_ratings`, `profile_picture` FROM `users` WHERE `login` = ?", [login], (err, result) => {
+        con.query("SELECT `user_ID`, `uuid`, `language`, `last_name`, `first_name`, `login`, `email`, `email_confirmation`, `insta`, `facebook`, `github`, `ft`, `google`, `nb_views`, `nb_comments`, `nb_ratings`, `profile_picture` FROM `users` WHERE `login` = ?", [login], (err, result) => {
             if (err)
                 throw err;
             else {
@@ -96,7 +96,7 @@ module.exports.user_exists_login = user_exists_login;
 // Return all information (except the password) from users based on the email
 const user_exists_email = async (email) => {
     return new Promise((resolve, reject) => {
-        con.query("SELECT `user_ID`, `uuid`, `language`, `last_name`, `first_name`, `login`, `email_confirmation`, `insta`, `facebook`, `github`, `ft`, `nb_views`, `nb_comments`, `nb_ratings`, `profile_picture` FROM `users` WHERE `email` = ?", [email], (err, result) => {
+        con.query("SELECT `user_ID`, `uuid`, `language`, `last_name`, `first_name`, `login`, `email`, `email_confirmation`, `insta`, `facebook`, `github`, `ft`, `google`, `nb_views`, `nb_comments`, `nb_ratings`, `profile_picture` FROM `users` WHERE `email` = ?", [email], (err, result) => {
             if (err)
                 throw err;
             else {
@@ -112,14 +112,18 @@ module.exports.user_exists_email = user_exists_email;
 
 // Create a user (no OAuth)
 const post_users = async (last_name, first_name, login, email, password) => {
-    let sql = "INSERT INTO `users` (`uuid`, `language`, `last_name`, `first_name`, `login`, `email`, `password`) VALUES (?)";
-    let uuid = uuidv4();
-    let crypted_pass = await crypted_password(password);
-    let sql_values = [uuid, 'English', last_name, first_name, login, email, crypted_pass];
-    con.query(sql, [sql_values], (err, result) => {
-        if (err)
-            throw err;
-    })
+    return new Promise(async (resolve, resject) => {
+        let sql = "INSERT INTO `users` (`uuid`, `language`, `last_name`, `first_name`, `login`, `email`, `password`, `email_confirmation`) VALUES (?)";
+        let uuid = uuidv4();
+        let email_confirmation = uuidv4();
+        let crypted_pass = await crypted_password(password);
+        let sql_values = [uuid, 'English', last_name, first_name, login, email, crypted_pass, email_confirmation];
+        con.query(sql, [sql_values], (err, result) => {
+            if (err)
+                throw err;
+        });
+        resolve(email_confirmation);
+    });
 }
 module.exports.post_users = post_users;
 

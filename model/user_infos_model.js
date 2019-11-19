@@ -20,7 +20,6 @@ module.exports.update_user_infos = update_user_infos;
 // Update the account information  (login, first_name, last_name, email)
 const update_password = async (password, uuid) => {
     let hash = await connection.crypted_password(password);
-    console.log(hash);
     let sql = "UPDATE `users` SET `password` = ? WHERE `uuid` = ?";
     let values = [hash, uuid];
     con.query(sql, values, (err, result) => {
@@ -30,9 +29,43 @@ const update_password = async (password, uuid) => {
 }
 module.exports.update_password = update_password;
 
+// Update the account information  (login, first_name, last_name, email)
+const reset_password = async (password, uuid) => {
+    return new Promise(async (resolve, reject) => {
+        let hash = await connection.crypted_password(password);
+        let sql = "UPDATE `users` SET `password` = ? WHERE `recup_password` = ?";
+        let values = [hash, uuid];
+        con.query(sql, values, (err, result) => {
+            if (err) {
+                resolve(false);
+                throw err;
+            } else {
+                sql = "UPDATE `users` SET `recup_password` = NULL WHERE `recup_password` = ?";
+                con.query(sql, uuid, (err, result) => {
+                    if (err) {
+                        resolve(false)
+                        throw err;
+                    } else
+                        resolve(true);
+                });
+            }
+        });
+    });
+}
+module.exports.reset_password = reset_password;
+
+// Confirm the email
+const confirm_email = (uuid) => {
+    const sql = "UPDATE `users` SET `email_confirmation` = NULL WHERE `email_confirmation` = ?";
+    con.query(sql, uuid, (err, result) => {
+        if (err)
+            throw err;
+    });
+}
+module.exports.confirm_email = confirm_email;
+
 // Update the profile picture
 const update_picture = (profile_picture, uuid) => {
-    console.log(profile_picture);
     let sql = "UPDATE `users` SET `profile_picture` = ? WHERE `uuid` = ?";
     let values = [profile_picture, uuid];
     con.query(sql, values, (err, result) => {

@@ -114,7 +114,7 @@ class AuthPage extends Component {
         this.setState({
           recaptchaResponse: response,
         });
-      }
+    }
 
     // MANUAL CONNECTION OR CREATION
     submitHandler = event => {
