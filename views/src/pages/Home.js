@@ -9,7 +9,7 @@ class HomePage extends Component {
 
   render () {
     return (
-      <div className={this.props.darkModeState ? "container bg-dark" : "container bg-white"}>
+      <div className={this.props.darkModeState ? "container bg-dark list-films-all" : "container bg-white list-films-all"}>
         <div className="row">
           <h1 onChange={this.setSearch} className={this.props.darkModeState ? "text-white mx-auto pb-4" : "text-dark mx-auto pb-4"}>{this.props.homeSearch}</h1>
         </div>

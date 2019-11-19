@@ -11,6 +11,7 @@ body {
 
 .navbar-perso
 {
+    margin-top : -1px;
     margin-bottom: 0;
     box-shadow: 0 2px 4px rgba(0,0,0,.04);
     display: inline;
@@ -57,10 +58,10 @@ body {
 /* Make div appear */
 .AdvancedSearchDiv {
     left: 0;
-    text-align: center;
+   /* text-align: center;*/
     color:  #9e9e9ec2 !important;
-    /*position: fixed;*/
-    padding-top: 84px;
+    position: fixed;
+    padding-top: 4%;
     overflow: scroll;
     height: 100%;
     z-index: 1;
@@ -82,7 +83,7 @@ body {
     to {left: 0;}
 }
 .card-body {
-    text-align: right !important;
+    
     box-shadow: 0 20px 40px rgba(0,0,0,.04) !important;
 
 
@@ -278,6 +279,48 @@ h1.jumbotron span{
     color: rgb(229, 255, 0);
     font-size: 1.42rem;
 }
+
+
+@media (min-width: 300px) {
+    .list-films-all {
+        margin-top : 41%;
+    }
+ }
+
+ @media (min-width: 360px) {
+    .list-films-all {
+        margin-top : 45%;
+    }
+ }
+
+@media (min-width: 576px) {
+        .list-films-all {
+            margin-top : 50%;
+        }
+     }
+
+/*// Medium devices (tablets, 768px and up)*/
+@media (min-width: 768px) { 
+        .list-films-all {
+            margin-top : 14%;
+        }
+      }
+
+/*// Large devices (desktops, 992px and up)*/
+@media (min-width: 992px) { 
+        .list-films-all {
+            margin-top : 14%;
+        }
+      }
+
+/*// Extra large devices (large desktops, 1200px and up)*/
+@media (min-width: 1200px) { 
+        .list-films-all {
+            margin-top : 4%;
+        }
+      }
+
+
 
 
 /* By hiding the .overlay element by default, 

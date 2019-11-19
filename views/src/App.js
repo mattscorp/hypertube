@@ -46,7 +46,7 @@ class App extends Component {
             stopDarkMode={() => {this.props.stopDarkMode()}}
             darkModeState = {this.props.darkModeState.dark_mode}
           />
-          <main className={this.props.darkModeState.dark_mode ? "mt-2 bg-secondary" : "mt-2"}>
+          <main className={this.props.darkModeState.dark_mode ? " bg-secondary" : ""}>
             <Switch>
               {this.props.userConnect.uuid ? <Redirect from="/" to="/home" exact/> : <Redirect from="/" to="/auth" exact/>}
               {this.props.userConnect.uuid ? <Redirect from="/auth" to="/home" exact/> : <Redirect from="/home" to="/auth" exact/>}

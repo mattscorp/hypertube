@@ -198,9 +198,9 @@ class MainNavigation extends Component {
         return (
             <React.Fragment>
                 {/* NAVBAR */}
-                <header className="navbar-perso sticky-top ">
+                <header className="navbar-perso fixed-top ">
 
-                    <nav className={this.props.darkModeState ? "navbar navbar-expand-sm bg-light navbar-light bg-dark row": " row navbar navbar-expand-sm bg-light navbar-light"}>
+                    <nav className={this.props.darkModeState ? "navbar navbar-expand-sm bg-light navbar-light bg-dark row ": " row  navbar navbar-expand-sm bg-light navbar-light"}>
 
                             <NavLink className="col-xs-12 col-md-1 text-center" to="/"> 
                                 <h1 className= {this.props.darkModeState ? "col-xs-12 navbar-brand main-navigation-logo text-white" : "col-xs-12 navbar-brand main-navigation-logo"}>HYPERTUBE</h1>
@@ -232,26 +232,32 @@ class MainNavigation extends Component {
                             {this.props.userConnectState.uuid ? 
                             <div>
                                 <li className="col-xs-6 col-md-7 col-md-offset-2">
-                                    <form id="myForm" >
+                                    <form id="myForm">
                                         <input onChange={this.setSearch} 
-                                            className="form-control text-center mx-auto" type="text" placeholder="Search" 
+                                            className="form-control text-center " type="text" placeholder="Search" 
                                             name="search_query"
                                             id="searchInput"
                                         />
-                                        <div className="mx-auto">
-                                            {(this.props.homeSearch === "Trending movies") ? null :
-                                                <button className="btn btn-success mx-auto  text-center" type="submit" onClick={this.clearSearch}>
-                                                    Clear
-                                                </button>
-                                            }    
-                                        </div>
+                                        
+                                              
+                                        
                                     </form>
                                 </li>
+                                
                                 <li className="col-xs-6 col-md-2">
-                                    <button className="btn btn-success btn-style mx-auto" type="submit" onClick={this.advancedSearch}>
+                                    <button className="btn btn-success btn-style " type="submit" onClick={this.advancedSearch}>
                                                                         Advanced search
                                     </button>
                                 </li>
+
+                                {(this.props.homeSearch === "Trending movies") ? null :
+                                                <li className="col-xs-4">
+                                                    <button className="btn btn-success   text-center" type="submit" onClick={this.clearSearch}>
+                                                         Clear
+                                                    </button>
+                                                </li>
+                                               
+                                            }  
                             </div>
                                  : null   }
                         </ul>
@@ -262,7 +268,7 @@ class MainNavigation extends Component {
 
                 {/* ACCOUNT SIDEBAR (Onclick on the profile picture - or if not the account <li>) */}
                 {this.state.isAccount === 1 || this.state.isAccount === 2 ? 
-                    <div className={this.state.isAccount === 1 ? (this.props.darkModeState ? "bg-dark AccountDiv comd-l-2" : "bg-white AccountDiv comd-l-2") : (this.props.darkModeState ? "bg-dark DisappearAccountDiv comd-l-2" : "bg-white DisappearAccountDiv comd-l-2")}>
+                    <div className={this.state.isAccount === 1 ? (this.props.darkModeState ? "bg-dark AccountDiv col-md-2" : "bg-white AccountDiv col-md-2") : (this.props.darkModeState ? "bg-dark DisappearAccountDiv col-md-2" : "bg-white DisappearAccountDiv col-md-2")}>
                         <Account
                             userConnectState={this.props.userConnectState}
                             isAccount={this.state.isAccount}
@@ -277,7 +283,7 @@ class MainNavigation extends Component {
                 }
                 {/* ADVANCE SEARCH OPTIONS */}
                 {(this.state.isAdvanced === 1 || this.state.isAdvanced === 2) ?
-                    <div className={this.state.isAdvanced === 1 ? (this.props.darkModeState ? "bg-dark AdvancedSearchDiv comd-l-2 sticky-top" : "bg-white AdvancedSearchDiv comd-l-2 sticky-top") : (this.props.darkModeState ? "bg-dark DisappearSearchDiv comd-l-2" : "bg-white DisappearSearchDiv comd-l-2")}>
+                    <div className={this.state.isAdvanced === 1 ? (this.props.darkModeState ? "bg-dark AdvancedSearchDiv row" : "bg-white AdvancedSearchDiv row") : (this.props.darkModeState ? "bg-dark DisappearSearchDiv col-md-2" : "bg-white DisappearSearchDiv col-md-2")}>
                         <AdvancedSearch
                             advanceSearchFunction={this.advanceSearchFunction}
                             seen={this.seen}
