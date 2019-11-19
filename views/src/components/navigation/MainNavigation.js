@@ -198,49 +198,25 @@ class MainNavigation extends Component {
         return (
             <React.Fragment>
                 {/* NAVBAR */}
-                <header className="navbar-perso sticky-top">
+                <header className="navbar-perso sticky-top ">
 
+                    <nav className={this.props.darkModeState ? "navbar navbar-expand-sm bg-light navbar-light bg-dark row": " row navbar navbar-expand-sm bg-light navbar-light"}>
 
+                            <NavLink className="col-xs-12 col-md-1 text-center" to="/"> 
+                                <h1 className= {this.props.darkModeState ? "col-xs-12 navbar-brand main-navigation-logo text-white" : "col-xs-12 navbar-brand main-navigation-logo"}>HYPERTUBE</h1>
+                            </NavLink>
+                        <ul className="ul-perso col-xs-12">
+                            <div className="visible-xs hidden-sm col-xs-8" >
 
-
-
-<nav className={this.props.darkModeState ? "navbar navbar-expand-sm bg-light navbar-light bg-dark": "navbar navbar-expand-sm bg-light navbar-light"}>
-    <div className="col-1" href="/">
-        <NavLink to="/"> 
-            <h1 className= {this.props.darkModeState ? "navbar-brand abs main-navigation-logo text-white" : "navbar-brand abs main-navigation-logo"}>HYPERTUBE</h1>
-        </NavLink>
-    </div>
-
-  <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span className="navbar-toggler-icon"></span>
-  </button>
-
-  <div className="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul className="navbar-nav mr-auto">
-      <li className="nav-item">
-        {/* <a className="nav-link" href="/">Home <span className="sr-only">(current)</span></a> */}
-        {this.props.userConnectState.uuid ? null : 
-        <div className="float-right col-1">
-            <NavLink to="/auth" className="text-center">
-                Authentification
-            </NavLink>
-        </div>}
-                                {this.props.userConnectState.uuid ? <div className="float-right col-1" onClick={this.accountModeHandler}>
-                                {(this.props.userConnectState.photo_URL === undefined || this.props.userConnectState.photo_URL === '') ? <button>Account</button> : <button><img title="Account" className="navlink_picture rounded-circle" src={this.props.userConnectState.photo_URL.replace('views/public', '.')}/></button>}
-                                </div> : null}
-      </li>
-      <li className="nav-item">
-      <button className="btn btn-success btn-style mx-auto" type="submit" onClick={this.advancedSearch}>
-                                        Advanced search
-       </button>
-        {/* <a className="nav-link" href="#">Link</a> */}
-      </li>
-      
-      <li className="nav-item">
-        {/* <a className="nav-link disabled" href="#">Disabled</a> */}
-      <button className="btn btn-success btn-style mx-auto" type="submit" onClick={this.advancedSearch}>
-       
-        <select>
+                            </div>
+                            <li className="col-xs-4 col-md-12 ">
+                                    {this.props.userConnectState.uuid ? <div className="float-right" onClick={this.accountModeHandler}>
+                                    {(this.props.userConnectState.photo_URL === undefined || this.props.userConnectState.photo_URL === '') ? <button>Account</button> : <button><img title="Account" className="navlink_picture rounded-circle" src={this.props.userConnectState.photo_URL.replace('views/public', '.')}/></button>}
+                                    </div> : null}
+                            </li>
+                            {this.props.userConnectState.uuid ? null :
+                            <li className="col-xs-12 col-md-2 col-md-offset-10">
+                                    <select className="select-css">
                                         <option value="en">🇬🇧&emsp;English</option>
                                         <option value="fr">🇫🇷&emsp;French</option>
                                         <option value="es">🇪🇸&emsp;Español</option>
@@ -249,58 +225,14 @@ class MainNavigation extends Component {
                                         <option value="nl">🇳🇱&emsp;Nederlands</option>
                                         <option value="jp">🇯🇵&emsp;日本語</option>
                                         <option value="cn">🇨🇳&emsp;中文</option>
-                                    </select>
-                                    </button>
-      </li>
-    </ul>
-    <form id="myForm" >
-        <input onChange={this.setSearch} 
-            className="form-control text-center mx-auto" type="text" placeholder="Search" 
-            name="search_query"
-            id="searchInput"
-        />
-        <div className="mx-auto">
-            {(this.props.homeSearch === "Trending movies") ? null :
-                        <button className="btn btn-success mx-auto  text-center" type="submit" onClick={this.clearSearch}>
-                            Clear
-                        </button>
-            }    
-        </div>
-    </form>
-    {/* <form className="form-inline my-2 my-lg-0">
-      <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form> */}
-  </div>
-</nav>
-
-
-
-
-
-
-
-{/* 
-
-
-
-                    <nav className={this.props.darkModeState ? "navbar navbar-expand-sm bg-light navbar-light bg-dark": "navbar navbar-expand-sm bg-light navbar-light"}>
-                        <div className="container-fluid">
-                            <div className="col-1"><NavLink to="/">
-                                <h1 className= {this.props.darkModeState ? "navbar-brand abs main-navigation-logo text-white" : "navbar-brand abs main-navigation-logo"}>HYPERTUBE</h1></NavLink>
-                                
-                                </div> 
-                        <ul>
-                            <li>
-                                <div className="col-1"> 
-                                    <button className="btn btn-success btn-style mx-auto" type="submit" onClick={this.advancedSearch}>
-                                        Advanced search
-                                    </button>
-                                </div>
+                                    </select>  
+                               
                             </li>
-                            <li>
-                                <div className="col-6">
-                                     <form id="myForm" >
+                            }
+                            {this.props.userConnectState.uuid ? 
+                            <div>
+                                <li className="col-xs-6 col-md-7 col-md-offset-2">
+                                    <form id="myForm" >
                                         <input onChange={this.setSearch} 
                                             className="form-control text-center mx-auto" type="text" placeholder="Search" 
                                             name="search_query"
@@ -308,49 +240,29 @@ class MainNavigation extends Component {
                                         />
                                         <div className="mx-auto">
                                             {(this.props.homeSearch === "Trending movies") ? null :
-                                                        <button className="btn btn-success mx-auto  text-center" type="submit" onClick={this.clearSearch}>
-                                                            Clear
-                                                        </button>
+                                                <button className="btn btn-success mx-auto  text-center" type="submit" onClick={this.clearSearch}>
+                                                    Clear
+                                                </button>
                                             }    
                                         </div>
-                                    </form> 
-                                </div>
-                            </li>
-                            <li>
-                                {this.props.userConnectState.uuid ? null : <div className="float-right col-1"><NavLink to="/auth" className="text-center">Authentification</NavLink></div>}
-                                {this.props.userConnectState.uuid ? <div className="float-right col-1" onClick={this.accountModeHandler}>
-                                {(this.props.userConnectState.photo_URL === undefined || this.props.userConnectState.photo_URL === '') ? <button>Account</button> : <button><img title="Account" className="navlink_picture rounded-circle" src={this.props.userConnectState.photo_URL.replace('views/public', '.')}/></button>}
-                                </div> : null}              
-                            </li>
-                            <li>
-                                <div className="col-1">
-                                    <select>
-                                        <option value="en">🇬🇧&emsp;English</option>
-                                        <option value="fr">🇫🇷&emsp;French</option>
-                                        <option value="es">🇪🇸&emsp;Español</option>
-                                        <option value="ru">🇷🇺&emsp;русский</option>
-                                        <option value="de">🇩🇪&emsp;Deutsch</option>
-                                        <option value="nl">🇳🇱&emsp;Nederlands</option>
-                                        <option value="jp">🇯🇵&emsp;日本語</option>
-                                        <option value="cn">🇨🇳&emsp;中文</option>
-                                    </select>
-                                </div>
-                            </li>
+                                    </form>
+                                </li>
+                                <li className="col-xs-6 col-md-2">
+                                    <button className="btn btn-success btn-style mx-auto" type="submit" onClick={this.advancedSearch}>
+                                                                        Advanced search
+                                    </button>
+                                </li>
+                            </div>
+                                 : null   }
                         </ul>
-                        
+               
+    </nav>
 
-                        </div>
-                       
-                                
-                                
-                                
-                        
-                    </nav> */}
-                </header>
+</header>
 
                 {/* ACCOUNT SIDEBAR (Onclick on the profile picture - or if not the account <li>) */}
                 {this.state.isAccount === 1 || this.state.isAccount === 2 ? 
-                    <div className={this.state.isAccount === 1 ? (this.props.darkModeState ? "bg-dark AccountDiv col-md-2" : "bg-white AccountDiv col-md-2") : (this.props.darkModeState ? "bg-dark DisappearAccountDiv col-md-2" : "bg-white DisappearAccountDiv col-md-2")}>
+                    <div className={this.state.isAccount === 1 ? (this.props.darkModeState ? "bg-dark AccountDiv comd-l-2" : "bg-white AccountDiv comd-l-2") : (this.props.darkModeState ? "bg-dark DisappearAccountDiv comd-l-2" : "bg-white DisappearAccountDiv comd-l-2")}>
                         <Account
                             userConnectState={this.props.userConnectState}
                             isAccount={this.state.isAccount}
@@ -365,7 +277,7 @@ class MainNavigation extends Component {
                 }
                 {/* ADVANCE SEARCH OPTIONS */}
                 {(this.state.isAdvanced === 1 || this.state.isAdvanced === 2) ?
-                    <div className={this.state.isAdvanced === 1 ? (this.props.darkModeState ? "bg-dark AdvancedSearchDiv col-md-2 sticky-top" : "bg-white AdvancedSearchDiv col-md-2 sticky-top") : (this.props.darkModeState ? "bg-dark DisappearSearchDiv col-md-2" : "bg-white DisappearSearchDiv col-md-2")}>
+                    <div className={this.state.isAdvanced === 1 ? (this.props.darkModeState ? "bg-dark AdvancedSearchDiv comd-l-2 sticky-top" : "bg-white AdvancedSearchDiv comd-l-2 sticky-top") : (this.props.darkModeState ? "bg-dark DisappearSearchDiv comd-l-2" : "bg-white DisappearSearchDiv comd-l-2")}>
                         <AdvancedSearch
                             advanceSearchFunction={this.advanceSearchFunction}
                             seen={this.seen}

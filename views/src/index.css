@@ -4,6 +4,11 @@ body {
 }
 
 /*** NAV ***/
+
+.ul-perso{
+    list-style: none;
+}
+
 .navbar-perso
 {
     margin-bottom: 0;
@@ -27,8 +32,10 @@ body {
     font-family: Raleway, sans-serif;
 }
 .navlink_picture {
-    max-height: 50px;
-    max-width: auto;
+    height: 50px;
+    width: 50px;
+    object-fit: cover;
+    border-radius: 50%;
 }
 .btn-style{
     margin : 0 0 0 0 !important;
@@ -136,13 +143,13 @@ body {
 
 /* Standard syntax */
 @keyframes AccountDiv {
-    from {right: -100%;}
+    from {right: -250%;}
     to {right: 0;}
 }
 
 /* Make the div disappear */
 .DisappearAccountDiv {
-    right: -100%;
+    right: -250%;
     text-align: center;
     color:  #9e9e9ec2 !important;
     position: fixed;
@@ -158,13 +165,13 @@ body {
 /* Safari 4.0 - 8.0 */
 @-webkit-keyframes DisappearAccountDiv {
     from {right: 0;}
-    to {right: -100%;}
+    to {right: -250%;}
 }
 
 /* Standard syntax */
 @keyframes DisappearAccountDiv {
     from {right: 0;}
-    to {right: -100%;}
+    to {right: -250%;}
 }
 
 .profile_picture_row {
