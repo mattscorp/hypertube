@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
+import { Player } from 'video-react';
 
 class Play extends Component {
 
@@ -162,6 +163,30 @@ class Play extends Component {
                                     <img src= {this.props.filmInfosState.film_infos.poster_path ? 'https://image.tmdb.org/t/p/w185_and_h278_bestv2' + this.props.filmInfosState.film_infos.poster_path : "https://upload.wikimedia.org/wikipedia/commons/f/fc/No_picture_available.png"} alt={"Poster of " + this.props.filmInfosState.film_infos.title} />
                                 </div>
                             </div>
+                            {/* TRAILER */}
+                            {this.props.filmInfosState.film_infos.videos.results[0] ?
+                                <div>
+                                    <iframe
+                                        width="560"
+                                        height="315"
+                                        src={"https://www.youtube.com/embed/" + this.props.filmInfosState.film_infos.videos.results[0].key}
+                                        frameborder="0"
+                                        allow="accelerometer; autoplay; full-screen; encrypted-media; gyroscope; picture-in-picture"
+                                        mozallowfullscreen="mozallowfullscreen" 
+                                        msallowfullscreen="msallowfullscreen" 
+                                        oallowfullscreen="oallowfullscreen" 
+                                        webkitallowfullscreen="webkitallowfullscreen"
+                                        allowfullscreen="allowfullscreen">
+                                    </iframe>
+                                    {/* <Player
+                                        playsInline
+                                        // poster={this.props.filmInfosState.film_infos.poster_path ? 'https://image.tmdb.org/t/p/w185_and_h278_bestv2' + this.props.filmInfosState.film_infos.poster_path : "https://upload.wikimedia.org/wikipedia/commons/f/fc/No_picture_available.png"} alt={"Poster of " + this.props.filmInfosState.film_infos.title}
+                                        // src="https://media.w3.org/2010/05/sintel/trailer_hd.mp4"
+                                        src={"https://www.youtube.com/embed/" + this.props.filmInfosState.film_infos.videos.results[0].key}
+                                    /> */}
+                                </div>
+                                : null
+                            }
                             {/* Similar movies */}
                             {this.props.filmInfosState.similar_movies !== "" ?
                             <div>

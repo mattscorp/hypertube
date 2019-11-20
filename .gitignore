@@ -1,5 +1,6 @@
 node_modules
 views/.env
 views/public/profile_pictures
+views/public/torrents
 sandbox
 model/db_connect.js

@@ -92,7 +92,7 @@ router.get('/movie_in_db', with_auth, async (req, res) => {
             let movie_infos_api = await films.movie_infos(req.query.movie_id);
             res.status(204).send('The movie needs to be downloaded');
             // On prend les providers
-            torrents.ft_torrent(movie_infos_api, 'Rarbg');
+            torrents.ft_torrent(movie_infos_api, ['Rarbg']);
         }
         else {
             res.status(200).send(movie_infos_db);

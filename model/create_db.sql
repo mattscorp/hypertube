@@ -45,12 +45,6 @@ CREATE TABLE IF NOT EXISTS `films` (
     `extension` varchar(10),
     `name` varchar(100),
     `year` int(5),
-    `picture` text,
-    `director` varchar(150),
-    `casting` text,
-    `producer` varchar(150),
-    `summary` text,
-    `duration` int(5),
     `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 

@@ -27,9 +27,6 @@ const film_db = async (movie_ID) => {
 }
 module.exports.film_db = film_db;
 
-
-
-
 //// FROM api.themoviedb.org ////
 
 const API_KEY = "208ecb5c1ee27eb7b9bc731dc8656bd2";
@@ -117,7 +114,7 @@ module.exports.search_movies = search_movies;
 // GET movie infos
 const movie_infos = async (movie_id) => {
     return new Promise((resolve, reject) => {
-        let url = `https://api.themoviedb.org/3/movie/${movie_id}?api_key=${API_KEY}&language=en-US`;
+        let url = `https://api.themoviedb.org/3/movie/${movie_id}?api_key=${API_KEY}&language=en-US&append_to_response=videos`;
         request(url, {json: true}, function (error, response, body) {
             resolve(body);
         });
@@ -137,7 +134,7 @@ const similar_movies = async (movie_ID) => {
 module.exports.similar_movies = similar_movies;
 
 // GET movie cast
-const movie_cast= async (movie_id) => {
+const movie_cast = async (movie_id) => {
     return new Promise((resolve, reject) => {
         let url = `https://api.themoviedb.org/3/movie/${movie_id}/credits?api_key=${API_KEY}`;
         request(url, {json: true}, function (error, response, body) {
@@ -146,3 +143,14 @@ const movie_cast= async (movie_id) => {
     });
 }
 module.exports.movie_cast = movie_cast;
+
+// ADD torrent movie to BDD
+const add_torrent = async (moviedb_ID, path, extension, name, year) => {
+    const sql = "INSERT INTO `films` (`moviedb_ID`, `path`, `extension`, `name`, `year`) VALUES (?, ?, ?, ?, ?)";
+    const values = [moviedb_ID, path, extension, name, year];
+    con.query(sql, values, (err) => {
+        if (err)
+            throw err;
+    });
+}
+module.exports.add_torrent = add_torrent;
