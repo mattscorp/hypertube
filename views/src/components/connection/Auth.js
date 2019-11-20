@@ -178,7 +178,7 @@ class AuthPage extends Component {
     render () {
         return (
         <div className="container">
-            <div className="row justify-content-center">
+            <div className="row justify-content-center under">
                 <div className="col-md-8">
                     <div className="card">
                         <div className="card-header col-md-10 mx-auto mt-2">
