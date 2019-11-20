@@ -129,12 +129,7 @@ module.exports.movie_infos = movie_infos;
 const similar_movies = async (movie_ID) => {
     return new Promise((resolve, reject) => {
         let sql = `https://api.themoviedb.org/3/movie/${movie_ID}/similar?api_key=${API_KEY}&language=en-US&page=1`;
-        console.log(sql);
         request(sql, {json: true}, function (error, response, body) {
-            console.log('ICI');
-            console.log('error:', error); // Print the error if one occurred
-            console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-            console.log('body:', body); // Print the HTML for the Google homepage.
             resolve(body);
         });
     });

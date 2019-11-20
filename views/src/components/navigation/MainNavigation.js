@@ -198,35 +198,31 @@ class MainNavigation extends Component {
         return (
             <React.Fragment>
                 {/* NAVBAR */}
-                <header className="navbar-perso fixed-top ">
-
+                <header className="navbar-perso fixed-top">
                     <nav className={this.props.darkModeState ? "navbar navbar-expand-sm bg-light navbar-light bg-dark row ": " row  navbar navbar-expand-sm bg-light navbar-light"}>
-
                             <NavLink className="col-xs-12 col-md-1 text-center" to="/"> 
                                 <h1 className= {this.props.darkModeState ? "col-xs-12 navbar-brand main-navigation-logo text-white" : "col-xs-12 navbar-brand main-navigation-logo"}>HYPERTUBE</h1>
                             </NavLink>
                         <ul className="ul-perso col-xs-12">
                             <div className="visible-xs hidden-sm col-xs-8" >
-
                             </div>
                             <li className="col-xs-4 col-md-12 ">
-                                    {this.props.userConnectState.uuid ? <div className="float-right" onClick={this.accountModeHandler}>
-                                    {(this.props.userConnectState.photo_URL === undefined || this.props.userConnectState.photo_URL === '') ? <button>Account</button> : <button><img title="Account" className="navlink_picture rounded-circle" src={this.props.userConnectState.photo_URL.replace('views/public', '.')}/></button>}
-                                    </div> : null}
+                                {this.props.userConnectState.uuid ? <div className="float-right" onClick={this.accountModeHandler}>
+                                {(this.props.userConnectState.photo_URL === undefined || this.props.userConnectState.photo_URL === '') ? <button>Account</button> : <button><img title="Account" className="navlink_picture rounded-circle" src={this.props.userConnectState.photo_URL.replace('views/public', '.')}/></button>}
+                                </div> : null}
                             </li>
                             {this.props.userConnectState.uuid ? null :
                             <li className="col-xs-12 col-md-2 col-md-offset-10">
-                                    <select className="select-css">
-                                        <option value="en">🇬🇧&emsp;English</option>
-                                        <option value="fr">🇫🇷&emsp;French</option>
-                                        <option value="es">🇪🇸&emsp;Español</option>
-                                        <option value="ru">🇷🇺&emsp;русский</option>
-                                        <option value="de">🇩🇪&emsp;Deutsch</option>
-                                        <option value="nl">🇳🇱&emsp;Nederlands</option>
-                                        <option value="jp">🇯🇵&emsp;日本語</option>
-                                        <option value="cn">🇨🇳&emsp;中文</option>
-                                    </select>  
-                               
+                                <select className="select-css">
+                                    <option value="en">🇬🇧&emsp;English</option>
+                                    <option value="fr">🇫🇷&emsp;French</option>
+                                    <option value="es">🇪🇸&emsp;Español</option>
+                                    <option value="ru">🇷🇺&emsp;русский</option>
+                                    <option value="de">🇩🇪&emsp;Deutsch</option>
+                                    <option value="nl">🇳🇱&emsp;Nederlands</option>
+                                    <option value="jp">🇯🇵&emsp;日本語</option>
+                                    <option value="cn">🇨🇳&emsp;中文</option>
+                                </select>  
                             </li>
                             }
                             {this.props.userConnectState.uuid ? 
@@ -237,33 +233,25 @@ class MainNavigation extends Component {
                                             className="form-control text-center " type="text" placeholder="Search" 
                                             name="search_query"
                                             id="searchInput"
-                                        />
-                                        
-                                              
-                                        
+                                        />  
                                     </form>
                                 </li>
-                                
                                 <li className="col-xs-6 col-md-2">
                                     <button className="btn btn-success btn-style " type="submit" onClick={this.advancedSearch}>
-                                                                        Advanced search
+                                        Advanced search
                                     </button>
                                 </li>
-
                                 {(this.props.homeSearch === "Trending movies") ? null :
                                                 <li className="col-xs-4">
                                                     <button className="btn btn-success   text-center" type="submit" onClick={this.clearSearch}>
                                                          Clear
                                                     </button>
                                                 </li>
-                                               
                                             }  
                             </div>
                                  : null   }
                         </ul>
-               
     </nav>
-
 </header>
 
                 {/* ACCOUNT SIDEBAR (Onclick on the profile picture - or if not the account <li>) */}

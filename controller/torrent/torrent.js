@@ -21,8 +21,8 @@ const ft_0 = async (source) => {
 // Search '1080' in 'Movies' category and limit to 20 results
 const ft_1 = async (movie_infos) => {
     console.log('****************************');
-            console.log(movie_infos.title);
-            console.log('****************************');
+        console.log(movie_infos.title);
+        console.log('****************************');
     return new Promise(async (resolve, reject) => {
         const torrents = await TorrentSearchApi.search(movie_infos.title, 'Movies', 20)
         // console.log(torrents);
@@ -35,13 +35,17 @@ const ft_1 = async (movie_infos) => {
 
 const ft_2 = async (torrents) => {
     // console.log('IN FT_2 : ' + torrents[0].title);
-    const magnet = await TorrentSearchApi.getMagnet(torrents[0]);
-    // console.log('MAGNET ****' + magnet);
+    if (torrents[0]) {
+        const magnet = await TorrentSearchApi.getMagnet(torrents[0]);
+        console.log('MAGNET ****' + magnet);
+    } else {
+        console.log('ERROR ==> PAS DE MAGNET');
+    }
 }
 
 const ft_torrent = async (movie_infos, source) => {
     const providers = await ft_0(source);
-    // console.log('return de providers : ' + providers);
+    console.log('return de providers : ' + providers);
     const torrents = await ft_1(movie_infos);
     ft_2(torrents);
 }

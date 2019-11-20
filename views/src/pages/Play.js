@@ -60,7 +60,6 @@ class Play extends Component {
             headers: {'Content-Type': 'application/json'}
         })     
         .then((res2) => {
-            console.log("reeeeeeeees = " + res2);
             if (res2.status !== 200)
                 console.log('Failed getting information about the movie, themoviedb.org is not res2ponding');
             else
