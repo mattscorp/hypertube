@@ -3,23 +3,27 @@ import spinner from '../../resources/spinner.svg';
 
 class AccountPage extends Component {
     componentWillMount() {
-        const insta_code = window.location.href.split('code=')[1].split('&')[0];
-        fetch('http://localhost:8000/oauth_insta', {
-            credentials: 'include',
-            method: 'POST',
-            body: JSON.stringify({code: insta_code}),
-            headers: {'Content-Type': 'application/json'}
-        })
-        .then(res => {
-            if (res.status === 401)
-                alert('Error connecting to Instagram');
-            if (res.status === 201)
-                alert('Connection successful');
-            else if (res.status === 200)
-                alert('Connection successful');
+        if (!window.location.href.split('code=')[1]) {
             window.location.assign('http://localhost:3000');
-        })
-        .catch (err => { console.log(err) });
+        } else {
+            const insta_code = window.location.href.split('code=')[1].split('&')[0];
+            fetch('http://localhost:8000/oauth_insta', {
+                credentials: 'include',
+                method: 'POST',
+                body: JSON.stringify({code: insta_code}),
+                headers: {'Content-Type': 'application/json'}
+            })
+            .then(res => {
+                if (res.status === 401)
+                    alert('Error connecting to Instagram');
+                if (res.status === 201)
+                    alert('Connection successful');
+                else if (res.status === 200)
+                    alert('Connection successful');
+                window.location.assign('http://localhost:3000');
+            })
+            .catch (err => { console.log(err) });
+        }
     }
 
     render () {

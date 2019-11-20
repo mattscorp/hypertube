@@ -73,21 +73,16 @@ class FilmsList extends Component{
             .catch(err => {
                 console.log(err);
             });
-            // this.setState({ state: this.state });
         }
-
-        // else if (this.props.homeSearch === "Gender :") {
-
-        // }
         else {
-            // const {page, films, mode} = this.state;
             if (this.props.mode === null)
             {
                 // CASE RESET_FILMS_BEFORE_SEARCH
-                this.setState(this.props.resetFilmsBeforeSearch()).then(() => {
+                // this.props.nextPageSearch(() => {
                     let search_query = this.props.homeSearch.split(':')[1].trim();
-                    URL = `http://localhost:8000/moviedb?action=search&page=1&movie_name=${search_query}${decade}${genderSearch}${public_category}${rating}${duration}`;
+                    URL = `http://localhost:8000/moviedb?action=search&page=${this.props.page}&movie_name=${search_query}${decade}${genderSearch}${public_category}${rating}${duration}`;
                     fetch(URL, {
+                        credentials: 'include',
                         method: 'GET',
                         headers: {'Content-Type': 'application/json'}
                     })
@@ -98,18 +93,18 @@ class FilmsList extends Component{
                     })
                     // CASE FIRST_PAGE_SEARCH
                     .then(resData => {
-                        this.setState(this.props.firstPageSearch(resData))
+                        this.props.nextPageSearch(resData)
                     })
                     .catch(err => {
                         console.log(err);
                     });
-                })
-                // this.setState({ state: this.state });
+                // })
             }
             else if (this.props.mode === 1)
             {
+                alert('HERE')
                 let search_query = this.props.homeSearch.split(':')[1].trim();
-                URL = `http://localhost:8000/moviedb?action=search&page=${this.props.page}&movie_name=${decade}${genderSearch}${public_category}${rating}${duration}`;
+                URL = `http://localhost:8000/moviedb?action=search&page=${this.props.reloadSearch.page}&movie_name=${decade}${genderSearch}${public_category}${rating}${duration}`;
                 fetch(URL, {
                     method: 'GET',
                     headers: {'Content-Type': 'application/json'}
@@ -124,7 +119,6 @@ class FilmsList extends Component{
                 .catch(err => {
                     console.log(err);
                 });
-                // this.setState({ state: this.state });
             }
         }
     }
