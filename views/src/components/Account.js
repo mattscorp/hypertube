@@ -163,93 +163,98 @@ class Account extends Component {
 
     render() {
         return (
-            <div>
-                {this.props.userConnectState.uuid ? <div className="nav-item overflow-auto" onClick={this.logout}><button>Logout</button></div> : null}
+            <div className="row container">
+                {this.props.userConnectState.uuid ? <div className="nav-item overflow-auto col-xs-12" onClick={this.logout}><button className="btn-logout btn-success-logout btn-style-logout">Logout</button></div> : null}
                 {/* Title */}
-                <div className="form-group row">
-                    <h1 className="mb-2 mx-auto">Your account</h1>
-                </div>
-                {/* Profile picture */}
-                <div className="form-group profile_picture_row row account_input">
-                    <label className="col-md-5 col-form-label text-md-right" htmlFor="darkMode">Profile picture</label>
-                    <div className="profile_picture_div col-md-5">
-                        {!this.props.userConnectState.photo_URL ? <img className="profile_picture" src={NoPhoto}/> : <img className="profile_picture" src={this.props.userConnectState.photo_URL.replace('views/public', '.')}/>}
-                    </div>
-                    {/* Update profile picture */}
-                    <form onSubmit={this.profilePictureForm}>
-                        <div className="mx-auto m-1">
-                            <input onChange={this.onChangePicture} required type="file" accept="image/png, image/jpeg, image/jpg" title="Update picture" ref={this.profilePictureEl}/>
-                        </div>
-                        <div className="mx-auto">
-                            <button className="btn btn-dark" type="submit">Update your profile picture</button>
-                        </div>
-                    </form>
+                <div className="form-group col-xs-12">
+                    <h1 className="">Your account</h1>
                 </div>
                 {/* Dark mode toggle */}
-                <div className="form-group row account_input">
-                    <label className="col-md-5 col-form-label text-md-right" htmlFor="darkMode">Dark mode</label>
-                    <div className="col-md-5">
+                <div className="form-group col-xs-12 account_input">
+                    <div className="col-xs-6 mt-0">
+                        <label className="col-form-label text-md-right" htmlFor="darkMode">Dark mode</label>
+                    </div>
+                    <div className="col-xs-6 pt-3">
                         <label className="switch">
                             <input onClick={this.setDarkMode} type="checkbox" ref={this.darkModeEl} defaultChecked={this.props.darkModeState}/>
                             <span className="slider round"></span>
                         </label>
                     </div>
                 </div>
+                {/* Profile picture */}
+                <div className="form-group profile_picture_row col-xs-12 account_input">
+                    <div className="col-xs-6 col-form-label text-md-right">
+                         <label  htmlFor="darkMode">Profile picture</label>
+                    </div>
+                    <div className="profile_picture_div col-xs-6">
+                        {!this.props.userConnectState.photo_URL ? <img className="profile_picture" src={NoPhoto}/> : <img className="profile_picture" src={this.props.userConnectState.photo_URL.replace('views/public', '.')}/>}
+                    </div>
+                    {/* Update profile picture */}
+                    <form onSubmit={this.profilePictureForm}>
+                        <div className=" ">
+                            <input onChange={this.onChangePicture} required type="file" accept="image/png, image/jpeg, image/jpg" title="Update picture" ref={this.profilePictureEl}/>
+                        </div>
+                        <div className="">
+                            <button className="btn btn-dark" type="submit">Update your profile picture</button>
+                        </div>
+                    </form>
+                </div>
+                
                 {/* Accout form (always available) */}
-                <form onSubmit={this.submitAccountForm}>
-                    <div className="form-group row account_input">
-                        <label className="col-md-5 col-form-label text-md-right" htmlFor="firstName">First name</label>
-                        <div className="col-md-6">
+                <form className="row" onSubmit={this.submitAccountForm}>
+                    <div className="form-group col-xs-6 account_input">
+                        <label className="col-xs-12 col-form-label text-md-right" htmlFor="firstName">First name</label>
+                        <div className="col-xs-12">
                             <input required className="form-control" title="Only letters and '-', minimum 3" type="text" pattern="(?=^.{3,}$)[A-Za-z-]+" id="firstName" ref={this.firstNameEl} defaultValue={this.props.userConnectState.first_name}/>
                         </div>
                     </div>
-                    <div className="form-group row account_input">
-                        <label className="col-md-5 col-form-label text-md-right" htmlFor="lastName">Last name</label>
-                        <div className="col-md-6">
+                    <div className="form-group col-xs-6 account_input">
+                        <label className="col-xs-12 col-form-label text-md-right" htmlFor="lastName">Last name</label>
+                        <div className="col-xs-12">
                             <input required className="form-control" title="Only letters and '-', minimum 3" type="text" pattern="(?=^.{3,}$)[A-Za-z-]+" id="lastName" ref={this.lastNameEl} defaultValue={this.props.userConnectState.last_name}/>
                         </div>
                     </div>
-                    <div className="form-group row account_input">
-                        <label className="col-md-5 col-form-label text-md-right" htmlFor="Login">Login</label>
-                        <div className="col-md-6">
+                    <div className="form-group col-xs-6 account_input">
+                        <label className="col-xs-12 col-form-label text-md-right" htmlFor="Login">Login</label>
+                        <div className="col-xs-12">
                             <input required className="form-control" title="Only letters and numbres, minimum 4" type="text" pattern="(?=^.{4,}$)[A-Za-z0-9]+" id="login" ref={this.loginEl} defaultValue={this.props.userConnectState.login}/>
                         </div>
                     </div>
-                    <div className="form-group row account_input">
-                        <label className="col-md-5 col-form-label text-md-right" htmlFor="email">Email</label>
-                        <div className="col-md-6">
+                    <div className="form-group col-xs-6 account_input">
+                        <label className="col-xs-12 col-form-label text-md-right" htmlFor="email">Email</label>
+                        <div className="col-xs-12">
                             <input required className="form-control" title="Valid email" type="email" id="email" ref={this.emailEl} defaultValue={this.props.userConnectState.email}/>
                         </div>
                     </div>
-                    <div className="form-actions row">
-                        <div className="mx-auto">
+                    <div className="form-actions col-xs-12">
+                        <div className="">
                             <button className="btn btn-dark" type="submit">Update your information</button>
                         </div>
                     </div>
                 </form>
                 {/* Password section (not available for Oauth2 accounts) */}
                 {(this.props.userConnectState.insta === "" && this.props.userConnectState.google === "" && this.props.userConnectState.facebook === "" && this.props.userConnectState.github === "" && this.props.userConnectState.ft === "") ?
-                <form onSubmit={this.submitPasswordForm}>
-                    <div className="form-group row">
-                        <label className="col-md-5 col-form-label text-md-right" htmlFor="password_confirm">New password</label>
-                        <div className="col-md-6">
+                <form className="row" onSubmit={this.submitPasswordForm}>
+                    <div className="form-group col-xs-12">
+                        <label className="col-xs-6 col-form-label text-md-right" htmlFor="password_confirm">New password</label>
+                        <div className="col-xs-6">
                             <input title="Must containe 8 characters, small and capital letters, numbers and special characters." required className="form-control" type="password" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" id="password_new" ref={this.passwordNewEl}/>
                         </div>
                     </div>
-                    <div className="form-group row">
-                        <label className="col-md-5 col-form-label text-md-right" htmlFor="password_confirm">Confirm password</label>
-                        <div className="col-md-6">
+                    <div className="form-group col-xs-12">
+                        <label className="col-xs-6 col-form-label text-md-right" htmlFor="password_confirm">Confirm password</label>
+                        <div className="col-xs-6">
                             <input title="Must containe 8 characters, small and capital letters, numbers and special characters." required className="form-control" type="password" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" id="password_confirm" ref={this.passwordConfirmEl}/>
                         </div>
                     </div>
-                    <div className="form-group row">
-                        <label className="col-md-5 col-form-label text-md-right" htmlFor="password_confirm">Old password</label>
-                        <div className="col-md-6">
+                    <div className="form-group col-xs-12">
+                        <label className="col-xs-6 col-form-label text-md-right" htmlFor="password_confirm">Old password</label>
+                        <div className="col-xs-6">
                             <input title="Must containe 8 characters, small and capital letters, numbers and special characters." required className="form-control" type="password" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" id="password_old" ref={this.passwordOldEl}/>
                         </div>
                     </div>
-                    <div className="form-actions row">
-                        <div className="mx-auto">
+                    <div className="form-actions col-xs-12">
+                        <div className="">
                             <button className="btn btn-dark" type="submit">Change your password</button>
                         </div>
                     </div>

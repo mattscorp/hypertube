@@ -53,6 +53,21 @@ body {
     border-color: #02fc7e !important;
 }
 
+.btn-style-logout{
+    margin : 0 0 0 0 !important;
+}
+.btn-success-logout {
+    color:  #7a6565c2 !important;
+    background-color: white !important;
+    border-color: #fc0202 !important;
+}
+
+.btn-success-logout:hover {
+    color: #1f1f1fab !important;
+    background-color: #7a6565c2 !important;
+    border-color: #fc0202 !important;
+}
+
 /*****     ADVANCED SEARCH (FROM NAV)     *****/
 
 /* Make div appear */
