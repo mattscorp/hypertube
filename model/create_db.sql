@@ -45,6 +45,7 @@ CREATE TABLE IF NOT EXISTS `films` (
     `extension` varchar(10),
     `name` varchar(100),
     `year` int(5),
+    `download_complete` int(5),
     `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 

@@ -54,12 +54,6 @@ const dowload_torrent = async (torrents, movie_infos) => {
                     films_db.add_torrent(movie_infos.id, file.path, extension, file.name, year);
 
                 })
-                // // Download a buffer
-                // // torrent: taken from a search result
-                // const buffer = await TorrentSearchApi.downloadTorrent(torrents[0]);
-                // // Download torrent and write it to the disk
-                // // torrent: taken from a search result
-                // await TorrentSearchApi.downloadTorrent(torrents[0], FILENAMEPATH);
             } catch(err) { console.log('Error downloading the torrent : ' + err) }
 
         } else {
@@ -74,6 +68,9 @@ const ft_torrent = async (movie_infos, source) => {
     const providers = await enable_providers(source[0]);
     console.log('return de providers : ' + providers);
     const torrents = await get_magnet(movie_infos);
+    // LIGNE A METTRE EN COMMENTAIRE POUR NE PAS DOWLOAD LE TORRENT
+    // =====> =====> =====>
     dowload_torrent(torrents, movie_infos);
+    // <===== <===== <=====
 }
 module.exports.ft_torrent = ft_torrent;

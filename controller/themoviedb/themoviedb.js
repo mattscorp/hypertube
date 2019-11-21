@@ -95,6 +95,8 @@ router.get('/movie_in_db', with_auth, async (req, res) => {
             torrents.ft_torrent(movie_infos_api, ['Rarbg']);
         }
         else {
+            console.log('IN MOVIE IN DB +++++++++++++-----------');
+            console.log(JSON.parse(movie_infos_db)[0].download_complete);
             res.status(200).send(movie_infos_db);
         }
     }
