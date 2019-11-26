@@ -1,14 +1,19 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Player } from 'video-react';
+const WebTorrent = require('webtorrent')
+
 
 class Play extends Component {
+
+
 
     constructor(props) {
         super(props);
     }
 
     componentDidMount () {
+
         // Call the API to get the movie details
         let URL = `http://localhost:8000/movie_infos?movie_id=${this.props.location.search.split('movie=')[1]}`;
         fetch(URL, {
@@ -26,9 +31,9 @@ class Play extends Component {
             this.props.setFilmInfos(resData);
         })
         // Torrent
-        .then(async () => {
+        .then(() => {
             console.log('Torrent');
-            // 1. Verifier si le film est dejq en BDD
+            // 1. Verifier si le film est deja en BDD, sinon le telecharge en backend
             fetch(`http://localhost:8000/movie_in_db?movie_id=${this.props.location.search.split('movie=')[1]}`, {
                 method: 'GET',
                 credentials: 'include',
@@ -39,10 +44,28 @@ class Play extends Component {
                 {
                     // 2. Si oui et fini de telecharger, l'envoyer, si oui mais pas fini passer a l'etape 4
                     console.log(res);
-                    return res.json();
+                    this.props.setMovieInDb(await res.json());
                 }
-                else {
-                    console.log('Downloading the movie');
+                else if (res.status === 206 || res.status === 204) // 206 Si le film est en train de telecharger mais le dl n'est pas fini || 204 si on vient de commencer le dl
+                {
+                    var WebTorrent = require('webtorrent')
+
+                    var client = new WebTorrent()
+                    
+                    // Sintel, a free, Creative Commons movie
+                    var torrentId = 'magnet:?xt=urn:btih:08ada5a7a6183aae1e09d831df6748d566095a10&dn=Sintel&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel.torrent'
+                    
+                    client.add(torrentId, function (torrent) {
+                      // Torrents can contain many files. Let's use the .mp4 file
+                      var file = torrent.files.find(function (file) {
+                        return file.name.endsWith('.mp4')
+                      })
+                    
+                      // Display the file by adding it to the DOM.
+                      // Supports video, audio, image files, and more!
+                      file.appendTo('body')
+                    })
+                }
                     // 3. Si non : 
                     //      a. get active providers
                     //      b. chercher le film et verifier que les infos sont coherentes
@@ -50,7 +73,6 @@ class Play extends Component {
                     
                     // 4. Envoyer le film pendant le telechargement
                     // 5. Si on trouve pas le bon film, mettre en liste d'attente par email
-                }
             })
         })
         // Call the API to get the cast
@@ -83,7 +105,7 @@ class Play extends Component {
                 return res3.json();
         })
         .then(resData3 => {
-                this.props.setSimilarMovies(resData3);
+            this.props.setSimilarMovies(resData3);
         })
     }
 
@@ -178,14 +200,21 @@ class Play extends Component {
                                         webkitallowfullscreen="webkitallowfullscreen"
                                         allowfullscreen="allowfullscreen">
                                     </iframe>
-                                    {/* <Player
-                                        playsInline
-                                        // poster={this.props.filmInfosState.film_infos.poster_path ? 'https://image.tmdb.org/t/p/w185_and_h278_bestv2' + this.props.filmInfosState.film_infos.poster_path : "https://upload.wikimedia.org/wikipedia/commons/f/fc/No_picture_available.png"} alt={"Poster of " + this.props.filmInfosState.film_infos.title}
-                                        // src="https://media.w3.org/2010/05/sintel/trailer_hd.mp4"
-                                        src={"https://www.youtube.com/embed/" + this.props.filmInfosState.film_infos.videos.results[0].key}
-                                    /> */}
+                                    
                                 </div>
                                 : null
+                            }
+                            {this.props.filmInfosState.movie_in_db[0] ?
+                                <div>
+                                    <Player
+                                        playsInline
+                                        poster={this.props.filmInfosState.film_infos.poster_path ? 'https://image.tmdb.org/t/p/w185_and_h278_bestv2' + this.props.filmInfosState.film_infos.poster_path : "https://upload.wikimedia.org/wikipedia/commons/f/fc/No_picture_available.png"} alt={"Poster of " + this.props.filmInfosState.film_infos.title}
+                                        src={"./torrents/" + this.props.filmInfosState.movie_in_db[0].path}
+                                    />
+                                </div>
+                                : <div>
+                                    <h1>This movie is not the database --> TO BE DONE</h1>
+                                </div>
                             }
                             {/* Similar movies */}
                             {this.props.filmInfosState.similar_movies !== "" ?

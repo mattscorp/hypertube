@@ -1,7 +1,8 @@
 const filmInfosReducer = (state = {
     film_infos: "",
     cast_infos: "",
-    similar_movies: ""
+    similar_movies: "",
+    movie_in_db: ""
 }, action) => {
     switch (action.type) {
         case "SET_FILM_INFOS":
@@ -21,6 +22,11 @@ const filmInfosReducer = (state = {
                 ...state,
                 similar_movies: action.payload
             }
+            case "MOVIE_IN_DB":
+                state ={
+                    ...state,
+                    movie_in_db: action.payload
+                }
     }
     return state;
 }

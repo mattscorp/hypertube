@@ -18,3 +18,10 @@ export function similar_movies(similarMovies) {
         payload: similarMovies
     };
 }
+
+export function movie_in_db(movieInDb) {
+    return {
+        type: "MOVIE_IN_DB",
+        payload: movieInDb
+    };
+}
