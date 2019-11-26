@@ -73,11 +73,12 @@ body {
 /* Make div appear */
 .AdvancedSearchDiv {
     left: 0;
-   /* text-align: center;*/
+   text-align: right;
     color:  #9e9e9ec2 !important;
-    position: fixed;
+    /* position: fixed; */
     padding-top: 4%;
     overflow: scroll;
+    width: 25%;
     height: 100%;
     z-index: 1;
     /* CSS ANIMATIONS */
@@ -141,7 +142,7 @@ body {
     right: 0;
     text-align: center;
     color:  #9e9e9ec2 !important;
-    position: fixed;
+    /* position: fixed; */
     height: 100%;
     overflow: scroll;
     z-index: 1;
@@ -263,6 +264,8 @@ body {
     border-radius: 50%;
   } 
 
+
+
 /*****      HOME PAGE      ******/
 .image img{
     height: 80%;
@@ -296,47 +299,85 @@ h1.jumbotron span{
 }
 
 
+/*****       MAIN DIV            ****/
+
+.main-all{
+    margin-top: 4vw;
+}
+
+@media (max-width: 1200px) {
+    .main-all{
+        margin-top: 42.5vw;
+    }
+ }
+
+ @media (max-width: 330px) {
+    .main-all{
+        margin-top: 48.5vw;
+    }
+    .AdvancedSearchDiv{
+        width: 100%;
+    }
+ }
+
+
+
 @media (min-width: 300px) {
-    .list-films-all, .under{
-        margin-top : 41%;
+    .list-films-all, .under, .AccountDiv{
+        margin-top : 55vw;
     }
  }
 
  @media (min-width: 360px) {
-    .list-films-all, .under{
-        margin-top : 45%;
+    .list-films-all, .under, .AccountDiv{
+        margin-top : 50vw;
     }
+    
  }
 
 @media (min-width: 576px) {
-        .list-films-all, .under{
+        .list-films-all, .under , .AccountDiv{
             margin-top : 50%;
         }
+        
      }
 
 /*// Medium devices (tablets, 768px and up)*/
 @media (min-width: 768px) { 
-        .list-films-all, .under{
+        .list-films-all, .under, .AccountDiv{
             margin-top : 14%;
         }
+        
       }
 
 /*// Large devices (desktops, 992px and up)*/
 @media (min-width: 992px) { 
-        .list-films-all, .under{
+        .list-films-all, .under, .AccountDiv{
             margin-top : 14%;
         }
+       
       }
 
 /*// Extra large devices (large desktops, 1200px and up)*/
 @media (min-width: 1200px) { 
-        .list-films-all {
+        .list-films-all , .AccountDiv{
             margin-top : 4%;
         }
         .under{
             margin-top : 8%;
         }
+       
       }
+
+@media (min-width: 2560px) { 
+.list-films-all , .AccountDiv{
+    margin-top : 0;
+}
+.under{
+    margin-top : 0;
+}
+
+}
 
 
 
@@ -610,7 +651,7 @@ body{
     }
 .btn.btn-success 
     {
-        position: absolute !important;
+        /* position: absolute !important; */
         width: 100% !important;
         right: 0 !important;
     }

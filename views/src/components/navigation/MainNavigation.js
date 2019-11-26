@@ -235,19 +235,24 @@ class MainNavigation extends Component {
                                             id="searchInput"
                                         />  
                                     </form>
+                                  
                                 </li>
+                                <li className="col-sm-1">
+                                {(this.props.homeSearch === "Trending movies") ? null :
+                                                
+                                                <button className="btn btn-success" type="submit" onClick={this.clearSearch}>
+                                                     Clear
+                                                </button>
+                                            
+                                        }  
+                                </li>
+                              
                                 <li className="col-xs-6 col-md-2">
                                     <button className="btn btn-success btn-style " type="submit" onClick={this.advancedSearch}>
                                         Advanced search
                                     </button>
                                 </li>
-                                {(this.props.homeSearch === "Trending movies") ? null :
-                                                <li className="col-xs-4">
-                                                    <button className="btn btn-success   text-center" type="submit" onClick={this.clearSearch}>
-                                                         Clear
-                                                    </button>
-                                                </li>
-                                            }  
+                                
                             </div>
                                  : null   }
                         </ul>
