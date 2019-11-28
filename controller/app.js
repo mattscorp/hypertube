@@ -45,50 +45,12 @@ app.use(user_infos);
 const themoviedb = require('./themoviedb/themoviedb.js');
 app.use(themoviedb);
 
-//////// API ////////
-
-// //// USERS ////
-// app.route('/users')
-// // GET "/users?user=XXX" 
-// //    --> Return all but password from the users table
-//   .get(async (req, res) => {
-//     if (!req.query.user) {
-//       res.status(400);
-//       res.send("Specify the user_ID as 'user'");
-//     } else {
-//       let user = JSON.parse(await connection.get_users(req.query.user));
-//       if (user == '')
-//         res.status(204);
-//       else
-//         res.status(200);
-//       res.json({ user: user});
-//     }
-//   })
-// // POST "/users", req.body = []
-// //    --> Create the user in the `users` database
-//   .post((req, res) => {
-//     if (req.body == '' || !req.body.uuid || !req.body.language || !req.body.last_name || !req.body.first_name || !req.body.login || !req.body.profile_picture || !req.body.login) {
-//       res.status(400);
-//       res.send("Specify the following : 'uuid', 'language', last_name', 'first_name', 'login', 'profile_picture', 'login'")
-//     } else {
-//       connection.post_users(req.body);
-//       res.status(201);
-//       console.log(req.body);
-//       res.send("The user has been successfully created");
-//       console.log("OK");
-//     }
-//   });
-
-// //// FILMS db ////
-// app.route('/films')
-//   .get(async (req, res) => {
-//     let film_list = JSON.parse(await films.film_list(req.query.order, (req.query.offset) ? req.query.offset : 0));
-//     if (film_list == '')
-//       res.status(204);
-//     else
-//       res.status(200);
-//     res.send(film_list);
-//   });
+// /**** ERROR 404 ****/
+// router.get('*', (req, res) => {
+//   if (req.query.movie_id && req.query.movie !== "") {
+//     res.sendFile(path.join(__dirname, './index.html'));
+//   }
+// });
 
 // listen for requests
 app.listen(config.PORT, () => {

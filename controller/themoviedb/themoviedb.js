@@ -90,16 +90,32 @@ router.get('/movie_in_db', with_auth, async (req, res) => {
         let movie_infos_db = await films.film_db(req.query.movie_id);
         if (movie_infos_db == 'vide') {
             let movie_infos_api = await films.movie_infos(req.query.movie_id);
-            res.status(204).send('The movie needs to be downloaded');
             // On prend les providers
-            torrents.ft_torrent(movie_infos_api, ['Rarbg']);
+            let torrent_infos = await torrents.ft_torrent(movie_infos_api, ['Rarbg']);
+            res.status(201).send(torrent_infos);
         }
         else {
-            console.log('IN MOVIE IN DB +++++++++++++-----------');
-            console.log(JSON.parse(movie_infos_db)[0].download_complete);
-            res.status(200).send(movie_infos_db);
+            //Si le telechargement est fini
+            if (JSON.parse(movie_infos_db)[0].download_complete === 1)
+            {
+                res.status(200).send(movie_infos_db);
+            }
+            else // Si le telechargement est toujours en cours
+            {
+                res.status(206).send(movie_infos_db);
+            }
         }
     }
 });
+
+/*
+    Lorsque le telechargement est fini on l'indique en BDD
+*/
+router.post('/torrent_done', with_auth, (req, res) => {
+    const magnet = req.body.body.split('magnet=')[1];
+    if (magnet && magnet != "" && magnet != undefined) {
+        films.torrent_done(magnet);
+    }
+})
 
 module.exports = router;

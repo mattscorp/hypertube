@@ -145,12 +145,22 @@ const movie_cast = async (movie_id) => {
 module.exports.movie_cast = movie_cast;
 
 // ADD torrent movie to BDD
-const add_torrent = async (moviedb_ID, path, extension, name, year) => {
-    const sql = "INSERT INTO `films` (`moviedb_ID`, `path`, `extension`, `name`, `year`) VALUES (?, ?, ?, ?, ?)";
-    const values = [moviedb_ID, path, extension, name, year];
+const add_torrent = async (moviedb_ID, path, extension, name, year, magnet) => {
+    const sql = "INSERT INTO `films` (`moviedb_ID`, `path`, `extension`, `name`, `year`, `magnet`) VALUES (?, ?, ?, ?, ?, ?)";
+    const values = [moviedb_ID, path, extension, name, year, magnet];
     con.query(sql, values, (err) => {
         if (err)
             throw err;
     });
 }
 module.exports.add_torrent = add_torrent;
+
+// UPDATE movie when movie is done
+const torrent_done = (magnet) => {
+    const sql = "UPDATE `films` SET `download_complete` = 1 WHERE `magnet` = ?";
+    con.query(sql, [magnet], (err) => {
+        if (err)
+            throw err;
+    });
+}
+module.exports.torrent_done = torrent_done;

@@ -10,20 +10,21 @@ import { set_dark_mode, stop_dark_mode } from './actions/dark_mode_action.js'
 import { film_infos, cast_infos, similar_movies, movie_in_db } from './actions/film_infos_action.js'
 import "../node_modules/video-react/dist/video-react.css"; // import css
 
-//Main pages
+// Main pages
 import Home from './pages/Home.js';
 import Play from './pages/Play.js';
 import MainNavigation from './components/navigation/MainNavigation';
 import ResetPassword from './components/connection/ResetPassword.js';
 import ConfirmEmail from './components/connection/ConfirmEmail.js';
-//Authentification pages
+// Authentification pages
 import AuthPage from './components/connection/Auth.js';
 import OAuth_FT from './components/connection/Oauth_FT.js';
 import OAuth_Insta from './components/connection/Oauth_Insta.js';
 import OAuth_Github from './components/connection/Oauth_Github.js';
 import OAuth_Google from './components/connection/Oauth_Google.js';
 import OAuth_Facebook from './components/connection/Oauth_Facebook.js';
-// import { Stats } from 'fs';
+// Error 404
+// import Error_404 from '.pages/Error404.js'
 
 class App extends Component {
 
@@ -90,6 +91,7 @@ class App extends Component {
                     darkModeState = {this.props.darkModeState.dark_mode}
                     />
                 }/>
+                {/* <Route path="*" component={ Error_404 } /> */}
             </Switch>
           </main>
         </React.Fragment>
