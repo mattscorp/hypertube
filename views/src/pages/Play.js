@@ -135,8 +135,9 @@ class Play extends Component {
                                             {this.props.filmInfosState.film_infos.title}
                                         </h1>
                                     </div>
-                                    
-                                {this.props.filmInfosState.movie_in_db[0] && this.props.filmInfosState.movie_in_db[0].download_complete === 1 ?
+                                {/* MOVIE PLAYER */}
+                                    {/* {this.props.filmInfosState.movie_in_db[0] && this.props.filmInfosState.movie_in_db[0].download_complete === 1 ? */}
+                                {this.props.filmInfosState.movie_in_db[0] ?
                                     <div className = 'col-md-10 col-xl-12'>
                                         <Player
                                             playsInline
@@ -147,6 +148,29 @@ class Play extends Component {
                                     : <div>
                                         <h1>This movie is not the database --> TO BE DONE</h1>
                                     </div>
+                                }
+
+
+                                 {/* TRAILER */}
+                                 {this.props.filmInfosState.film_infos.videos.results[0] ?
+                                    <div className = 'col-md-10 col-xl-12 text-center'>
+                                        <br></br>
+                                        <h4>TRAILER</h4>
+                                        <iframe
+                                            width="80%"
+                                            height="80%"
+                                            src={"https://www.youtube.com/embed/" + this.props.filmInfosState.film_infos.videos.results[0].key}
+                                            frameborder="0"
+                                            allow="accelerometer; autoplay; full-screen; encrypted-media; gyroscope; picture-in-picture"
+                                            mozallowfullscreen="mozallowfullscreen" 
+                                            msallowfullscreen="msallowfullscreen" 
+                                            oallowfullscreen="oallowfullscreen" 
+                                            webkitallowfullscreen="webkitallowfullscreen"
+                                            allowfullscreen="allowfullscreen">
+                                        </iframe>
+                                        
+                                    </div>
+                                    : null
                                 }
 
 
@@ -213,29 +237,9 @@ class Play extends Component {
                                         </div>
                                     : null
                                     }
-                                    <div className = 'col-md-10'>
-                                        <img src= {this.props.filmInfosState.film_infos.poster_path ? 'https://image.tmdb.org/t/p/w185_and_h278_bestv2' + this.props.filmInfosState.film_infos.poster_path : "https://upload.wikimedia.org/wikipedia/commons/f/fc/No_picture_available.png"} alt={"Poster of " + this.props.filmInfosState.film_infos.title} />
-                                    </div>
+                                    
                                 </div>
-                                {/* TRAILER */}
-                                {this.props.filmInfosState.film_infos.videos.results[0] ?
-                                    <div>
-                                        <iframe
-                                            width="80%"
-                                            height="80%"
-                                            src={"https://www.youtube.com/embed/" + this.props.filmInfosState.film_infos.videos.results[0].key}
-                                            frameborder="0"
-                                            allow="accelerometer; autoplay; full-screen; encrypted-media; gyroscope; picture-in-picture"
-                                            mozallowfullscreen="mozallowfullscreen" 
-                                            msallowfullscreen="msallowfullscreen" 
-                                            oallowfullscreen="oallowfullscreen" 
-                                            webkitallowfullscreen="webkitallowfullscreen"
-                                            allowfullscreen="allowfullscreen">
-                                        </iframe>
-                                        
-                                    </div>
-                                    : null
-                                }
+                               
                                 
                                 {/* Similar movies */}
                                 {this.props.filmInfosState.similar_movies !== "" ?
