@@ -54,12 +54,12 @@ const dowload_torrent = async (torrents, movie_infos) => {
                     films_db.add_torrent(movie_infos.id, file.path, extension, file.name, year, magnet);
                     // A la fin du DL on update la db
                     console.log("IN DOWNLOAD_TORRENT --> BEFORE 'done");
-                    torrent.on('done', function (magnet) {
-                        console.log("*/*/*/*/*/ TORRENT DONE \\*\\*\\*\\*\\*")
+                    torrent.on('done', function () {
+                        console.log("*/*/*/*/*/ TORRENT DONE \\*\\*\\*\\*\\*");
                         films_db.torrent_done(magnet);
                     });
                     console.log("IN DOWNLOAD_TORRENT --> AFTER 'done");
-                })
+                });
             } catch(err) { console.log('Error downloading the torrent : ' + err) }
 
         } else {
