@@ -62,8 +62,10 @@ router.get('/movie_infos', with_auth, async (req, res) => {
         let movie_infos = await films.movie_infos(req.query.movie_id);
         if (movie_infos == '')
             res.status(204);
-        else
+        else {
+            movie_infos.revenue = movie_infos.revenue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             res.status(200).send(movie_infos);
+        }
     }
 });
 

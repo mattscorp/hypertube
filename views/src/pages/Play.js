@@ -33,7 +33,6 @@ class Play extends Component {
         .then(resData => {
             this.props.setFilmInfos(resData);
             this.setState(()  => {
-                console.log("yaaal " +  this.props.filmInfosState.film_infos.poster_path);
                 return {background: 'url(https://image.tmdb.org/t/p/w185_and_h278_bestv2' + this.props.filmInfosState.film_infos.poster_path + ')'};
             })
         })
@@ -59,8 +58,12 @@ class Play extends Component {
                     var client = new WebTorrent()
                     // Sintel, a free, Creative Commons movie
                     // alert((await res.json())[0].magnet);
+                    // test Parasite
+                    let torrentId = 'magnet:?xt=urn:btih:a39e4232842fd09608162521df562b34e61bb22a&dn=Parasite.2019.KOREAN.1080p.WEBRip.x264.AAC2.0-NOGRP&tr=http%3A%2F%2Ftracker.trackerfix.com%3A80%2Fannounce&tr=udp%3A%2F%2F9.rarbg.me%3A2710&tr=udp%3A%2F%2F9.rarbg.to%3A2710&tr=udp%3A%2F%2Fopen.demonii.com%3A1337%2Fannounce&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com';
+                    // TEst
                     // let torrentId = 'magnet:?xt=urn:btih:a24c8725e54759b73e33d91c032f5777df9dce1c&dn=Scarface.1983.1080p.BluRay.H264.AAC-RARBG&tr=http%3A%2F%2Ftracker.trackerfix.com%3A80%2Fannounce&tr=udp%3A%2F%2F9.rarbg.me%3A2710&tr=udp%3A%2F%2F9.rarbg.to%3A2710&tr=udp%3A%2F%2Fopen.demonii.com%3A1337%2Fannounce'
-                    let torrentId = 'magnet:?xt=urn:btih:08ada5a7a6183aae1e09d831df6748d566095a10&dn=Sintel&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel.torrent';
+                    // demo webtorrent
+                    // let torrentId = 'magnet:?xt=urn:btih:08ada5a7a6183aae1e09d831df6748d566095a10&dn=Sintel&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel.torrent';
                     // let torrentId = (await res.json())[0].magnet;
                     alert(torrentId);
                     console.log('TorrentId : ' + torrentId);
@@ -75,7 +78,7 @@ class Play extends Component {
                         });
                         // Display the file by adding it to the DOM.
                         // Supports video, audio, image files, and more!
-                        file.appendTo('body')
+                        file.appendTo('#torrent_live');
                     });
                 }
                     // 3. Si non : 
@@ -96,7 +99,7 @@ class Play extends Component {
         })     
         .then((res2) => {
             if (res2.status !== 200)
-                console.log('Failed getting information about the movie, themoviedb.org is not res2ponding');
+                console.log('Failed getting information about the movie, themoviedb.org is not responding');
             else
                 return res2.json();
         })
@@ -152,6 +155,7 @@ class Play extends Component {
                                     </div>
                                     : <div>
                                         <h1>This movie is not the database --> TO BE DONE</h1>
+                                        <div id="torrent_live"></div>
                                     </div>
                                 }
 
@@ -165,13 +169,13 @@ class Play extends Component {
                                             width="80%"
                                             height="80%"
                                             src={"https://www.youtube.com/embed/" + this.props.filmInfosState.film_infos.videos.results[0].key}
-                                            frameborder="0"
+                                            frameBorder="0"
                                             allow="accelerometer; autoplay; full-screen; encrypted-media; gyroscope; picture-in-picture"
                                             mozallowfullscreen="mozallowfullscreen" 
                                             msallowfullscreen="msallowfullscreen" 
                                             oallowfullscreen="oallowfullscreen" 
                                             webkitallowfullscreen="webkitallowfullscreen"
-                                            allowfullscreen="allowfullscreen">
+                                            allowFullScreen="allowFullScreen">
                                         </iframe>
                                         
                                     </div>
