@@ -1,3 +1,31 @@
+
+
+
+.menu-item {
+    padding: 0 40px;
+    margin: 5px 10px;
+    user-select: none;
+    cursor: pointer;
+    border: none;
+  }
+  .menu-item-wrapper.active {
+    border: 1px blue solid;
+  }
+  .menu-item.active {
+    border: 1px green solid;
+  }
+   
+  .scroll-menu-arrow {
+    padding: 20px;
+    cursor: pointer;
+  }
+
+
+
+/*** TEST ***/ 
+
+
+
 body {
     background-color: #e2e2e2 !important;
 
@@ -45,6 +73,10 @@ body {
     color:  #9e9e9ec2 !important;
     background-color: white !important;
     border-color: #02fc7e !important;
+}
+.btn-dark {
+    border: solid 0.5px !important;
+    margin: 5px !important;
 }
 
 .btn-success:hover {
@@ -326,7 +358,16 @@ h1.jumbotron span{
     }
  }
 
+/***** PAGE DE FILM *****/
 
+
+.list-films {
+    list-style: none;
+}
+
+.trailer-div {
+    margin-bottom: 2.5vw;
+}
 
 @media (min-width: 300px) {
     .list-films-all, .under, .AccountDiv{
@@ -334,6 +375,16 @@ h1.jumbotron span{
     }
     .under{
         background-color: #9e9e9ec2;
+    }
+    .image:hover .overlay_car {
+        width: 46%;
+        height: 41%;
+        background: rgba(0,0,0,.75);
+        color: #e2e2e2;
+        position: absolute;
+
+        transform: translate(-99%, 0%);
+        display: inline-block;
     }
  }
 
@@ -344,6 +395,16 @@ h1.jumbotron span{
     .under{
         background-color: #9e9e9ec2;
     }
+    .image:hover .overlay_car {
+        width: 41%;
+        height: 35%;
+        background: rgba(0,0,0,.75);
+        color: #e2e2e2;
+        position: absolute;
+
+        transform: translate(-99%, 0%);
+        display: inline-block;
+    }
     
  }
 
@@ -353,6 +414,16 @@ h1.jumbotron span{
         }
         .under{
             background-color: #9e9e9ec2;
+        }
+        .image:hover .overlay_car {
+            width: 26%;
+            height: 34%;
+            background: rgba(0,0,0,.75);
+            color: #e2e2e2;
+            position: absolute;
+
+            transform: translate(-99%, 0%);
+            display: inline-block;
         }
         
      }
@@ -365,6 +436,16 @@ h1.jumbotron span{
         .under{
             background-color: #9e9e9ec2;
         }
+        .image:hover .overlay_car {
+            width: 19%;
+            height: 33%;
+            background: rgba(0,0,0,.75);
+            color: #e2e2e2;
+            position: absolute;
+
+            transform: translate(-99%, 0%);
+            display: inline-block;
+        }
         
       }
 
@@ -375,6 +456,16 @@ h1.jumbotron span{
         }
         .under{
             background-color: #9e9e9ec2;
+        }
+        .image:hover .overlay_car {
+            width: 15%;
+            height: 34%;
+            background: rgba(0,0,0,.75);
+            color: #e2e2e2;
+            position: absolute;
+
+            transform: translate(-99%, 0%);
+            display: inline-block;
         }
        
       }
@@ -388,6 +479,16 @@ h1.jumbotron span{
             margin-top : 8%;
             background-color: #9e9e9ec2;
         }
+        .image:hover .overlay_car {
+            width: 12%;
+            height: 35%;
+            background: rgba(0,0,0,.75);
+            color: #e2e2e2;
+            position: absolute;
+
+            transform: translate(-99%, 0%);
+            display: inline-block;
+        }
        
       }
 
@@ -398,6 +499,16 @@ h1.jumbotron span{
 .under{
     margin-top : 0;
     background-color: #9e9e9ec2;
+}
+.image:hover .overlay_car {
+    width: 6%;
+    height: 32%;
+    background: rgba(0,0,0,.75);
+    color: #e2e2e2;
+    position: absolute;
+
+    transform: translate(-99%, 0%);
+    display: inline-block;
 }
 
 }
@@ -460,16 +571,11 @@ padding: 5%;
     box-sizing:border-box;
     padding: 9%;
 
-    /* All other styling - see example */
-    img {
-        vertical-align:top;
-    }
+   
 }
-
-/*.pagination_div{
-	margin-left: 45%;
-}
-*/
+.overlay_car {
+    display:none;
+ }
 
 /**** FOOTER *****/
 

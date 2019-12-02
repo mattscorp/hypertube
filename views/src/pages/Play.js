@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Player } from 'video-react';
+import ScrollMenu from 'react-horizontal-scrolling-menu';
 const WebTorrent = require('webtorrent')
 
 
@@ -122,9 +123,6 @@ class Play extends Component {
         .then(resData3 => {
             this.props.setSimilarMovies(resData3);
         })
-        
-        
-        
     }
 
     render () {
@@ -159,10 +157,37 @@ class Play extends Component {
                                     </div>
                                 }
 
+                                {this.props.filmInfosState.film_infos.overview ?
+                                        <div className = 'col-md-12 text-center'>
+                                            <h3>Overview : </h3>
+                                            <p>{this.props.filmInfosState.film_infos.overview}</p>
+                                        </div> 
+                                    : null}
+
+                                    {/* Movie cast and director */}
+                                    {this.props.filmInfosState.cast_infos.cast ?
+                                    <div className = 'col-md-12 text-center'>
+                                        <h3>Cast:</h3>
+                                        {this.props.filmInfosState.cast_infos.cast.slice(0, 5).map((elem, index) => 
+                                            <p key={index} >{elem.name} as {elem.character}</p>
+                                        )}
+                                    </div>
+                                    : null
+                                    }
+                                    {this.props.filmInfosState.cast_infos.crew ?
+                                    <div className = 'col-md-12 text-center'>
+                                        <h3>Director:</h3>
+                                        {this.props.filmInfosState.cast_infos.crew.map((elem, index) => 
+                                        elem.job === "Director" ? (
+                                            <p key={index} >{elem.name}</p>
+                                        ): null )}
+                                        </div>
+                                    : null
+                                    }     
 
                                  {/* TRAILER */}
                                  {this.props.filmInfosState.film_infos.videos.results[0] ?
-                                    <div className = 'col-md-10 col-xl-12 text-center'>
+                                    <div className = 'col-md-10 col-xl-12 text-center trailer-div'>
                                         <br></br>
                                         <h4>TRAILER</h4>
                                         <iframe
@@ -181,119 +206,108 @@ class Play extends Component {
                                     </div>
                                     : null
                                 }
+                                <ul className="container-fluid text-center list-films">
+                                        
+                                        <li>
+                                                {this.props.filmInfosState.film_infos.release_date ?
+                                                <div className = 'col-md-6'>
+                                                    <h3>Original release date : </h3>
+                                                    <p>{this.props.filmInfosState.film_infos.release_date}</p>
+                                                </div> 
+                                            : null}
+                                        </li>
+                                        <li>
+                                                {this.props.filmInfosState.film_infos.vote_average ?
+                                                <div className = 'col-md-6'>
+                                                    <h3>Vote Average : </h3> 
+                                                    <p>{this.props.filmInfosState.film_infos.vote_average}</p>
+                                                </div> 
+                                            : null}
+                                        </li>
+                                        <li>
+                                                {this.props.filmInfosState.film_infos.runtime ?
+                                                <div className = 'col-md-6'>
+                                                    <h3>Runtime in minutes: </h3> 
+                                                    <p>{this.props.filmInfosState.film_infos.runtime} min</p>
+                                                </div> 
+                                           : null}
+                                        </li>
+                                        <li>
+                                                {this.props.filmInfosState.film_infos.revenue ?
+                                                <div className = 'col-md-6'>
+                                                    <h3>Revenue in Dollars: </h3> 
+                                                    <p>{this.props.filmInfosState.film_infos.revenue} $</p>
+                                                </div> 
+                                            : null}
+                                        </li>
+                                        <li>
+                                                {this.props.filmInfosState.film_infos.production_countries ?
+                                                <div className = 'col-md-6'>
+                                                    <h3>Production Countries: </h3> 
+                                                    <p>{this.props.filmInfosState.film_infos.production_countries[0].name}</p>
+                                                </div> 
+                                            : null}
+                                        </li>
+                                        <li>
+                                                {this.props.filmInfosState.film_infos.imdb_id ?
+                                                <div className = 'col-md-6'>
+                                                    <h3>IMDB ID: </h3> 
+                                                    <p>{this.props.filmInfosState.film_infos.imdb_id}</p>
+                                                </div> 
+                                            : null}
+                                        </li>
+                                    </ul>
 
-
-
-                                    {this.props.filmInfosState.film_infos.release_date ?
-                                        <div className = 'col-md-10'>
-                                            <h3>Original release date : </h3>
-                                            <p>{this.props.filmInfosState.film_infos.release_date}</p>
-                                        </div> 
-                                    : null}
-                                    {this.props.filmInfosState.film_infos.overview ?
-                                        <div className = 'col-md-10'>
-                                            <h3>Overview : </h3>
-                                            <p>{this.props.filmInfosState.film_infos.overview}</p>
-                                        </div> 
-                                    : null}
-                                    {this.props.filmInfosState.film_infos.vote_average ?
-                                        <div className = 'col-md-10'>
-                                            <h3>Vote Average : </h3> 
-                                            <p>{this.props.filmInfosState.film_infos.vote_average}</p>
-                                        </div> 
-                                    : null}
-                                    {this.props.filmInfosState.film_infos.runtime ?
-                                        <div className = 'col-md-10'>
-                                            <h3>Runtime in minutes: </h3> 
-                                            <p>{this.props.filmInfosState.film_infos.runtime} min</p>
-                                        </div> 
-                                    : null}
-                                    {this.props.filmInfosState.film_infos.revenue ?
-                                        <div className = 'col-md-10'>
-                                            <h3>Revenue in Dollars: </h3> 
-                                            <p>{this.props.filmInfosState.film_infos.revenue} $</p>
-                                        </div> 
-                                    : null}
-                                    {this.props.filmInfosState.film_infos.production_countries ?
-                                        <div className = 'col-md-10'>
-                                            <h3>Production Countries: </h3> 
-                                            <p>{this.props.filmInfosState.film_infos.production_countries[0].name}</p>
-                                        </div> 
-                                    : null}
-                                    {this.props.filmInfosState.film_infos.imdb_id ?
-                                        <div className = 'col-md-10'>
-                                            <h3>IMDB ID: </h3> 
-                                            <p>{this.props.filmInfosState.film_infos.imdb_id}</p>
-                                        </div> 
-                                    : null}
-                                    {/* Movie cast and director */}
-                                    {this.props.filmInfosState.cast_infos.cast ?
-                                    <div className = 'col-md-10'>
-                                        <h3>Cast:</h3>
-                                        {this.props.filmInfosState.cast_infos.cast.slice(0, 5).map((elem, index) => 
-                                            <p key={index} >{elem.name} as {elem.character}</p>
-                                        )}
-                                    </div>
-                                    : null
-                                    }
-                                    {this.props.filmInfosState.cast_infos.crew ?
-                                    <div className = 'col-md-10'>
-                                        <h3>Director:</h3>
-                                        {this.props.filmInfosState.cast_infos.crew.map((elem, index) => 
-                                        elem.job === "Director" ? (
-                                            <p key={index} >{elem.name}</p>
-                                        ): null )}
-                                        </div>
-                                    : null
-                                    }
-                                    
                                 </div>
                                
-                                
-                                {/* Similar movies */}
+                              
+                              
                                 {this.props.filmInfosState.similar_movies !== "" ?
                                 <div>
                                     <div className="row">
                                         <h3>Similar movies</h3>
                                     </div>
-                                    <div id="result_list" ref="result_list" className="row">
-                                        {
-                                            this.props.filmInfosState.similar_movies.map((elem, index) =>
+                                        <div id="result_list" ref="result_list" className="row ">
+                                    
+                                            {
+                                            
+                                                this.props.filmInfosState.similar_movies.map((elem, index) =>
+                                               
                                                 (<div id={elem.id} >
-                                                    <div className="image">
-                                                        <img src= {elem.poster_path ? 'https://image.tmdb.org/t/p/w185_and_h278_bestv2' + elem.poster_path : "https://upload.wikimedia.org/wikipedia/commons/f/fc/No_picture_available.png"} alt={"Poster of " + elem.title} />
-                                                        <div className="overlay">
-                                                            <div className="topright">
-                                                                <p>
-                                                                <span className="glyphicon glyphicon-star">{elem.vote_average}</span>
-                                                                </p> 
-                                                            </div>
-                                                            <div>
-                                                                {
-                                                                    elem.overview.split(' ').map((elem_child, index_child) => 
-                                                                        (<span key={index_child}>
-                                                                            {index_child < 25 ? elem_child : null}
-                                                                            {index_child < 24 ? ' ' : null}
-                                                                            {index_child  === 25 ? '...' : null}
-                                                                            {index_child === 0 ? (!elem_child ? 'No resume available' : null) : null}
-                                                                        </span>)
-                                                                    )
-                                                                }
-                                                                <div className="play_hover">
-                                                                    <a href={"play?movie=" + elem.id}>
-                                                                        <p className="btn btn-info btn-lg">
-                                                                            <span className="glyphicon glyphicon-play"></span> Play
-                                                                        </p>
-                                                                    </a>
-                                                                </div>         
+                                                        <div className="image">
+                                                            <img src= {elem.poster_path ? 'https://image.tmdb.org/t/p/w185_and_h278_bestv2' + elem.poster_path : "https://upload.wikimedia.org/wikipedia/commons/f/fc/No_picture_available.png"} alt={"Poster of " + elem.title} />
+                                                            <div className="overlay_car">
+                                                                <div className="topright">
+                                                                    <p>
+                                                                    <span className="glyphicon glyphicon-star">{elem.vote_average}</span>
+                                                                    </p> 
+                                                                </div>
+                                                                <div>
+                                                                    {
+                                                                        elem.overview.split(' ').map((elem_child, index_child) => 
+                                                                            (<span key={index_child}>
+                                                                                {index_child < 25 ? elem_child : null}
+                                                                                {index_child < 24 ? ' ' : null}
+                                                                                {index_child  === 25 ? '...' : null}
+                                                                                {index_child === 0 ? (!elem_child ? 'No resume available' : null) : null}
+                                                                            </span>)
+                                                                        )
+                                                                    }
+                                                                    <div className="play_hover">
+                                                                        <a href={"play?movie=" + elem.id}>
+                                                                            <p className="btn btn-info btn-lg">
+                                                                                <span className="glyphicon glyphicon-play"></span> Play
+                                                                            </p>
+                                                                        </a>
+                                                                    </div>         
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <h5 className={this.props.darkModeState ? "text-white" : "text-dark"}>{elem.title}</h5>
-                                                </div>)
-                                            )
-                                        }
-                                    </div>
+                                                        <h5 className={this.props.darkModeState ? "text-white" : "text-dark"}>{elem.title}</h5>
+                                                    </div>)
+                                                )
+                                            }
+                                        </div>
                                 </div>
                                 : null}
                             </div>
