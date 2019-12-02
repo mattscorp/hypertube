@@ -60,16 +60,22 @@ class Play extends Component {
                     // Sintel, a free, Creative Commons movie
                     // alert((await res.json())[0].magnet);
                     // test Parasite
-                    let torrentId = 'magnet:?xt=urn:btih:a39e4232842fd09608162521df562b34e61bb22a&dn=Parasite.2019.KOREAN.1080p.WEBRip.x264.AAC2.0-NOGRP&tr=http%3A%2F%2Ftracker.trackerfix.com%3A80%2Fannounce&tr=udp%3A%2F%2F9.rarbg.me%3A2710&tr=udp%3A%2F%2F9.rarbg.to%3A2710&tr=udp%3A%2F%2Fopen.demonii.com%3A1337%2Fannounce&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com';
+                    let torrentId = 'magnet:?xt=urn:btih:a39e4232842fd09608162521df562b34e61bb22a&dn=Parasite.2019.KOREAN.1080p.WEBRip.x264.AAC2.0-NOGRP&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fparasite.2019.korean.1080p.webrip.x264.aac2.0-nogrp.torrent';
                     // TEst
+                    //
+                    // let torrentId = 'magnet:?xt=urn:btih:fe311716722e2ab35be2dd1cbc806571ded71e95&dn=Inside.Out.2015.1080p.BluRay.x264-SPARKS%5Brarbg%5D&tr=http://track.one:1234/announce&tr=udp://tracker.openbittorrent.com:80';
                     // let torrentId = 'magnet:?xt=urn:btih:a24c8725e54759b73e33d91c032f5777df9dce1c&dn=Scarface.1983.1080p.BluRay.H264.AAC-RARBG&tr=http%3A%2F%2Ftracker.trackerfix.com%3A80%2Fannounce&tr=udp%3A%2F%2F9.rarbg.me%3A2710&tr=udp%3A%2F%2F9.rarbg.to%3A2710&tr=udp%3A%2F%2Fopen.demonii.com%3A1337%2Fannounce'
+                    // TEST lady and the tramp
+                    // let torrentId = 'magnet:?xt=urn:btih:23aafdf7027db833bb68e0fe29e81e806a430395&dn=Lady.and.the.Tramp.2019.iNTERNAL.720p.WEB.H264-AMRAP&tr=http%3A%2F%2Ftracker.trackerfix.com%3A80%2Fannounce&tr=udp%3A%2F%2F9.rarbg.me%3A2710&tr=udp%3A%2F%2F9.rarbg.to%3A2710&tr=udp%3A%2F%2Fopen.demonii.com%3A1337%2Fannounce';
+                    // free torrent test
+                    // let torrentId = 'magnet:?xt=urn:btih:dd8255ecdc7ca55fb0bbf81323d87062db1f6d1c&dn=Big+Buck+Bunny&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fbig-buck-bunny.torrent'
                     // demo webtorrent
                     // let torrentId = 'magnet:?xt=urn:btih:08ada5a7a6183aae1e09d831df6748d566095a10&dn=Sintel&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel.torrent';
                     // let torrentId = (await res.json())[0].magnet;
                     alert(torrentId);
                     console.log('TorrentId : ' + torrentId);
                     // torrentId.appendTo('body')
-                    client.add(torrentId, function (torrent) {
+                    client.add(torrentId, {transports: ['websocket']}, function (torrent) {
                         console.log('Torrent tpusu : ' + torrent);
                         console.log('yolo  : ' + torrentId);
                         // Torrents can contain many files. Let's use the .mp4 file
