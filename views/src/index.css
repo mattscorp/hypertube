@@ -337,26 +337,7 @@ h1.jumbotron span{
     margin-top: 4vw;
 }
 
-@media (max-width: 1200px) {
-    .main-all{
-        margin-top: 42.5vw;
-    }
-    .under{
-        background-color: #9e9e9ec2;
-    }
- }
 
- @media (max-width: 330px) {
-    .main-all{
-        margin-top: 48.5vw;
-    }
-    .AdvancedSearchDiv{
-        width: 100%;
-    }
-    .under{
-        background-color: #9e9e9ec2;
-    }
- }
 
 /***** PAGE DE FILM *****/
 
@@ -407,6 +388,10 @@ h1.jumbotron span{
     }
     
  }
+
+ 
+
+ 
 
 @media (min-width: 576px) {
         .list-films-all, .under , .AccountDiv{
@@ -471,6 +456,9 @@ h1.jumbotron span{
       }
 
 /*// Extra large devices (large desktops, 1200px and up)*/
+
+
+
 @media (min-width: 1200px) { 
         .list-films-all , .AccountDiv{
             margin-top : 4%;
@@ -480,7 +468,7 @@ h1.jumbotron span{
             background-color: #9e9e9ec2;
         }
         .image:hover .overlay_car {
-            width: 12%;
+            width: 6%;
             height: 35%;
             background: rgba(0,0,0,.75);
             color: #e2e2e2;
@@ -491,6 +479,8 @@ h1.jumbotron span{
         }
        
       }
+
+     
 
 @media (min-width: 2560px) { 
 .list-films-all , .AccountDiv{

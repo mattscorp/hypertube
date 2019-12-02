@@ -279,7 +279,7 @@ class Play extends Component {
                                             
                                                 this.props.filmInfosState.similar_movies.map((elem, index) =>
                                                
-                                                (<div id={elem.id} >
+                                                (<div id={elem.id} className="text-center" >
                                                         <div className="image">
                                                             <img src= {elem.poster_path ? 'https://image.tmdb.org/t/p/w185_and_h278_bestv2' + elem.poster_path : "https://upload.wikimedia.org/wikipedia/commons/f/fc/No_picture_available.png"} alt={"Poster of " + elem.title} />
                                                             <div className="overlay_car">
