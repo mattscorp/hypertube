@@ -145,6 +145,12 @@ router.get('/stream_dl', with_auth, async (req, res) => {
                 res.end(err);
                 } else { /* If we have information about the file available */
                     console.log(stats);
+                    let range = req.query.range;
+                    console.log('range : ' + range);
+                    if (!range) {
+                        // 416 Wrong range
+                        return res.sendStatus(416);
+                    }
                 }
             });
         } else

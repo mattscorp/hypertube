@@ -66,14 +66,17 @@ class Play extends Component {
                     // alert(torrentId);
                     // console.log('TorrentId : ' + torrentId);
                     // On va chercher le stream du torrent
-                    fetch(`http://localhost:8000/stream_dl?id=${this.props.filmInfosState.film_infos.id}`, {
+                    fetch(`http://localhost:8000/stream_dl?id=${this.props.filmInfosState.film_infos.id}&range=bytes0to0on0`, {
                         method: 'GET',
                         credentials: 'include',
+                        'range': '',
                         headers: {'Content-Type': 'application/json'}
                     })
                     .then(res => {
                         if (res.status === 204)
                             alert("Pas de magnet");
+                        else if (res.status === 416)
+                            alert("Pas de range");
                     });
 
 
