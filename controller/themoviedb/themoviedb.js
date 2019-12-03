@@ -1,6 +1,7 @@
 'use strict'
 
 const with_auth = require('../user/authentification_middleware');
+const fs = require("fs");
 const express = require('express');
 const router = express.Router();
 // model functions
@@ -117,6 +118,37 @@ router.post('/torrent_done', with_auth, (req, res) => {
     const magnet = req.body.body.split('magnet=')[1];
     if (magnet && magnet != "" && magnet != undefined) {
         films.torrent_done(magnet);
+    }
+})
+
+/*
+    On envoie le flux video pendant le telechargement
+*/
+router.get('/stream_dl', with_auth, async (req, res) => {
+    console.log('IN STREAM_DL : ' + req.query.id);
+    let movie_infos = await films.film_db(req.query.id);
+    console.log(movie_infos);
+    if (movie_infos == 'vide')     {
+        res.status(204).send('Pas de magnet');
+    } else {
+        let path = JSON.parse(movie_infos)[0].path;
+        console.log(path);
+        if (fs.existsSync(`./views/public/torrents/${path}`)) {
+            console.log('IN "/stream_DL" : Le fichier existe');
+            fs.stat(`./views/public/torrents/${path}`, function(err, stats) {
+                if (err) { /* If we can't get information about the file */
+                    if (err.code === 'ENOENT') {
+                        console.log('ERROR');
+                        // 404 Error if file not found
+                        return res.sendStatus(404);
+                    }
+                res.end(err);
+                } else { /* If we have information about the file available */
+                    console.log(stats);
+                }
+            });
+        } else
+        console.log('IN "/stream_DL" : Le fichier n\'existe pas');
     }
 })
 
