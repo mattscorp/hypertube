@@ -276,7 +276,7 @@ class MainNavigation extends Component {
                 }
                 {/* ADVANCE SEARCH OPTIONS */}
                 {(this.state.isAdvanced === 1 || this.state.isAdvanced === 2) ?
-                    <div className={this.state.isAdvanced === 1 ? (this.props.darkModeState ? "bg-dark AdvancedSearchDiv row" : "bg-white AdvancedSearchDiv row") : (this.props.darkModeState ? "bg-dark DisappearSearchDiv col-md-2" : "bg-white DisappearSearchDiv col-md-2")}>
+                    <div className={this.state.isAdvanced === 1 ? (this.props.darkModeState ? "bg-dark AdvancedSearchDiv " : "bg-white AdvancedSearchDiv ") : (this.props.darkModeState ? "bg-dark DisappearSearchDiv col-md-2" : "bg-white DisappearSearchDiv col-md-2")}>
                         <AdvancedSearch
                             advanceSearchFunction={this.advanceSearchFunction}
                             seen={this.seen}
