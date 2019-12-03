@@ -10,6 +10,9 @@ import { set_dark_mode, stop_dark_mode } from './actions/dark_mode_action.js'
 import { film_infos, cast_infos, similar_movies, movie_in_db } from './actions/film_infos_action.js'
 import "../node_modules/video-react/dist/video-react.css"; // import css
 
+// BOOTSTRAP
+
+
 // Main pages
 import Home from './pages/Home.js';
 import Play from './pages/Play.js';

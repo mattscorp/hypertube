@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Player } from 'video-react';
 
-
-
 class Play extends Component {
 
     state = {
@@ -274,68 +272,50 @@ class Play extends Component {
                               
                               
                                 {this.props.filmInfosState.similar_movies !== "" ?
-                                <div className="container mt-3">
-                                    <div className="col-md-12 text-center">
+                                <div>
+                                    <div className="row">
                                         <h3>Similar movies</h3>
                                     </div>
-                                        {/* <div id="result_list" ref="result_list" className="row "> */}
-                                        <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                                        {/* <!-- Indicators --> */}
-                                            {/* <ul class="carousel-indicators">
+                                        <div id="result_list" ref="result_list" className="row ">
+                                    
                                             {
-                                                 this.props.filmInfosState.similar_movies.map((elem, index) =>
-
-                                                    <li data-target={"#" + elem.id} data-slide-to={index} className={index === 0 ? "active" : null}></li>
-                                                )
-                                            }
-                                            </ul> */}
-                                            <div className="carousel-inner">
-                                                {
-                                                    
-                                                    this.props.filmInfosState.similar_movies.map((elem, index) =>
-                                                    
-                                                    (<div id={elem.id}  className={index === 0 ? "active carousel-item text-center" : "carousel-item text-center"}>
-                                                            <div className="image ">
-                                                                <img src= {elem.poster_path ? 'https://image.tmdb.org/t/p/w185_and_h278_bestv2' + elem.poster_path : "https://upload.wikimedia.org/wikipedia/commons/f/fc/No_picture_available.png"} alt={"Poster of " + elem.title} />
-                                                                <div className="overlay_car">
-                                                                    <div className="topright">
-                                                                        <p>
-                                                                        <span className="glyphicon glyphicon-star">{elem.vote_average}</span>
-                                                                        </p> 
-                                                                    </div>
-                                                                    <div  className="text-center col-sm-12">
-                                                                        {
-                                                                            elem.overview.split(' ').map((elem_child, index_child) => 
-                                                                                (<span key={index_child}>
-                                                                                    {index_child < 25 ? elem_child : null}
-                                                                                    {index_child < 24 ? ' ' : null}
-                                                                                    {index_child  === 25 ? '...' : null}
-                                                                                    {index_child === 0 ? (!elem_child ? 'No resume available' : null) : null}
-                                                                                </span>)
-                                                                            )
-                                                                        }
-                                                                        <div className="play_hover">
-                                                                            <a href={"play?movie=" + elem.id}>
-                                                                                <p className="btn btn-info btn-lg">
-                                                                                    <span className="glyphicon glyphicon-play"></span> Play
-                                                                                </p>
-                                                                            </a>
-                                                                        </div>         
-                                                                    </div>
+                                            
+                                                this.props.filmInfosState.similar_movies.map((elem, index) =>
+                                               
+                                                (<div id={elem.id} className="text-center" >
+                                                        <div className="image">
+                                                            <img src= {elem.poster_path ? 'https://image.tmdb.org/t/p/w185_and_h278_bestv2' + elem.poster_path : "https://upload.wikimedia.org/wikipedia/commons/f/fc/No_picture_available.png"} alt={"Poster of " + elem.title} />
+                                                            <div className="overlay_car">
+                                                                <div className="topright">
+                                                                    <p>
+                                                                    <span className="glyphicon glyphicon-star">{elem.vote_average}</span>
+                                                                    </p> 
+                                                                </div>
+                                                                <div>
+                                                                    {
+                                                                        elem.overview.split(' ').map((elem_child, index_child) => 
+                                                                            (<span key={index_child}>
+                                                                                {index_child < 25 ? elem_child : null}
+                                                                                {index_child < 24 ? ' ' : null}
+                                                                                {index_child  === 25 ? '...' : null}
+                                                                                {index_child === 0 ? (!elem_child ? 'No resume available' : null) : null}
+                                                                            </span>)
+                                                                        )
+                                                                    }
+                                                                    <div className="play_hover">
+                                                                        <a href={"play?movie=" + elem.id}>
+                                                                            <p className="btn btn-info btn-lg">
+                                                                                <span className="glyphicon glyphicon-play"></span> Play
+                                                                            </p>
+                                                                        </a>
+                                                                    </div>         
                                                                 </div>
                                                             </div>
-                                                            <h5 className={this.props.darkModeState ? "text-white" : "text-dark"}>{elem.title}</h5>
-                                                        </div>)
-                                                    )
-                                                }
-                                            </div>
-                                            {/* <!-- Left and right controls --> */}
-                                            <a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
-                                                <span class="carousel-control-prev-icon"></span>
-                                            </a>
-                                            <a class="carousel-control-next" href="#myCarousel" data-slide="next">
-                                                <span class="carousel-control-next-icon"></span>
-                                            </a>
+                                                        </div>
+                                                        <h5 className={this.props.darkModeState ? "text-white" : "text-dark"}>{elem.title}</h5>
+                                                    </div>)
+                                                )
+                                            }
                                         </div>
                                 </div>
                                 : null}
