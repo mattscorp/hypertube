@@ -13,6 +13,10 @@ class Play extends Component {
 
     constructor(props) {
         super(props);
+        // l ID du film dans the movieDB
+        this.props.location.search.split('movie=')[1] = React.createRef();
+        this.com = this.com.bind(this);
+
     }
 
     componentDidMount () {
@@ -138,6 +142,18 @@ class Play extends Component {
             this.props.setSimilarMovies(resData3);
         })
     }
+        // MAKE A COMM FONCTION
+            make_comm = (event) => {
+                event.preventDefault();
+                this.props.com ? this.props.stopDarkMode() : this.props.setDarkMode();
+                fetch(`http://localhost:8000/dark_mode`, {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {'Content-Type': 'application/json'}
+                })
+                .then((res) => { console.log(res) })
+                .catch((err) => { console.log(err); });
+            }
 
     render () {
         // alert(this.state.film_cast.cast);
@@ -154,6 +170,14 @@ class Play extends Component {
                                         <h1 className="text-center">
                                             {this.props.filmInfosState.film_infos.title}
                                         </h1>
+                                    </div>
+                                    <div className="col-md-12">
+                                    <h1 className="text-center">
+                                           Make a comment
+                                    </h1>
+                                        <input>
+                                        
+                                        </input>
                                     </div>
                                 {/* MOVIE PLAYER */}
                                     {this.props.filmInfosState.movie_in_db[0] && this.props.filmInfosState.movie_in_db[0].download_complete === 1 ?
