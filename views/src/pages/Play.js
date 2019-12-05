@@ -9,13 +9,15 @@ class Play extends Component {
     state = {
         background: "",
         repeat: "no-repeat",
+        comment: [],
+        offset: 0,
+
     }
 
     constructor(props) {
         super(props);
         // l ID du film dans the movieDB
-        this.props.location.search.split('movie=')[1] = React.createRef();
-        this.com = this.com.bind(this);
+         this.com = React.createRef();
 
     }
 
@@ -141,18 +143,57 @@ class Play extends Component {
         .then(resData3 => {
             this.props.setSimilarMovies(resData3);
         })
+        this.get_comment();
+
     }
+        // DISPLAY COMMENT
+            get_comment = () => {
+                fetch(`http://localhost:8000/get_comment?offset=${this.state.offset}&moviedb_id=${this.props.location.search.split('movie=')[1]}`, {
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: {'Content-Type': 'application/json'},
+            })
+            .then((res) => {
+                if (res.status !== 200)
+                console.log('Fail to fetch comment on the select movie');
+            else
+                return res.json();
+            })
+            .then(resData => {
+                resData.map(elem => {
+                    this.setState(prevState => (
+                        this.state.offset += 1,
+                        this.state.comment.push(elem)
+                    ))
+                })
+               
+                
+                console.log(resData);
+                // this.props.setSimilarMovies(resData);
+            })
+        }
         // MAKE A COMM FONCTION
             make_comm = (event) => {
                 event.preventDefault();
-                this.props.com ? this.props.stopDarkMode() : this.props.setDarkMode();
-                fetch(`http://localhost:8000/dark_mode`, {
+               
+                this.setState(prevState => (
+
+                    this.state.offset += 1,
+                    this.state.comment.unshift({comment : this.com.current.value, name : this.props.userConnectState.first_name || this.props.userConnectState.login ,date : new Date().toISOString().slice(0, 19).replace('T', ' ')}) 
+                ))
+
+                fetch(`http://localhost:8000/add_comment`, {
                     method: 'POST',
                     credentials: 'include',
-                    headers: {'Content-Type': 'application/json'}
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ moviedb_ID: this.props.location.search.split('movie=')[1], comment : this.com.current.value}),
                 })
-                .then((res) => { console.log(res) })
                 .catch((err) => { console.log(err); });
+            }
+        // LOAD MORE COMM
+            loadMoreComment = (event) => {
+                event.preventDefault();
+             this.get_comment();   
             }
 
     render () {
@@ -171,13 +212,35 @@ class Play extends Component {
                                             {this.props.filmInfosState.film_infos.title}
                                         </h1>
                                     </div>
-                                    <div className="col-md-12">
-                                    <h1 className="text-center">
-                                           Make a comment
-                                    </h1>
-                                        <input>
+                                    <div className="col-md-12 comment_section">
+                                   
+                                        <div className="row all_comment">
+                                            <ul>
+                                                {
+                                                    this.state.comment.map((elem, index) => (
+                                                        <li>
+                                                            {elem.name} : {elem.comment} 
+                                                        </li>
+                                                    ))
+
+                                                }
+                                            </ul>
+                                            
+
+
+                                        </div>
+                                        <button onClick={this.loadMoreComment}></button>
+                                        <h1 className="text-center">
+                                            Make a comment
+                                        </h1>
+                                        <form onSubmit={this.make_comm}>
+                                            <input ref={this.com}>
+                                            
+                                            </input>
+                                            <input type="submit" value="ok"></input>
+                                            
+                                        </form>
                                         
-                                        </input>
                                     </div>
                                 {/* MOVIE PLAYER */}
                                     {this.props.filmInfosState.movie_in_db[0] && this.props.filmInfosState.movie_in_db[0].download_complete === 1 ?

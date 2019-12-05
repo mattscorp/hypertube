@@ -45,6 +45,11 @@ app.use(user_infos);
 const themoviedb = require('./themoviedb/themoviedb.js');
 app.use(themoviedb);
 
+/**** ADD COMMENT ****/
+const comment = require('./comment.js');
+app.use(comment);
+
+
 // /**** ERROR 404 ****/
 // router.get('*', (req, res) => {
 //   if (req.query.movie_id && req.query.movie !== "") {

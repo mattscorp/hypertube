@@ -74,7 +74,8 @@ class App extends Component {
                     setSimilarMovies={(resData) => {this.props.setSimilarMovies(resData)}}
                     setMovieInDb={(resData) => {this.props.setMovieInDb(resData)}}
                     darkModeState = {this.props.darkModeState.dark_mode}
-                  />
+                    userConnectState={this.props.userConnect}
+                    />
               }/>
               <Route path="/home" render={
                 (props) => 

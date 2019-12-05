@@ -60,8 +60,9 @@ CREATE TABLE IF NOT EXISTS `ratings` (
 
 CREATE TABLE IF NOT EXISTS `comments` (
     `comment_ID` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `film_ID` int(11) DEFAULT NULL,
-    `user_ID` int(11) DEFAULT NULL,
+    `film_ID` int(11) DEFAULT NULL, 
+    `uuid` text,
+    `first_name` varchar(255) DEFAULT NULL,
     `comment` text,
     `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
