@@ -11,6 +11,7 @@ class Play extends Component {
         repeat: "no-repeat",
         comment: [],
         offset: 0,
+        loadMoreButton : 0,
 
     }
 
@@ -161,9 +162,11 @@ class Play extends Component {
             else
                 return res.json();
             })
+            
             .then(resData => {
-                resData.map(elem => {
+                resData.map((elem , index) => {
                     this.setState(prevState => (
+                        index === 4 ? this.state.loadMoreButton = 0 : this.state.loadMoreButton = 1,
                         this.state.offset += 1,
                         this.state.comment.push(elem)
                     ))
@@ -228,7 +231,13 @@ class Play extends Component {
                                                 }
                                             </ul>
                                         </div>
-                                        <button value="Load more comments" onClick={this.loadMoreComment}>LoadMore</button>
+                                        {this.state.loadMoreButton === 0 ? 
+                                        <button value="Load more comments" onClick={this.loadMoreComment}>
+                                            LoadMore
+                                        </button>
+                                        : null 
+                                        }
+                                        
                                         <h1 className="text-center">
                                             Make a comment
                                         </h1>
