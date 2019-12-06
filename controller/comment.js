@@ -27,12 +27,12 @@ router.get('/get_comment', with_auth, async (req, res) => {
     if(req.query.offset && req.query.offset !== "" && req.query.moviedb_id && req.query.moviedb_id !== "" )
     {
         console.log("CA EXISTE");
-        let get_comment = JSON.parse(await commentModel.get_comment(req.query.moviedb_id, req.query.offset));
+        let get_comment = await commentModel.get_comment(req.query.moviedb_id, req.query.offset);
         console.log(get_comment);
         if (get_comment == 'vide')
          res.sendStatus(403);
     else
-        res.status(200).send(get_comment);
+        res.status(200).send(JSON.parse(get_comment));
     }
     else
      res.sendStatus(403);

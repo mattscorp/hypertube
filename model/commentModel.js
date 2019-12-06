@@ -39,7 +39,7 @@ const get_comment = async (moviedb_ID, offset) => {
                 throw err;
             else {
                 if (result == '')
-                    resolve('vide');
+                    resolve("vide");
                 else
                     resolve(JSON.stringify(result));
             }

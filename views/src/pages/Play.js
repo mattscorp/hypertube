@@ -164,16 +164,22 @@ class Play extends Component {
             })
             
             .then(resData => {
-                resData.map((elem , index) => {
+                if (resData !== undefined){
+                    resData.map((elem , index) => {
+                        this.setState(prevState => (
+                            index === 4 ? this.state.loadMoreButton = 0 : this.state.loadMoreButton = 1,
+                            this.state.offset += 1,
+                            this.state.comment.push(elem)
+                        ))
+                    })
+                }
+                else
+                {
                     this.setState(prevState => (
-                        index === 4 ? this.state.loadMoreButton = 0 : this.state.loadMoreButton = 1,
-                        this.state.offset += 1,
-                        this.state.comment.push(elem)
+                        this.state.loadMoreButton = 1
                     ))
-                })
-               
-                
-                console.log(resData);
+                }
+                // console.log(resData);
                 // this.props.setSimilarMovies(resData);
             })
         }
