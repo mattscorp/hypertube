@@ -33,8 +33,8 @@ module.exports.add_comment = add_comment;
 const get_comment = async (moviedb_ID, offset) => {
 
     return new Promise( async (resolve, reject) => {
-        let sql = "SELECT * FROM `comments` WHERE `film_ID` = ? ORDER BY `date` DESC LIMIT ?, ?";
-        con.query(sql, [moviedb_ID, parseInt(offset), parseInt(offset) + 5], (err, result) => {
+        let sql = "SELECT * FROM `comments` WHERE `film_ID` = ? ORDER BY `date` DESC LIMIT ?, 5";
+        con.query(sql, [moviedb_ID, parseInt(offset)], (err, result) => {
             if (err)
                 throw err;
             else {

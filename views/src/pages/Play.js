@@ -143,11 +143,13 @@ class Play extends Component {
         .then(resData3 => {
             this.props.setSimilarMovies(resData3);
         })
-        this.get_comment();
+         this.get_comment();
 
     }
         // DISPLAY COMMENT
             get_comment = () => {
+                console.log("ON Y EST PASSE");
+                console.log(this.state.offset);
                 fetch(`http://localhost:8000/get_comment?offset=${this.state.offset}&moviedb_id=${this.props.location.search.split('movie=')[1]}`, {
                     method: 'GET',
                     credentials: 'include',
@@ -219,17 +221,14 @@ class Play extends Component {
                                                 {
                                                     this.state.comment.map((elem, index) => (
                                                         <li>
-                                                            {elem.name} : {elem.comment} 
+                                                            {elem.first_name || elem.name} : {elem.comment} 
                                                         </li>
                                                     ))
 
                                                 }
                                             </ul>
-                                            
-
-
                                         </div>
-                                        <button onClick={this.loadMoreComment}></button>
+                                        <button value="Load more comments" onClick={this.loadMoreComment}>LoadMore</button>
                                         <h1 className="text-center">
                                             Make a comment
                                         </h1>
