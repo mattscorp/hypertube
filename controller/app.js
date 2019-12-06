@@ -45,10 +45,13 @@ app.use(user_infos);
 const themoviedb = require('./themoviedb/themoviedb.js');
 app.use(themoviedb);
 
-/**** ADD COMMENT ****/
+/**** ADD / GET COMMENT ****/
 const comment = require('./comment.js');
 app.use(comment);
 
+/**** ADD / GET RATING ****/
+const rating = require('./rating.js');
+app.use(rating);
 
 // /**** ERROR 404 ****/
 // router.get('*', (req, res) => {

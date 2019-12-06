@@ -12,13 +12,13 @@ class Play extends Component {
         comment: [],
         offset: 0,
         loadMoreButton : 0,
-
+        average_rating: -1
     }
 
     constructor(props) {
         super(props);
-        // l ID du film dans the movieDB
          this.com = React.createRef();
+         this.rating = React.createRef();
 
     }
 
@@ -144,8 +144,8 @@ class Play extends Component {
         .then(resData3 => {
             this.props.setSimilarMovies(resData3);
         })
-         this.get_comment();
-
+        this.get_comment();
+        this.average_rating();
     }
         // DISPLAY COMMENT
             get_comment = () => {
@@ -184,28 +184,66 @@ class Play extends Component {
             })
         }
         // MAKE A COMM FONCTION
-            make_comm = (event) => {
-                event.preventDefault();
-               
-                this.setState(prevState => (
+        make_comm = (event) => {
+            event.preventDefault();
+            
+            this.setState(prevState => (
 
-                    this.state.offset += 1,
-                    this.state.comment.unshift({comment : this.com.current.value, name : this.props.userConnectState.first_name || this.props.userConnectState.login ,date : new Date().toISOString().slice(0, 19).replace('T', ' ')}) 
-                ))
+                this.state.offset += 1,
+                this.state.comment.unshift({comment : this.com.current.value, name : this.props.userConnectState.first_name || this.props.userConnectState.login ,date : new Date().toISOString().slice(0, 19).replace('T', ' ')}) 
+            ))
 
-                fetch(`http://localhost:8000/add_comment`, {
-                    method: 'POST',
-                    credentials: 'include',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ moviedb_ID: this.props.location.search.split('movie=')[1], comment : this.com.current.value}),
-                })
-                .catch((err) => { console.log(err); });
-            }
-        // LOAD MORE COMM
-            loadMoreComment = (event) => {
-                event.preventDefault();
-             this.get_comment();   
-            }
+            fetch(`http://localhost:8000/add_comment`, {
+                method: 'POST',
+                credentials: 'include',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ moviedb_ID: this.props.location.search.split('movie=')[1], comment : this.com.current.value}),
+            })
+            .catch((err) => { console.log(err); });
+        }
+    // LOAD MORE COMM
+        loadMoreComment = (event) => {
+            event.preventDefault();
+            this.get_comment();   
+        }
+
+        // GET AVERAGE RATING
+        average_rating = () => {
+            fetch(`http://localhost:8000/get_rate_average?moviedb_ID=${this.props.location.search.split('movie=')[1]}`, {
+                method: 'GET',
+                credentials: 'include',
+                headers: {'Content-Type': 'application/json'}
+            })
+            .then((res) => {
+                if (res.status !== 400) {
+                    return (res.json());
+                    
+                }
+                else alert('lol');
+            })
+            .then((resData) => {
+                if (resData !== undefined) {
+                    this.setState(prevState => (this.state.average_rating = resData[0].average_rating))
+                }
+            })
+        }
+
+        // RATING FUNCTION
+        rate_movie = (event) => {
+            event.preventDefault();
+            alert('YO');
+            fetch(`http://localhost:8000/rate_movie`, {
+                method: 'POST',
+                credentials: 'include',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ moviedb_ID: this.props.location.search.split('movie=')[1], rating : this.rating.current.value}),
+            })
+            .then(() => {
+                this.average_rating();
+            })
+            .catch((err) => { console.log(err); });
+        }
+        
 
     render () {
         // alert(this.state.film_cast.cast);
@@ -222,6 +260,13 @@ class Play extends Component {
                                         <h1 className="text-center">
                                             {this.props.filmInfosState.film_infos.title}
                                         </h1>
+                                    </div>
+                                    <div className="col-md-12 rating_section">
+                                        <h1>Hypertube Ratings</h1>
+                                        <h2>Average rating : {this.state.average_rating ? this.state.average_rating : "Not rated yet"}</h2>
+                                        <form>
+                                            <input onChange={this.rate_movie} type="range" name="points" min="0" max="10" ref={this.rating}/>
+                                        </form>
                                     </div>
                                     <div className="col-md-12 comment_section">
                                    
