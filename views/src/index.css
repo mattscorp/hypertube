@@ -387,6 +387,9 @@ h1.jumbotron span{
     margin-bottom: 2.5vw;
 }
 
+.comment{
+    background: #5f5656;
+}
 @media (min-width: 300px) {
     .list-films-all, .under, .AccountDiv{
         margin-top : 55vw;
