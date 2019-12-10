@@ -163,7 +163,7 @@ class Account extends Component {
 
     render() {
         return (
-            <div className="row container">
+            <div className="row">
                 {this.props.userConnectState.uuid ? <div className="nav-item overflow-auto col-xs-12" onClick={this.logout}><button className="btn-logout btn-success-logout btn-style-logout">Logout</button></div> : null}
                 {/* Title */}
                 <div className="form-group col-xs-12">

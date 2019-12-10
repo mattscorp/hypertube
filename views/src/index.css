@@ -41,7 +41,6 @@ body {
 {
     margin-top : -1px;
     margin-bottom: 0;
-    box-shadow: 0 2px 4px rgba(0,0,0,.04);
     display: inline;
 }
 .right-element {
@@ -109,7 +108,7 @@ body {
     color:  #9e9e9ec2 !important;
     /* position: fixed; */
     padding-top: 4%;
-    overflow: scroll;
+    /* overflow: scroll; */
     width: 25%;
     height: 100%;
     z-index: 1;
@@ -142,7 +141,7 @@ body {
     text-align: center;
     color:  #9e9e9ec2 !important;
     position: fixed;
-    overflow: scroll;
+    /* overflow: scroll; */
     height: 100%;
     z-index: 1;
     /* CSS ANIMATIONS */
@@ -176,7 +175,7 @@ body {
     color:  #9e9e9ec2 !important;
     /* position: fixed; */
     height: 100%;
-    overflow: scroll;
+    /* overflow: scroll; */
     z-index: 1;
     /* CSS ANIMATIONS */
     -webkit-animation-name: AccountDiv; /* Safari 4.0 - 8.0 */
@@ -203,7 +202,7 @@ body {
     color:  #9e9e9ec2 !important;
     position: fixed;
     height: 100%;
-    overflow: scroll;
+    /* overflow: scroll; */
     z-index: 1;
     /* CSS ANIMATIONS */
     -webkit-animation-name: DisappearAccountDiv; /* Safari 4.0 - 8.0 */
@@ -224,7 +223,7 @@ body {
 }
 
 .profile_picture_row {
-    height: 200px;
+    height: 50%;
 }
 
 .profile_picture {
@@ -358,7 +357,7 @@ h1.jumbotron span{
         margin-top : 55vw;
     }
     .under{
-        background-color: #9e9e9ec2;
+        background-color: #f8f9faf0;
     }
     .image:hover .overlay_car {
         width: 46%;
@@ -377,7 +376,7 @@ h1.jumbotron span{
         margin-top : 50vw;
     }
     .under{
-        background-color: #9e9e9ec2;
+        background-color: #f8f9faf0;
     }
     .image:hover .overlay_car {
         width: 100%;
@@ -401,7 +400,7 @@ h1.jumbotron span{
             margin-top : 50%;
         }
         .under{
-            background-color: #9e9e9ec2;
+            background-color: #f8f9faf0;
         }
         .image:hover .overlay_car {
             width: 54%;
@@ -422,7 +421,7 @@ h1.jumbotron span{
             margin-top : 14%;
         }
         .under{
-            background-color: #9e9e9ec2;
+            background-color: #f8f9faf0;
         }
         .image:hover .overlay_car {
             width: 31%;
@@ -444,7 +443,7 @@ h1.jumbotron span{
             margin-top : 7%;
         }
         .under{
-            background-color: #9e9e9ec2;
+            background-color: #f8f9faf0;
         }
         .image:hover .overlay_car {
             width: 31%;
@@ -462,7 +461,7 @@ h1.jumbotron span{
             text-align: left;
             color: #9e9e9ec2 !important;
             padding-top: 7%;
-            overflow: scroll;
+            /* overflow: scroll; */
             /* width: 25%; */
             /* height: 69%; */
             z-index: 1;
@@ -483,11 +482,11 @@ h1.jumbotron span{
             margin-top : 4%;
         }
         .AccountDiv{
-            margin-top : 0;
+            margin-top : 50px;
         }
         .under{
             margin-top : 8%;
-            background-color: #9e9e9ec2;
+            background-color: #f8f9faf0;
         }
         .image:hover .overlay_car {
             width: 31%;
@@ -510,7 +509,7 @@ h1.jumbotron span{
 }
 .under{
     margin-top : 0;
-    background-color: #9e9e9ec2;
+    background-color: #f8f9faf0;
 }
 .image:hover .overlay_car {
     width: 31%;
@@ -681,7 +680,7 @@ body{
     width: 0;
     height: 100%;
     margin-right: -250px;
-    overflow-y: auto;
+    /* overflow-y: auto; */
     background: #000;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
