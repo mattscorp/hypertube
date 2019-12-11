@@ -191,20 +191,34 @@ class Play extends Component {
         // MAKE A COMM FONCTION
         make_comm = (event) => {
             event.preventDefault();
-            
-            this.setState(prevState => (
+            if (this.com.current.value && this.com.current.value.trim() !== '')
+            {
+                if (this.state.comment.length === 0
+                    || (this.state.comment[0].date
+                        && ((this.props.userConnectState.first_name || this.props.userConnectState.login) === (this.state.comment[0].name || this.state.comment[0].first_name))
+                        && !((new Date().toISOString().slice(0, 16).replace('T', ' ')) === this.state.comment[0].date.slice(0, 16).replace('T', ' ') && (parseInt((new Date().toISOString().slice(17, 19).replace('T', ' '))) - parseInt(this.state.comment[0].date.slice(17, 19).replace('T', ' ')) < 5))))
+                {
+                    alert(this.state.comment.length);
+                    this.setState(prevState => (
+                        this.state.offset += 1,
+                        this.state.comment.unshift({comment : this.com.current.value, name : this.props.userConnectState.first_name || this.props.userConnectState.login , date : new Date().toISOString().slice(0, 19).replace('T', ' ')}) 
+                    ))
+                    fetch(`http://localhost:8000/add_comment`, {
+                        method: 'POST',
+                        credentials: 'include',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ moviedb_ID: this.props.location.search.split('movie=')[1], comment : this.com.current.value}),
+                    })
+                    .then(() => {this.com.current.value = '';})
+                    .catch((err) => { console.log(err); });
+                } else {
+                    alert("You must wait at least 5 seconds to post another comment");
+                }
+            }
+        }
 
-                this.state.offset += 1,
-                this.state.comment.unshift({comment : this.com.current.value, name : this.props.userConnectState.first_name || this.props.userConnectState.login ,date : new Date().toISOString().slice(0, 19).replace('T', ' ')}) 
-            ))
-
-            fetch(`http://localhost:8000/add_comment`, {
-                method: 'POST',
-                credentials: 'include',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ moviedb_ID: this.props.location.search.split('movie=')[1], comment : this.com.current.value}),
-            })
-            .catch((err) => { console.log(err); });
+        delete_com = (elem) => {
+            alert(elem.comment);
         }
     // LOAD MORE COMM
         loadMoreComment = (event) => {
@@ -234,12 +248,11 @@ class Play extends Component {
         // RATING FUNCTION
         rate_movie = (event) => {
             event.preventDefault();
-                
-                fetch(`http://localhost:8000/rate_movie`, {
-                method: 'POST',
-                credentials: 'include',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ moviedb_ID: this.props.location.search.split('movie=')[1], rating : event.target.value}),
+            fetch(`http://localhost:8000/rate_movie`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ moviedb_ID: this.props.location.search.split('movie=')[1], rating : event.target.value}),
             })
             .then(() => {
                 this.average_rating();
@@ -288,36 +301,30 @@ class Play extends Component {
                                         <div className="col-md-12 text-center rating_section">
                                             <h1>Hypertube Ratings</h1>
                                             <h2>Average rating : {this.state.average_rating ? this.state.average_rating : "Not rated yet"} </h2>
-                                            {/* <form> */}
-                                                {/* <input onChange={this.rate_movie} type="range" name="points" min="0" max="10" ref={this.rating}/> */}
-                                                <div className="col-md-5 offset-4">
-                                               
-                                                    <form class="rating" onChange={this.rate_movie} > 
-                                                    <h1>{this.state.user_rating}</h1>                                         
-                                                        <input type="radio" id="star10" name="rating" value="10" ref={this.rating} checked={this.state.user_rating > 9.5 && this.state.user_rating <= 10}/><label class = "full" for="star10" title="10 stars" ></label>
-                                                        <input type="radio" id="star9half" name="rating" value="9.5" ref={this.rating} checked={this.state.user_rating > 9 && this.state.user_rating <= 9.5} /><label class="half" for="star9half" title="9.5 stars" ></label>
-                                                        <input type="radio" id="star9" name="rating" value="9" ref={this.rating} checked={this.state.user_rating > 8.5 && this.state.user_rating <= 9} /><label class = "full" for="star9" title="9 stars" ></label>
-                                                        <input type="radio" id="star8half" name="rating" value="8.5" ref={this.rating} checked={this.state.user_rating > 8 && this.state.user_rating <= 8.5} /><label class="half" for="star8half" title="8.5 stars" ></label>
-                                                        <input type="radio" id="star8" name="rating" value="8" ref={this.rating} checked={this.state.user_rating > 7.5 && this.state.user_rating <= 8} /><label class = "full" for="star8" title="8 stars" ></label>
-                                                        <input type="radio" id="star7half" name="rating" value="7.5" ref={this.rating} checked={this.state.user_rating > 7 && this.state.user_rating <= 7.5} /><label class="half" for="star7half" title="7.5 stars" ></label>
-                                                        <input type="radio" id="star7" name="rating" value="7" ref={this.rating} checked={this.state.user_rating > 6.5 && this.state.user_rating <= 7} /><label class = "full" for="star7" title="7 stars" ></label>
-                                                        <input type="radio" id="star6half" name="rating" value="6.5" ref={this.rating} checked={this.state.user_rating > 6 && this.state.user_rating <= 6.5} /><label class="half" for="star6half" title="6.5 stars" ></label>
-                                                        <input type="radio" id="star6" name="rating" value="6" ref={this.rating} checked={this.state.user_rating > 5.5 && this.state.user_rating <= 6} /><label class = "full" for="star6" title="6 stars" ></label>
-                                                        <input type="radio" id="star5half" name="rating" value="5.5" ref={this.rating} checked={this.state.user_rating > 5 && this.state.user_rating <= 5.5} /><label class="half" for="star5half" title="Pretty good - 5.5 stars" ></label>
-                                                        <input type="radio" id="star5" name="rating" value="5" ref={this.rating} checked={this.state.user_rating > 4.5 && this.state.user_rating <= 5} /><label class = "full" for="star5" title="Awesome - 5 stars" ></label>
-                                                        <input type="radio" id="star4half" name="rating" value="4.5" ref={this.rating} checked={this.state.user_rating > 4 && this.state.user_rating <= 4.5} /><label class="half" for="star4half" title="Pretty good - 4.5 stars" ></label>
-                                                        <input type="radio" id="star4" name="rating" value="4" ref={this.rating} checked={this.state.user_rating > 3.5 && this.state.user_rating <= 4} /><label class = "full" for="star4" title="Pretty good - 4 stars" ></label>
-                                                        <input type="radio" id="star3half" name="rating" value="3.5" ref={this.rating} checked={this.state.user_rating > 3 && this.state.user_rating <= 3.5} /><label class="half" for="star3half" title="Meh - 3.5 stars" ></label>
-                                                        <input type="radio" id="star3" name="rating" value="3" ref={this.rating} checked={this.state.user_rating > 2.5 && this.state.user_rating <= 3} /><label class = "full" for="star3" title="Meh - 3 stars" ></label>
-                                                        <input type="radio" id="star2half" name="rating" value="2.5" ref={this.rating} checked={this.state.user_rating > 2 && this.state.user_rating <= 2.5} /><label class="half" for="star2half" title="Kinda bad - 2.5 stars" ></label>
-                                                        <input type="radio" id="star2" name="rating" value="2" ref={this.rating} checked={this.state.user_rating > 1.5 && this.state.user_rating <= 2} /><label class = "full" for="star2" title="Kinda bad - 2 stars" ></label>
-                                                        <input type="radio" id="star1half" name="rating" value="1.5" ref={this.rating} checked={this.state.user_rating > 1 && this.state.user_rating <= 1.5} /><label class="half" for="star1half" title="Meh - 1.5 stars" ></label>
-                                                        <input type="radio" id="star1" name="rating" value="1" ref={this.rating} checked={this.state.user_rating > 0.5 && this.state.user_rating <= 1} /><label class = "full" for="star1" title="Sucks big time - 1 star" ></label>
-                                                        <input type="radio" id="starhalf" name="rating" value="0.5" ref={this.rating} checked={this.state.user_rating > 0 && this.state.user_rating <= 0.5} /><label class="half" for="starhalf" title="Sucks big time - 0.5 stars" ></label>
-                                                    </form>
-                                               
-                                                </div>
-                                            {/* </form> */}
+                                            <div className="col-md-5 offset-4">
+                                                <form class="rating" onChange={this.rate_movie} > 
+                                                    <input type="radio" id="star10" name="rating" value="10" ref={this.rating} checked={this.state.user_rating > 9.5 && this.state.user_rating <= 10}/><label class = "full" for="star10" title="10 stars" ></label>
+                                                    <input type="radio" id="star9half" name="rating" value="9.5" ref={this.rating} checked={this.state.user_rating > 9 && this.state.user_rating <= 9.5} /><label class="half" for="star9half" title="9.5 stars" ></label>
+                                                    <input type="radio" id="star9" name="rating" value="9" ref={this.rating} checked={this.state.user_rating > 8.5 && this.state.user_rating <= 9} /><label class = "full" for="star9" title="9 stars" ></label>
+                                                    <input type="radio" id="star8half" name="rating" value="8.5" ref={this.rating} checked={this.state.user_rating > 8 && this.state.user_rating <= 8.5} /><label class="half" for="star8half" title="8.5 stars" ></label>
+                                                    <input type="radio" id="star8" name="rating" value="8" ref={this.rating} checked={this.state.user_rating > 7.5 && this.state.user_rating <= 8} /><label class = "full" for="star8" title="8 stars" ></label>
+                                                    <input type="radio" id="star7half" name="rating" value="7.5" ref={this.rating} checked={this.state.user_rating > 7 && this.state.user_rating <= 7.5} /><label class="half" for="star7half" title="7.5 stars" ></label>
+                                                    <input type="radio" id="star7" name="rating" value="7" ref={this.rating} checked={this.state.user_rating > 6.5 && this.state.user_rating <= 7} /><label class = "full" for="star7" title="7 stars" ></label>
+                                                    <input type="radio" id="star6half" name="rating" value="6.5" ref={this.rating} checked={this.state.user_rating > 6 && this.state.user_rating <= 6.5} /><label class="half" for="star6half" title="6.5 stars" ></label>
+                                                    <input type="radio" id="star6" name="rating" value="6" ref={this.rating} checked={this.state.user_rating > 5.5 && this.state.user_rating <= 6} /><label class = "full" for="star6" title="6 stars" ></label>
+                                                    <input type="radio" id="star5half" name="rating" value="5.5" ref={this.rating} checked={this.state.user_rating > 5 && this.state.user_rating <= 5.5} /><label class="half" for="star5half" title="Pretty good - 5.5 stars" ></label>
+                                                    <input type="radio" id="star5" name="rating" value="5" ref={this.rating} checked={this.state.user_rating > 4.5 && this.state.user_rating <= 5} /><label class = "full" for="star5" title="Awesome - 5 stars" ></label>
+                                                    <input type="radio" id="star4half" name="rating" value="4.5" ref={this.rating} checked={this.state.user_rating > 4 && this.state.user_rating <= 4.5} /><label class="half" for="star4half" title="Pretty good - 4.5 stars" ></label>
+                                                    <input type="radio" id="star4" name="rating" value="4" ref={this.rating} checked={this.state.user_rating > 3.5 && this.state.user_rating <= 4} /><label class = "full" for="star4" title="Pretty good - 4 stars" ></label>
+                                                    <input type="radio" id="star3half" name="rating" value="3.5" ref={this.rating} checked={this.state.user_rating > 3 && this.state.user_rating <= 3.5} /><label class="half" for="star3half" title="Meh - 3.5 stars" ></label>
+                                                    <input type="radio" id="star3" name="rating" value="3" ref={this.rating} checked={this.state.user_rating > 2.5 && this.state.user_rating <= 3} /><label class = "full" for="star3" title="Meh - 3 stars" ></label>
+                                                    <input type="radio" id="star2half" name="rating" value="2.5" ref={this.rating} checked={this.state.user_rating > 2 && this.state.user_rating <= 2.5} /><label class="half" for="star2half" title="Kinda bad - 2.5 stars" ></label>
+                                                    <input type="radio" id="star2" name="rating" value="2" ref={this.rating} checked={this.state.user_rating > 1.5 && this.state.user_rating <= 2} /><label class = "full" for="star2" title="Kinda bad - 2 stars" ></label>
+                                                    <input type="radio" id="star1half" name="rating" value="1.5" ref={this.rating} checked={this.state.user_rating > 1 && this.state.user_rating <= 1.5} /><label class="half" for="star1half" title="Meh - 1.5 stars" ></label>
+                                                    <input type="radio" id="star1" name="rating" value="1" ref={this.rating} checked={this.state.user_rating > 0.5 && this.state.user_rating <= 1} /><label class = "full" for="star1" title="Sucks big time - 1 star" ></label>
+                                                    <input type="radio" id="starhalf" name="rating" value="0.5" ref={this.rating} checked={this.state.user_rating > 0 && this.state.user_rating <= 0.5} /><label class="half" for="starhalf" title="Sucks big time - 0.5 stars" ></label>
+                                                </form>
+                                            </div>
                                         </div>
                                         <div className="comment_section col-md-12 text-center">
                                     
@@ -330,6 +337,7 @@ class Play extends Component {
                                                                 <br></br>
                                                                 Comment BY {elem.first_name || elem.name} :
                                                                 <div className="comment"> {elem.comment} </div>
+                                                                <button onClick={() => this.delete_com(elem)}>X</button>
                                                             </li>
                                                         ))
 

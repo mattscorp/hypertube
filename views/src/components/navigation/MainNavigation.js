@@ -85,7 +85,7 @@ class MainNavigation extends Component {
             }
         })
         .then(resData => {
-            if (resData) {
+            if (resData && resData[0] && resData[0].uuid && resData[0].uuid !== undefined) {
                 this.props.setUserConnect(resData[0]);
                 if (resData[0].dark_mode === 1)
                     this.props.setDarkMode();

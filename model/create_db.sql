@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `ratings` (
     `rating_ID` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `film_ID` int(11) DEFAULT NULL,
     `user_ID` TEXT,
-    `rating` int(4),
+    `rating` FLOAT,
     `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
