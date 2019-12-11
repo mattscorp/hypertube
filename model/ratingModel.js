@@ -44,7 +44,7 @@ module.exports.update_rating = update_rating;
 
 const average_rating = (movie_ID) => {
     return new Promise((resolve, reject) => {
-        let sql = "SELECT AVG (ALL `rating`) AS average_rating FROM `ratings` WHERE `film_ID` = ?";
+        let sql = "SELECT ROUND((AVG (ALL `rating`)), 1) AS average_rating FROM `ratings` WHERE `film_ID` = ?";
         con.query(sql, [movie_ID], (err, result) => {
             if (err)
                 throw err;
@@ -56,3 +56,18 @@ const average_rating = (movie_ID) => {
     });
 };
 module.exports.average_rating = average_rating;
+
+const user_rating = (movie_ID, uuid) => {
+    return new Promise((resolve, reject) => {
+        let sql = "SELECT `rating` FROM `ratings` WHERE `film_ID` = ? AND `user_ID` = ?";
+        con.query(sql, [movie_ID, uuid], (err, result) => {
+            if (err)
+                throw err;
+            else if (result == '')
+                resolve('vide');
+            else
+                resolve(result);
+        });
+    });
+};
+module.exports.user_rating = user_rating;

@@ -37,4 +37,16 @@ router.get('/get_rate_average', with_auth, async (req, res) => {
     }
 })
 
+router.get('/user_rating', with_auth, async (req, res) => {
+    if (req.query.moviedb_ID && req.query.moviedb_ID != '') {
+        let user_rating = await ratingModel.user_rating(req.query.moviedb_ID, req.uuid)
+        if (user_rating  == 'vide')
+            res.sendStatus(204);
+        else
+            res.status(200).send(user_rating);
+    } else {
+        res.sendStatus(400);
+    }
+})
+
 module.exports = router;
