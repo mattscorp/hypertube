@@ -137,7 +137,9 @@ class MainNavigation extends Component {
                 headers: {'Content-Type': 'application/json'}
             })
             .then(res => {
-                if (res.status !== 200 && res.status !== 201)
+                if (res.status === 401)
+                    window.location.assign('/');
+                else if (res.status !== 200 && res.status !== 201)
                     throw new Error('Failed');
                 return res.json();
             })
@@ -158,7 +160,9 @@ class MainNavigation extends Component {
                 headers: {'Content-Type': 'application/json'}
             })
             .then(res => {
-                if (res.status !== 200 && res.status !== 201)
+                if (res.status === 401)
+                    window.location.assign('/');
+                else if (res.status !== 200 && res.status !== 201)
                     throw new Error('Failed');
                 return res.json();
             })
@@ -182,7 +186,9 @@ class MainNavigation extends Component {
             headers: {'Content-Type': 'application/json'}
         })
         .then(res => {
-            if (res.status !== 200 && res.status !== 201)
+            if (res.status === 401)
+                window.location.assign('/');
+            else if (res.status !== 200 && res.status !== 201)
                 throw new Error('Failed');
             return res.json();
         })

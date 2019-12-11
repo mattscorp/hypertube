@@ -43,9 +43,11 @@ class Account extends Component {
             credentials: 'include',
             headers: {'Content-Type': 'application/json'}
         })
-        .then((res) => { console.log(res) })
+        .then((res) => {
+            if (res.status === 401)
+                window.location.assign('/');
+        })
         .catch((err) => { console.log(err); });
-        console.log('dark mode value : ' + this.darkModeEl.current.value);
     }
 
     // UPDATE ACCOUNT DATA (login, email, first and last names)
@@ -66,7 +68,9 @@ class Account extends Component {
                 headers: {'Content-Type': 'application/json'}
             })
             .then(res => {
-                if (res.status === 201)
+                if (res.status === 401)
+                    window.location.assign('/');
+                else if (res.status === 201)
                     alert('Information updated');
                 else
                     alert('An error has occured');
@@ -132,7 +136,7 @@ class Account extends Component {
         .then(res => {
             if (res.status === 401) {
                 alert('Error : you need to reconnect');
-                window.location.assign('http://localhost:3000');
+                window.location.assign('/');
             } else if (res.status === 400) {
                 alert('Only jpeg, jpg and png files are supported.');
             } else if (res.status === 200) {
@@ -143,7 +147,9 @@ class Account extends Component {
                     credentials: 'include'
                 })
                 .then(res => {
-                    if (res.status !== 200) {
+                    if (res.status === 401)
+                        window.location.assign('/');
+                    else if (res.status !== 200) {
                         this.props.setUserDisconnect()
                     } else {
                         return res.json();

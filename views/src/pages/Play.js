@@ -33,7 +33,9 @@ class Play extends Component {
             headers: {'Content-Type': 'application/json'}
         })
         .then((res) => {
-            if (res.status !== 200)
+            if (res.status === 401)
+                window.location.assign('/');
+            else if (res.status !== 200)
                 console.log('Failed getting information about the movie, themoviedb.org is not responding');
             else
                 return res.json();
@@ -55,7 +57,9 @@ class Play extends Component {
                 headers: {'Content-Type': 'application/json'}
             })
             .then(async (res) => {
-                if (res.status === 200)
+                if (res.status === 401)
+                    window.location.assign('/');
+                else if (res.status === 200)
                 {
                     // 2. Si oui et fini de telecharger, l'envoyer, si oui mais pas fini passer a l'etape 4
                     console.log(res);
@@ -81,7 +85,9 @@ class Play extends Component {
                         headers: {'Content-Type': 'application/json'}
                     })
                     .then(res => {
-                        if (res.status === 204)
+                        if (res.status === 401)
+                            window.location.assign('/');
+                        else if (res.status === 204)
                             alert("Pas de magnet");
                         else if (res.status === 416)
                             alert("Pas de range");
@@ -121,7 +127,9 @@ class Play extends Component {
             headers: {'Content-Type': 'application/json'}
         })     
         .then((res2) => {
-            if (res2.status !== 200)
+            if (res2.status === 401)
+                window.location.assign('/');
+            else if (res2.status !== 200)
                 console.log('Failed getting information about the movie, themoviedb.org is not responding');
             else
                 return res2.json();
@@ -137,7 +145,9 @@ class Play extends Component {
             headers: {'Content-Type': 'application/json'}
         })
         .then((res3) => {
-            if (res3.status !== 200)
+            if (res3.status === 401)
+                window.location.assign('/');
+            else if (res3.status !== 200)
                 console.log('Failed getting similar movies, themoviedb.org is not res2ponding');
             else
                 return res3.json();
@@ -152,135 +162,147 @@ class Play extends Component {
         // Get the rating from this user (if any)
         this.user_rating();
     }
-        // DISPLAY COMMENT
-            get_comment = () => {
-                console.log("ON Y EST PASSE");
-                console.log(this.state.offset);
-                fetch(`http://localhost:8000/get_comment?offset=${this.state.offset}&moviedb_id=${this.props.location.search.split('movie=')[1]}`, {
-                    method: 'GET',
-                    credentials: 'include',
-                    headers: {'Content-Type': 'application/json'},
-            })
-            .then((res) => {
-                if (res.status !== 200)
+     // DISPLAY COMMENT
+    get_comment = () => {
+        fetch(`http://localhost:8000/get_comment?offset=${this.state.offset}&moviedb_id=${this.props.location.search.split('movie=')[1]}`, {
+            method: 'GET',
+            credentials: 'include',
+            headers: {'Content-Type': 'application/json'},
+        })
+        .then((res) => {
+            if (res.status === 401)
+                window.location.assign('/');
+            else if (res.status !== 200)
                 console.log('Fail to fetch comment on the select movie');
             else
                 return res.json();
-            })
-            
-            .then(resData => {
-                if (resData !== undefined){
-                    resData.map((elem , index) => {
-                        this.setState(prevState => (
-                            index === 4 ? this.state.loadMoreButton = 0 : this.state.loadMoreButton = 1,
-                            this.state.offset += 1,
-                            this.state.comment.push(elem)
-                        ))
-                    })
-                }
-                else
-                {
+        })
+        
+        .then(resData => {
+            if (resData !== undefined){
+                resData.map((elem , index) => {
                     this.setState(prevState => (
-                        this.state.loadMoreButton = 1
-                    ))
-                }
-                // console.log(resData);
-                // this.props.setSimilarMovies(resData);
-            })
-        }
-        // MAKE A COMM FONCTION
-        make_comm = (event) => {
-            event.preventDefault();
-            if (this.com.current.value && this.com.current.value.trim() !== '')
-            {
-                if (this.state.comment.length === 0
-                    || (this.state.comment[0].date
-                        && ((this.props.userConnectState.first_name || this.props.userConnectState.login) === (this.state.comment[0].name || this.state.comment[0].first_name))
-                        && !((new Date().toISOString().slice(0, 16).replace('T', ' ')) === this.state.comment[0].date.slice(0, 16).replace('T', ' ') && (parseInt((new Date().toISOString().slice(17, 19).replace('T', ' '))) - parseInt(this.state.comment[0].date.slice(17, 19).replace('T', ' ')) < 5))))
-                {
-                    alert(this.state.comment.length);
-                    this.setState(prevState => (
+                        index === 4 ? this.state.loadMoreButton = 0 : this.state.loadMoreButton = 1,
                         this.state.offset += 1,
-                        this.state.comment.unshift({comment : this.com.current.value, name : this.props.userConnectState.first_name || this.props.userConnectState.login , date : new Date().toISOString().slice(0, 19).replace('T', ' ')}) 
+                        this.state.comment.push(elem)
                     ))
-                    fetch(`http://localhost:8000/add_comment`, {
-                        method: 'POST',
-                        credentials: 'include',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({ moviedb_ID: this.props.location.search.split('movie=')[1], comment : this.com.current.value}),
-                    })
-                    .then(() => {this.com.current.value = '';})
-                    .catch((err) => { console.log(err); });
-                } else {
-                    alert("You must wait at least 5 seconds to post another comment");
-                }
+                })
+            }
+            else
+            {
+                this.setState(prevState => (
+                    this.state.loadMoreButton = 1
+                ))
+            }
+            // console.log(resData);
+            // this.props.setSimilarMovies(resData);
+        })
+    }
+    // MAKE A COMM FONCTION
+    make_comm = (event) => {
+        event.preventDefault();
+        if (this.com.current.value && this.com.current.value.trim() !== '')
+        {
+            if (this.state.comment.length === 0
+                || (this.state.comment[0].date
+                    && (!((this.props.userConnectState.first_name || this.props.userConnectState.login) === (this.state.comment[0].name || this.state.comment[0].first_name))
+                        || (new Date().toISOString().slice(0, 16).replace('T', ' ') !== this.state.comment[0].date.slice(0, 16).replace('T', ' '))
+                        || ((parseInt(new Date().toISOString().slice(17, 19).replace('T', ' ')) - parseInt(this.state.comment[0].date.slice(17, 19).replace('T', ' ')) > 5) || (parseInt((new Date().toISOString().slice(17, 19).replace('T', ' '))) - parseInt(this.state.comment[0].date.slice(17, 19).replace('T', ' '))) < -5))))
+            {
+                this.setState(prevState => (
+                    this.state.offset += 1,
+                    this.state.comment.unshift({comment : this.com.current.value, name : this.props.userConnectState.first_name || this.props.userConnectState.login , date : new Date().toISOString().slice(0, 19).replace('T', ' ')}) 
+                ))
+                fetch(`http://localhost:8000/add_comment`, {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ moviedb_ID: this.props.location.search.split('movie=')[1], comment : this.com.current.value}),
+                })
+                .then((res) => {
+                    if (res.status === 401)
+                        window.location.assign('/');
+                    else 
+                        this.com.current.value = '';
+                })
+                .catch((err) => { console.log(err); });
+            } else {
+                alert("You must wait at least 5 seconds to post another comment");
             }
         }
+    }
 
-        delete_com = (elem) => {
-            alert(elem.comment);
-        }
+    delete_com = (elem) => {
+        alert('DELETE TO BE DONE : ' + elem.comment);
+    }
     // LOAD MORE COMM
-        loadMoreComment = (event) => {
-            event.preventDefault();
-            this.get_comment();   
-        }
+    loadMoreComment = (event) => {
+        event.preventDefault();
+        this.get_comment();   
+    }
 
-        // GET AVERAGE RATING
-        average_rating = () => {
-            fetch(`http://localhost:8000/get_rate_average?moviedb_ID=${this.props.location.search.split('movie=')[1]}`, {
-                method: 'GET',
-                credentials: 'include',
-                headers: {'Content-Type': 'application/json'}
-            })
-            .then((res) => {
-                if (res.status !== 400) {
-                    return (res.json());
-                }
-            })
-            .then((resData) => {
-                if (resData !== undefined) {
-                    this.setState(prevState => (this.state.average_rating = resData[0].average_rating))
-                }
-            })
-        }
+    // GET AVERAGE RATING
+    average_rating = () => {
+        fetch(`http://localhost:8000/get_rate_average?moviedb_ID=${this.props.location.search.split('movie=')[1]}`, {
+            method: 'GET',
+            credentials: 'include',
+            headers: {'Content-Type': 'application/json'}
+        })
+        .then((res) => {
+            if (res.status === 401)
+                window.location.assign('/');
+            else if (res.status !== 400) {
+                return (res.json());
+            }
+        })
+        .then((resData) => {
+            if (resData !== undefined) {
+                this.setState(prevState => (this.state.average_rating = resData[0].average_rating))
+            }
+        })
+    }
 
-        // RATING FUNCTION
-        rate_movie = (event) => {
-            event.preventDefault();
-            fetch(`http://localhost:8000/rate_movie`, {
+    // RATING FUNCTION
+    rate_movie = (event) => {
+        event.preventDefault();
+        fetch(`http://localhost:8000/rate_movie`, {
             method: 'POST',
             credentials: 'include',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({ moviedb_ID: this.props.location.search.split('movie=')[1], rating : event.target.value}),
-            })
-            .then(() => {
+        })
+        .then((res) => {
+            if (res.status === 401)
+                window.location.assign('/');
+            else {
                 this.average_rating();
                 this.user_rating();
-            })
-            .catch((err) => { console.log(err); });
-        }
+            }
+        })
+        .catch((err) => { console.log(err); });
+    }
 
-        // GET THE USER PREVIOUS RATING AND PUT IT IN THE STATE TO HAVE THE PROPER NUMBER OF STARS WHEN LOADING THE PAGE
-        user_rating = () => {
-            fetch(`http://localhost:8000/user_rating?moviedb_ID=${this.props.location.search.split('movie=')[1]}`, {
-                method: 'GET',
-                credentials: 'include',
-                headers: {'Content-Type': 'application/json'}
-            })
-            .then((res) => {
-                if (res.status === 200) {
-                    return (res.json());
-                }
-            })
-            .then((resData) => {
-                if (resData[0].rating !== undefined) {
-                    this.setState(prevState => (this.state.user_rating = resData[0].rating))
-                }
-            })
-            .catch((err) => { console.log(err); });
-        }
-        
+    // GET THE USER PREVIOUS RATING AND PUT IT IN THE STATE TO HAVE THE PROPER NUMBER OF STARS WHEN LOADING THE PAGE
+    user_rating = () => {
+        fetch(`http://localhost:8000/user_rating?moviedb_ID=${this.props.location.search.split('movie=')[1]}`, {
+            method: 'GET',
+            credentials: 'include',
+            headers: {'Content-Type': 'application/json'}
+        })
+        .then((res) => {
+            if (res.status === 401)
+                window.location.assign('/');
+            else if (res.status === 200) {
+                return (res.json());
+            }
+        })
+        .then((resData) => {
+            if (resData[0].rating !== undefined) {
+                this.setState(prevState => (this.state.user_rating = resData[0].rating))
+            }
+        })
+        .catch((err) => { console.log(err); });
+    }
 
     render () {
         // alert(this.state.film_cast.cast);

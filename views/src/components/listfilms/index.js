@@ -64,7 +64,9 @@ class FilmsList extends Component{
                 headers: {'Content-Type': 'application/json'}
             })
             .then(res => {
-                if (res.status !== 200 && res.status !== 201)
+                if (res.status === 401)
+                    window.location.assign('/');
+                else if (res.status !== 200 && res.status !== 201)
                     throw new Error('Failed');
                 return res.json();
             })
@@ -87,7 +89,9 @@ class FilmsList extends Component{
                         headers: {'Content-Type': 'application/json'}
                     })
                     .then(res => {
-                        if (res.status !== 200 && res.status !== 201)
+                        if (res.status === 401)
+                            window.location.assign('/');
+                        else if (res.status !== 200 && res.status !== 201)
                             throw new Error('Failed');
                         return res.json();
                     })
@@ -102,15 +106,17 @@ class FilmsList extends Component{
             }
             else if (this.props.mode === 1)
             {
-                alert('HERE')
                 let search_query = this.props.homeSearch.split(':')[1].trim();
                 URL = `http://localhost:8000/moviedb?action=search&page=${this.props.reloadSearch.page}&movie_name=${decade}${genderSearch}${public_category}${rating}${duration}`;
                 fetch(URL, {
                     method: 'GET',
+                    credentials: "include",
                     headers: {'Content-Type': 'application/json'}
                 })
                 .then(res => {
-                    if (res.status !== 200 && res.status !== 201)
+                    if (res.status === 401)
+                        window.location.assign('/');
+                    else if (res.status !== 200 && res.status !== 201)
                         throw new Error('Failed');
                     return res.json();
                 })

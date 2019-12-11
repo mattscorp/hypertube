@@ -72,11 +72,7 @@ router.post('/update_password', with_auth, async (req, res) => {
 });
 
 // **** UPDATE PROFILE PICTURE **** //
-// router.post('/profile_picture', with_auth, async(req, res) => {
-//     console.log('in profile picture : ' + req.file);
-//     res.status(200).send('OK');
-// });
-router.post("/profile_picture", with_auth, (req, res) => {
+router.post("/profile_picture", with_auth, async (req, res) => {
     let uuid_user = req.uuid;
     upload(req, res, (err) => {
         // console.log("Request file ---", req.file);//Here you get file.
