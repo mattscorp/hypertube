@@ -8,13 +8,13 @@ const commentModel = require('./../model/commentModel.js');
 
 router.post('/add_comment', with_auth, async (req, res) => {
     if (req.body.moviedb_ID && req.body.moviedb_ID !== "" && req.body.comment && req.body.comment !== "") {
-        // console.log("req.body.moviedb_ID " + req.body.moviedb_ID);
-        // console.log("req.body.comment  " + req.body.comment );
         let add_comment = await commentModel.add_comment(req.body.moviedb_ID, req.body.comment, req.uuid);
         if (add_comment == 'vide')
             res.sendStatus(403);
-        else
+        else {
+            commentModel.one_more_comment(req.uuid);
             res.sendStatus(201);
+        }
     }
     else
      res.sendStatus(403);
@@ -46,8 +46,10 @@ router.post('/delete_comment', with_auth, async (req, res) => {
         let del = await commentModel.delete_comment(req.body.comment, req.body.comment_ID, req.body.uuid);
         if (del == 'vide')
             res.sendStatus(403);
-        else
-        res.sendStatus(201);
+        else {
+            commentModel.one_less_comment(req.uuid);
+            res.sendStatus(201);
+        }
     }
     else
      res.sendStatus(403);

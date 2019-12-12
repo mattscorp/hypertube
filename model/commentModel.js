@@ -29,6 +29,23 @@ const add_comment = async (moviedb_ID, comment, uuid) => {
 }
 module.exports.add_comment = add_comment;
 
+const one_more_comment = (uuid) => {
+    let sql = "UPDATE `users` SET `nb_comments` = `nb_comments` + 1 WHERE `uuid` = ?";
+    con.query(sql, [uuid], (err) => {
+        if (err)
+            throw err;
+    });
+};
+module.exports.one_more_comment = one_more_comment;
+
+const one_less_comment = (uuid) => {
+    let sql = "UPDATE `users` SET `nb_comments` = `nb_comments` - 1 WHERE `uuid` = ?";
+    con.query(sql, [uuid], (err) => {
+        if (err)
+            throw err;
+    });
+};
+module.exports.one_less_comment = one_less_comment;
 
 const get_comment = async (moviedb_ID, offset) => {
 

@@ -13,6 +13,7 @@ router.post('/rate_movie', with_auth, async (req, res) => {
         // si pas de note --> insert
         if (prev_rating == 'vide') {
             ratingModel.post_rating(req.uuid, req.body.moviedb_ID, req.body.rating);
+            ratingModel.one_more_rating(req.uuid);
             res.sendStatus(204);
         }
         // si déjà une note (et qu'elle est différente de la prev_rating) --> update

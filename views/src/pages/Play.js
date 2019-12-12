@@ -285,12 +285,9 @@ class Play extends Component {
                             i = index;
                         }
                    })
-                   this.setState(prevState => (
+                    this.setState(prevState => (
                         this.state.comment.splice(i, 1) 
-                   ))
-                   alert("I = ");
-                   alert(i);
-                    console.log("suprimmer le com du state");
+                    ))
                 }
              })
             .catch((err) => { console.log(err); });
@@ -369,7 +366,6 @@ class Play extends Component {
     show_user = async (elem) => {
         let user_infos = await fetch_post('/user_public_profile', {uuid: elem.uuid});
         if (user_infos !== undefined && user_infos !== '' && user_infos !== '403') {
-            console.log(user_infos);
             this.setState(prevState => (
                 this.state.show_user = elem.uuid,
                 this.state.user_infos = user_infos
@@ -438,7 +434,9 @@ class Play extends Component {
                                                                 <br></br>
                                                                 Comment BY <b className="user_popup" onClick={() => this.show_user(elem)}>{elem.first_name || elem.name}</b> :
                                                                 <div className="comment"> {elem.comment} </div>
-                                                                <button onClick={() => this.delete_com(elem)}>X</button>
+                                                                {elem.uuid === this.props.userConnectState.uuid ?
+                                                                    <button onClick={() => this.delete_com(elem)}>X</button> : null
+                                                                }
                                                                 {this.state.show_user === elem.uuid ?
                                                                     <UserProfile
                                                                         elem={elem}

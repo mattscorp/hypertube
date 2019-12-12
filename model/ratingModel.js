@@ -33,6 +33,15 @@ const post_rating = (uuid, film_ID, rating) => {
 };
 module.exports.post_rating = post_rating;
 
+const one_more_rating = (uuid) => {
+    let sql = "UPDATE `users` SET `nb_ratings` = `nb_ratings` + 1 WHERE `uuid` = ?";
+    con.query(sql, [uuid], (err) => {
+        if (err)
+            throw err;
+    });
+};
+module.exports.one_more_rating = one_more_rating;
+
 const update_rating = (uuid, film_ID, rating) => {
     let sql = "UPDATE `ratings` SET `rating` = ? WHERE `film_ID` = ? AND `user_ID` = ?";
     con.query(sql, [rating, film_ID, uuid], (err) => {
