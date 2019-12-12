@@ -21,22 +21,35 @@ router.post('/add_comment', with_auth, async (req, res) => {
 });
 
 router.get('/get_comment', with_auth, async (req, res) => {
-    console.log("lOFFSET = " + req.query.offset);
-    console.log("moviedb_id = " + req.query.moviedb_id);
-
     if(req.query.offset && req.query.offset !== "" && req.query.moviedb_id && req.query.moviedb_id !== "" )
     {
-        console.log("CA EXISTE");
         let get_comment = await commentModel.get_comment(req.query.moviedb_id, req.query.offset);
-        console.log(get_comment);
         if (get_comment == 'vide')
-         res.sendStatus(403);
+            res.sendStatus(403);
+        else
+            res.status(200).send(JSON.parse(get_comment));
+    }
+    else if (req.query.moviedb_id && req.query.moviedb_id !== "") {
+        let get_comment_after_new = await commentModel.get_comment_after_new(req.query.moviedb_id);
+        if (get_comment_after_new == 'vide')
+            res.sendStatus(403);
+        else
+            res.status(200).send(JSON.parse(get_comment_after_new));
+    }
     else
-        res.status(200).send(JSON.parse(get_comment));
+        res.sendStatus(403);
+});
+
+router.post('/delete_comment', with_auth, async (req, res) => {
+    if(req.body.comment && req.body.comment !== "" && req.body.comment_ID && req.body.comment_ID !== "" && req.body.uuid && req.body.uuid !== "")
+    {
+        let del = await commentModel.delete_comment(req.body.comment, req.body.comment_ID, req.body.uuid);
+        if (del == 'vide')
+            res.sendStatus(403);
+        else
+        res.sendStatus(201);
     }
     else
      res.sendStatus(403);
 });
-
-
 module.exports = router;

@@ -48,4 +48,41 @@ const get_comment = async (moviedb_ID, offset) => {
 }
 module.exports.get_comment = get_comment;
 
+const get_comment_after_new = async (moviedb_ID) => {
 
+    return new Promise( async (resolve, reject) => {
+        let sql = "SELECT * FROM `comments` WHERE `film_ID` = ? ORDER BY `date` DESC LIMIT 5";
+        con.query(sql, [moviedb_ID], (err, result) => {
+            if (err)
+                throw err;
+            else {
+                if (result == '')
+                    resolve("vide");
+                else
+                    resolve(JSON.stringify(result));
+            }
+        });
+    });
+}
+module.exports.get_comment_after_new = get_comment_after_new;
+
+// DELETE COMMENT 
+
+const delete_comment = async (comment, comment_ID, uuid) => {
+console.log(comment);
+console.log(uuid);
+    return new Promise( async (resolve, reject) => {
+        let sql = "DELETE FROM `comments` WHERE `comment` = ? AND `uuid` = ? AND `comment_ID` = ?";
+        con.query(sql, [comment, uuid, comment_ID], (err, result) => {
+            if (err)
+                throw err;
+            else {
+                if (result == '')
+                    resolve("vide");
+                else
+                    resolve("ok");
+            }
+        });
+    });
+}
+module.exports.delete_comment = delete_comment;

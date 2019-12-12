@@ -198,6 +198,33 @@ class Play extends Component {
             // this.props.setSimilarMovies(resData);
         })
     }
+
+    get_comment_after_new = () => {
+        fetch(`http://localhost:8000/get_comment?moviedb_id=${this.props.location.search.split('movie=')[1]}`, {
+            method: 'GET',
+            credentials: 'include',
+            headers: {'Content-Type': 'application/json'},
+        })
+        .then((res) => {
+            if (res.status === 401)
+                window.location.assign('/');
+            else if (res.status !== 200)
+                console.log('Fail to fetch comment on the select movie');
+            else
+                return res.json();
+        })
+        
+        .then(resData => {
+            if (resData !== undefined){
+                    this.setState(prevState => (
+                        this.state.offset += 1,
+                        this.state.comment.unshift(resData[0])
+                    ))
+            }
+            // console.log(resData);
+            // this.props.setSimilarMovies(resData);
+        })
+    }
     // MAKE A COMM FONCTION
     make_comm = (event) => {
         event.preventDefault();
@@ -209,10 +236,10 @@ class Play extends Component {
                         || (new Date().toISOString().slice(0, 16).replace('T', ' ') !== this.state.comment[0].date.slice(0, 16).replace('T', ' '))
                         || ((parseInt(new Date().toISOString().slice(17, 19).replace('T', ' ')) - parseInt(this.state.comment[0].date.slice(17, 19).replace('T', ' ')) > 5) || (parseInt((new Date().toISOString().slice(17, 19).replace('T', ' '))) - parseInt(this.state.comment[0].date.slice(17, 19).replace('T', ' '))) < -5))))
             {
-                this.setState(prevState => (
-                    this.state.offset += 1,
-                    this.state.comment.unshift({comment : this.com.current.value, name : this.props.userConnectState.first_name || this.props.userConnectState.login , date : new Date().toISOString().slice(0, 19).replace('T', ' ')}) 
-                ))
+                // this.setState(prevState => (
+                //     this.state.offset += 1,
+                //     this.state.comment.unshift({comment : this.com.current.value, name : this.props.userConnectState.first_name || this.props.userConnectState.login , date : new Date().toISOString().slice(0, 19).replace('T', ' ')}) 
+                // ))
                 fetch(`http://localhost:8000/add_comment`, {
                     method: 'POST',
                     credentials: 'include',
@@ -223,7 +250,10 @@ class Play extends Component {
                     if (res.status === 401)
                         window.location.assign('/');
                     else 
+                    {
+                        this.get_comment_after_new();
                         this.com.current.value = '';
+                    }
                 })
                 .catch((err) => { console.log(err); });
             } else {
@@ -231,9 +261,38 @@ class Play extends Component {
             }
         }
     }
-
+    // DELETE A COM
     delete_com = (elem) => {
-        alert('DELETE TO BE DONE : ' + elem.comment);
+        if (elem.comment && elem.comment !== undefined && elem.comment_ID && elem.comment_ID !== undefined && elem.uuid && elem.uuid !== undefined)
+        {
+            fetch(`http://localhost:8000/delete_comment`, {
+                method: 'POST',
+                credentials: 'include',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ comment: elem.comment, comment_ID : elem.comment_ID, uuid: elem.uuid}),
+            })
+            .then((res) => {
+                if (res.status === 401)
+                    window.location.assign('/');
+                else
+                {
+                    let i = -1;
+                    this.state.comment.map ((e, index ) => {
+                        if(elem.comment === e.comment && ((elem.first_name || elem.name) === (e.first_name || e.name)) && elem.date.slice(0, 19).replace('T', ' ') === e.date.slice(0, 19).replace('T', ' ')){
+                            i = index;
+                        }
+                   })
+                   this.setState(prevState => (
+                        this.state.comment.splice(i, 1) 
+                   ))
+                   alert("I = ");
+                   alert(i);
+                    console.log("suprimmer le com du state");
+                }
+             })
+            .catch((err) => { console.log(err); });
+            }
+        
     }
     // LOAD MORE COMM
     loadMoreComment = (event) => {
