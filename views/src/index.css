@@ -741,7 +741,7 @@ body{
             display: inline-block;
         }
         .AdvancedSearchDiv {
-            position: fixed;
+            /* position: fixed; */
             width: 42%;
          }
         
@@ -780,7 +780,7 @@ body{
             display: inline-block;
         }
         .AdvancedSearchDiv {
-            position: fixed;
+            /* position: fixed; */
             width: 25%;
          }
         
@@ -846,7 +846,7 @@ body{
             display: inline-block;
         }
         .AdvancedSearchDiv {
-            position: fixed;
+            /* position: fixed; */
             width: 21%;
          }
        
@@ -873,7 +873,7 @@ body{
     display: inline-block;
 }
 .AdvancedSearchDiv {
-    position: fixed;
+    /* position: fixed; */
     width: 19%;
  }
 
