@@ -97,5 +97,16 @@ router.post('/dark_mode', with_auth, async(req, res) => {
     user_infos.dark_mode_update((JSON.parse(infos))[0].dark_mode, req.uuid);
 })
 
+// **** UPDATE DARK MODE **** //
+router.post('/user_public_profile', with_auth, async(req, res) => {
+    if (req && req.body && req.body.uuid != '') {
+        let public_profile = await user_infos.get_public_profile(req.body.uuid);
+        console.log(public_profile[0]);
+        res.status(200).send(public_profile[0]);
+    } else {
+        res.sendStatus(403);
+    }
+
+})
 
 module.exports = router;

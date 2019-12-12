@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { NavLink } from 'react-router-dom';
 import { Player } from 'video-react';
-
-
+import UserProfile from './UserProfile.js';
+import {fetch_post} from '../fetch.js'
 
 class Play extends Component {
 
@@ -13,7 +12,9 @@ class Play extends Component {
         offset: 0,
         loadMoreButton : 0,
         average_rating: -1,
-        user_rating: -1
+        user_rating: -1,
+        show_user: "",
+        user_infos: ""
     }
 
     constructor(props) {
@@ -363,6 +364,24 @@ class Play extends Component {
         .catch((err) => { console.log(err); });
     }
 
+    show_user = async (elem) => {
+        let user_infos = await fetch_post('/user_public_profile', {uuid: elem.uuid});
+        if (user_infos !== undefined && user_infos !== '' && user_infos !== '403') {
+            console.log(user_infos);
+            this.setState(prevState => (
+                this.state.show_user = elem.uuid,
+                this.state.user_infos = user_infos
+            ))
+        }
+    }
+    
+    hide_user = (elem) => {
+        this.setState(prevState => (
+            this.state.show_user = "",
+            this.state.user_infos = ""
+        ))
+    }
+
     render () {
         // alert(this.state.film_cast.cast);
         return (
@@ -408,7 +427,6 @@ class Play extends Component {
                                             </div>
                                         </div>
                                         <div className="comment_section col-md-12 text-center">
-                                    
                                             <div className="all_comment">
                                                 <ul>
                                                     {
@@ -416,12 +434,20 @@ class Play extends Component {
                                                             <li className="col-md-12 text-center">
                                                                 Posted on: {elem.date.slice(0, 19).replace('T', ' ')}
                                                                 <br></br>
-                                                                Comment BY {elem.first_name || elem.name} :
+                                                                Comment BY <b className="user_popup" onClick={() => this.show_user(elem)}>{elem.first_name || elem.name}</b> :
                                                                 <div className="comment"> {elem.comment} </div>
                                                                 <button onClick={() => this.delete_com(elem)}>X</button>
+                                                                {this.state.show_user === elem.uuid ?
+                                                                    <UserProfile
+                                                                        elem={elem}
+                                                                        hide_user={this.hide_user}
+                                                                        user_infos={this.state.user_infos}
+                                                                    >
+                                                                    </UserProfile>
+                                                                    : null
+                                                                }
                                                             </li>
                                                         ))
-
                                                     }
                                                 </ul>
                                             </div>
@@ -431,18 +457,14 @@ class Play extends Component {
                                             </button>
                                             : null 
                                             }
-                                            
                                             <h1 className="text-center">
                                                 Make a comment
                                             </h1>
                                             <form onSubmit={this.make_comm}>
                                                 <input ref={this.com}>
-                                                
                                                 </input>
                                                 <input type="submit" value="ok"></input>
-                                                
                                             </form>
-                                            
                                         </div>
                                     </div>
                                     
@@ -463,32 +485,32 @@ class Play extends Component {
                                 }
 
                                 {this.props.filmInfosState.film_infos.overview ?
-                                        <div className = 'col-md-12 text-center'>
-                                            <h3>Overview : </h3>
-                                            <p>{this.props.filmInfosState.film_infos.overview}</p>
-                                        </div> 
-                                    : null}
+                                    <div className = 'col-md-12 text-center'>
+                                        <h3>Overview : </h3>
+                                        <p>{this.props.filmInfosState.film_infos.overview}</p>
+                                    </div> 
+                                : null}
 
-                                    {/* Movie cast and director */}
-                                    {this.props.filmInfosState.cast_infos.cast ?
-                                    <div className = 'col-md-12 text-center'>
-                                        <h3>Cast:</h3>
-                                        {this.props.filmInfosState.cast_infos.cast.slice(0, 5).map((elem, index) => 
-                                            <p key={index} >{elem.name} as {elem.character}</p>
-                                        )}
+                                {/* Movie cast and director */}
+                                {this.props.filmInfosState.cast_infos.cast ?
+                                <div className = 'col-md-12 text-center'>
+                                    <h3>Cast:</h3>
+                                    {this.props.filmInfosState.cast_infos.cast.slice(0, 5).map((elem, index) => 
+                                        <p key={index} >{elem.name} as {elem.character}</p>
+                                    )}
+                                </div>
+                                : null
+                                }
+                                {this.props.filmInfosState.cast_infos.crew ?
+                                <div className = 'col-md-12 text-center'>
+                                    <h3>Director:</h3>
+                                    {this.props.filmInfosState.cast_infos.crew.map((elem, index) => 
+                                    elem.job === "Director" ? (
+                                        <p key={index} >{elem.name}</p>
+                                    ): null )}
                                     </div>
-                                    : null
-                                    }
-                                    {this.props.filmInfosState.cast_infos.crew ?
-                                    <div className = 'col-md-12 text-center'>
-                                        <h3>Director:</h3>
-                                        {this.props.filmInfosState.cast_infos.crew.map((elem, index) => 
-                                        elem.job === "Director" ? (
-                                            <p key={index} >{elem.name}</p>
-                                        ): null )}
-                                        </div>
-                                    : null
-                                    }     
+                                : null
+                                }     
 
                                  {/* TRAILER */}
                                  {this.props.filmInfosState.film_infos.videos.results[0] ?
@@ -514,80 +536,64 @@ class Play extends Component {
                                 <ul className="container-fluid text-center list-films">
                                         
                                         <li>
-                                                {this.props.filmInfosState.film_infos.release_date ?
-                                                <div className = 'col-md-6'>
-                                                    <h3>Original release date : </h3>
-                                                    <p>{this.props.filmInfosState.film_infos.release_date}</p>
-                                                </div> 
+                                            {this.props.filmInfosState.film_infos.release_date ?
+                                            <div className = 'col-md-6'>
+                                                <h3>Original release date : </h3>
+                                                <p>{this.props.filmInfosState.film_infos.release_date}</p>
+                                            </div> 
                                             : null}
                                         </li>
                                         <li>
-                                                {this.props.filmInfosState.film_infos.vote_average ?
-                                                <div className = 'col-md-6'>
-                                                    <h3>Vote Average : </h3> 
-                                                    <p>{this.props.filmInfosState.film_infos.vote_average}</p>
-                                                </div> 
+                                            {this.props.filmInfosState.film_infos.vote_average ?
+                                            <div className = 'col-md-6'>
+                                                <h3>Vote Average : </h3> 
+                                                <p>{this.props.filmInfosState.film_infos.vote_average}</p>
+                                            </div> 
                                             : null}
                                         </li>
                                         <li>
-                                                {this.props.filmInfosState.film_infos.runtime ?
-                                                <div className = 'col-md-6'>
-                                                    <h3>Runtime in minutes: </h3> 
-                                                    <p>{this.props.filmInfosState.film_infos.runtime} min</p>
-                                                </div> 
+                                            {this.props.filmInfosState.film_infos.runtime ?
+                                            <div className = 'col-md-6'>
+                                                <h3>Runtime in minutes: </h3> 
+                                                <p>{this.props.filmInfosState.film_infos.runtime} min</p>
+                                            </div> 
                                            : null}
                                         </li>
                                         <li>
-                                                {this.props.filmInfosState.film_infos.revenue ?
-                                                <div className = 'col-md-6'>
-                                                    <h3>Revenue in Dollars: </h3> 
-                                                    <p>{this.props.filmInfosState.film_infos.revenue} $</p>
-                                                </div> 
+                                            {this.props.filmInfosState.film_infos.revenue ?
+                                            <div className = 'col-md-6'>
+                                                <h3>Revenue in Dollars: </h3> 
+                                                <p>{this.props.filmInfosState.film_infos.revenue} $</p>
+                                            </div> 
                                             : null}
                                         </li>
                                         <li>
-                                                {this.props.filmInfosState.film_infos.production_countries ?
-                                                <div className = 'col-md-6'>
-                                                    <h3>Production Countries: </h3> 
-                                                    <p>{this.props.filmInfosState.film_infos.production_countries[0].name}</p>
-                                                </div> 
+                                            {this.props.filmInfosState.film_infos.production_countries ?
+                                            <div className = 'col-md-6'>
+                                                <h3>Production Countries: </h3> 
+                                                <p>{this.props.filmInfosState.film_infos.production_countries[0].name}</p>
+                                            </div> 
                                             : null}
                                         </li>
                                         <li>
-                                                {this.props.filmInfosState.film_infos.imdb_id ?
-                                                <div className = 'col-md-6'>
-                                                    <h3>IMDB ID: </h3> 
-                                                    <p>{this.props.filmInfosState.film_infos.imdb_id}</p>
-                                                </div> 
+                                            {this.props.filmInfosState.film_infos.imdb_id ?
+                                            <div className = 'col-md-6'>
+                                                <h3>IMDB ID: </h3> 
+                                                <p>{this.props.filmInfosState.film_infos.imdb_id}</p>
+                                            </div> 
                                             : null}
                                         </li>
                                     </ul>
-
                                 </div>
-                               
-                              
-                              
                                 {this.props.filmInfosState.similar_movies !== "" ?
                                 <div className="container mt-3">
                                     <div className="col-md-12 text-center">
                                         <h3>Similar movies</h3>
                                     </div>
-                                        {/* <div id="result_list" ref="result_list" className="row "> */}
                                         <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                                        {/* <!-- Indicators --> */}
-                                            {/* <ul class="carousel-indicators">
-                                            {
-                                                 this.props.filmInfosState.similar_movies.map((elem, index) =>
-
-                                                    <li data-target={"#" + elem.id} data-slide-to={index} className={index === 0 ? "active" : null}></li>
-                                                )
-                                            }
-                                            </ul> */}
                                             <div className="carousel-inner">
                                                 {
-                                                    
                                                     this.props.filmInfosState.similar_movies.map((elem, index) =>
-                                                    
                                                     (<div id={elem.id}  className={index === 0 ? "active carousel-item text-center" : "carousel-item text-center"}>
                                                             <div className="image ">
                                                                 <img src= {elem.poster_path ? 'https://image.tmdb.org/t/p/w185_and_h278_bestv2' + elem.poster_path : "https://upload.wikimedia.org/wikipedia/commons/f/fc/No_picture_available.png"} alt={"Poster of " + elem.title} />

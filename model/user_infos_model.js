@@ -85,3 +85,21 @@ const dark_mode_update = (dark_mode, uuid) => {
     });
 }
 module.exports.dark_mode_update = dark_mode_update;
+
+// Get user public profile
+const get_public_profile = uuid => {
+    return new Promise((resolve, reject) => {
+        let sql = 'SELECT `first_name`, `login`, `profile_picture`, `nb_views`, `nb_comments`, `nb_ratings` FROM `users` WHERE uuid = ?';
+        con.query(sql, [uuid], (err, result) => {
+            if (err)
+                throw err;
+            else {
+                if (result == "")
+                    resolve ("vide");
+                else
+                    resolve(result);
+            }
+        });
+    });
+}
+module.exports.get_public_profile = get_public_profile;
