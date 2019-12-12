@@ -263,7 +263,9 @@ class Play extends Component {
     }
     // DELETE A COM
     delete_com = (elem) => {
-        if (elem.comment && elem.comment !== undefined && elem.comment_ID && elem.comment_ID !== undefined && elem.uuid && elem.uuid !== undefined)
+        // alert(this.props.userConnectState.uuid);
+        // alert(elem.uuid);
+        if (elem.comment && elem.comment !== undefined && elem.comment_ID && elem.comment_ID !== undefined && elem.uuid && elem.uuid !== undefined && this.props.userConnectState.uuid && this.props.userConnectState.uuid !== undefined && this.props.userConnectState.uuid === elem.uuid)
         {
             fetch(`http://localhost:8000/delete_comment`, {
                 method: 'POST',
