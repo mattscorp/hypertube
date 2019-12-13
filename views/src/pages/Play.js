@@ -373,7 +373,7 @@ class Play extends Component {
         }
     }
     
-    hide_user = (elem) => {
+    hide_user = () => {
         this.setState(prevState => (
             this.state.show_user = "",
             this.state.user_infos = ""
@@ -381,10 +381,9 @@ class Play extends Component {
     }
 
     render () {
-        // alert(this.state.film_cast.cast);
         return (
             <React.Fragment>
-                <div className="film-container" style={{background:this.state.background}}>
+                <div className="film-container" style={{background:this.state.background}} onClick={this.state.show_user != "" ? this.hide_user : null}>
                     <div className="container under">
                         {this.props.filmInfosState.film_infos.id !== parseInt(this.props.location.search.split('movie=')[1].trim()) ? null :
                             <div>

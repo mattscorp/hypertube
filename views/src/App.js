@@ -27,6 +27,7 @@ import OAuth_Github from './components/connection/Oauth_Github.js';
 import OAuth_Google from './components/connection/Oauth_Google.js';
 import OAuth_Facebook from './components/connection/Oauth_Facebook.js';
 // Error 404
+import NotFound from './pages/NotFound.js';
 // import Error_404 from '.pages/Error404.js'
 
 class App extends Component {
@@ -95,7 +96,7 @@ class App extends Component {
                     darkModeState = {this.props.darkModeState.dark_mode}
                     />
                 }/>
-                {/* <Route path="*" component={ Error_404 } /> */}
+                <Route path="*" component={NotFound} />
             </Switch>
           </main>
         </React.Fragment>
