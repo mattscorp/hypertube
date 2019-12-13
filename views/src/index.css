@@ -1,3 +1,15 @@
+/*** FOOTER ***/
+
+.footer {
+    background-color: darkgray;
+    color: blacks;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+}
+
 /*** ERROR 404 PAGE NOT FOUND ***/
 
 .page_not_found {
@@ -127,7 +139,7 @@ body {
     margin : 0 0 0 0 !important;
 }
 .btn-success-logout {
-    color:  #7a6565c2 !important;
+    color:  #cfa9a9c2 !important;
     background-color: white !important;
     border-color: #fc0202 !important;
 }
@@ -373,6 +385,7 @@ h1.jumbotron span{
 
 .main-all{
     margin-top: 4vw;
+    margin-bottom: 2vw
 }
 
 
@@ -492,13 +505,6 @@ padding: 5%;
 .overlay_car {
     display:none;
  }
-
-/**** FOOTER *****/
-
-.footer {
-	margin-bottom:0;
-	color: red;
-}
 
 /**** CREATE ACCOUNT ****/
 

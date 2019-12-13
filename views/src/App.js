@@ -99,6 +99,9 @@ class App extends Component {
                 <Route path="*" component={NotFound} />
             </Switch>
           </main>
+          <div className='footer'>
+                <p>Created by mascorpi and pvictor as part of school 42's curriculum, 2019</p>
+          </div>
         </React.Fragment>
       </BrowserRouter>
     );
