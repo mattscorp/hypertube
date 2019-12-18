@@ -7,9 +7,9 @@ class UserProfile extends Component {
         return (
             <div className="user_popup_div">
                 <p>{this.props.elem.login ? this.props.elem.login : this.props.elem.first_name}</p>
-                <p>Number of films views: {this.props.user_infos.nb_views ? this.props.user_infos.nb_views : 0}</p>
-                <p>Number comments: {this.props.user_infos.nb_comments ? this.props.user_infos.nb_comments : 0}</p>
-                <p>Number of films rated: {this.props.user_infos.nb_ratings ? this.props.user_infos.nb_ratings : 0}</p>
+                <p>Number of films views: {this.props.user_infos.nb_views && this.props.user_infos.nb_views >= 0 ? this.props.user_infos.nb_views : 0}</p>
+                <p>Number comments: {this.props.user_infos.nb_comments && this.props.user_infos.nb_comments >= 0 ? this.props.user_infos.nb_comments : 0}</p>
+                <p>Number of films rated: {this.props.user_infos.nb_ratings && this.props.user_infos.nb_ratings >= 0 ? this.props.user_infos.nb_ratings : 0}</p>
                 <div >
                     {!this.props.user_infos.profile_picture || this.props.user_infos.profile_picture === undefined ? 
                         <img className="profile_picture" src={NoPhoto}/>

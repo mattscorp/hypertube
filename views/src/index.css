@@ -221,7 +221,6 @@ body {
 
 /* Make the div appear */
 .AccountDiv {
-    right: 0;
     text-align: center;
     color:  #9e9e9ec2 !important;
     /* position: fixed; */
@@ -233,6 +232,7 @@ body {
     -webkit-animation-duration: 1s; /* Safari 4.0 - 8.0 */
     animation-name: AccountDiv;
     animation-duration: 1s;
+    right: 0;
 }
 /* Safari 4.0 - 8.0 */
 @-webkit-keyframes AccountDiv {
@@ -242,13 +242,13 @@ body {
 
 /* Standard syntax */
 @keyframes AccountDiv {
-    from {right: -250%;}
+    from {right: -100%;}
     to {right: 0;}
 }
 
 /* Make the div disappear */
 .DisappearAccountDiv {
-    right: -250%;
+    right: -100%;
     text-align: center;
     color:  #9e9e9ec2 !important;
     position: fixed;
@@ -264,13 +264,13 @@ body {
 /* Safari 4.0 - 8.0 */
 @-webkit-keyframes DisappearAccountDiv {
     from {right: 0;}
-    to {right: -250%;}
+    to {right: -100%;}
 }
 
 /* Standard syntax */
 @keyframes DisappearAccountDiv {
     from {right: 0;}
-    to {right: -250%;}
+    to {right: -100%;}
 }
 
 .profile_picture_row {
@@ -505,6 +505,11 @@ padding: 5%;
 }
 .overlay_car {
     display:none;
+ }
+
+ .similar_movies {
+    width: 100%;
+    background-color: rgba(0,0,0,.4);
  }
 
 /**** CREATE ACCOUNT ****/

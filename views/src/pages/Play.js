@@ -155,6 +155,8 @@ class Play extends Component {
         .then((res3) => {
             if (res3.status === 401)
                 window.location.assign('/');
+            else if (res3.status === 204)
+                window.location.assign('/unknown_movie');
             else if (res3.status !== 200)
                 console.log('Failed getting similar movies, themoviedb.org is not res2ponding');
             else
@@ -563,7 +565,7 @@ class Play extends Component {
                                 {this.props.filmInfosState.film_infos.videos.results[0] ?
                                     <div className = 'col-md-10 col-xl-12 text-center trailer-div'>
                                         <br></br>
-                                        <h4>TRAILER</h4>
+                                        <h3>Movie Trailer</h3>
                                         <iframe
                                             width="80%"
                                             height="80%"
@@ -631,8 +633,8 @@ class Play extends Component {
                                         </li>
                                     </ul>
                                 </div>
-                                {this.props.filmInfosState.similar_movies !== "" ?
-                                <div className="container mt-3">
+                                {this.props.filmInfosState.similar_movies !== "" && this.props.filmInfosState.similar_movies[0] && this.props.filmInfosState.similar_movies[0] != undefined ?
+                                <div className="container mt-3 similar_movies">
                                     <div className="col-md-12 text-center">
                                         <h3>Similar movies</h3>
                                     </div>

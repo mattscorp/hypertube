@@ -48,7 +48,7 @@ router.get('/moviedb', with_auth, async (req, res) => {
         // ** SIMILAR ** --> get movies that are similar to the parameter "movie_ID"
         else if (req.query.action.toLowerCase() == "similar") {
             let similar_movies = await films.similar_movies(req.query.movie_id);
-            if (similar_movies == '')
+            if (similar_movies == '' || similar_movies.status_code == 34)
                 res.status(204);
             else
                 res.status(200);
@@ -61,7 +61,7 @@ router.get('/moviedb', with_auth, async (req, res) => {
 router.get('/movie_infos', with_auth, async (req, res) => {
     if (req.query.movie_id && req.query.movie !== "") {
         let movie_infos = await films.movie_infos(req.query.movie_id);
-        if (movie_infos == '')
+        if (movie_infos == '' || movie_infos.status_code == 34)
             res.status(204);
         else {
             movie_infos.revenue = movie_infos.revenue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
