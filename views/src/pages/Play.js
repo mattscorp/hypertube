@@ -14,7 +14,8 @@ class Play extends Component {
         average_rating: -1,
         user_rating: -1,
         show_user: "",
-        user_infos: ""
+        user_infos: "",
+        fake_add: 46
     }
 
     constructor(props) {
@@ -25,7 +26,8 @@ class Play extends Component {
     }
 
     componentDidMount () {
-
+        // Starts a countdown to play the fake add before playing the movie
+        this.fake_ad_countdown();
         // Call the API to get the movie details
         let URL = `http://localhost:8000/movie_infos?movie_id=${this.props.location.search.split('movie=')[1]}`;
         fetch(URL, {
@@ -378,6 +380,14 @@ class Play extends Component {
         }
     }
     
+    fake_ad_countdown = () => {
+        setInterval(() => {
+            this.setState(prevState => (
+                this.state.fake_add += -1
+            ))
+        }, 1000)
+    }
+
     hide_user = () => {
         this.setState(prevState => (
             this.state.show_user = "",
@@ -430,20 +440,24 @@ class Play extends Component {
                                         </div>
 
                                         {/* MOVIE PLAYER */}
-                                        {this.props.filmInfosState.movie_in_db[0] ?
+                                        {this.state.fake_add >= 0 ?
+                                            <div className = 'col-md-10 col-xl-12 text-center trailer-div'>
+                                                <iframe 
+                                                    width="100%" height="100%"
+                                                    src="https://www.youtube.com/embed/sODZLSHJm6Q?autoplay=1"
+                                                    frameborder="0"
+                                                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                                    allowfullscreen>
+                                                </iframe>
+                                                <p>Your video will be played in {this.state.fake_add} seconds.</p>
+                                            </div> 
+                                            : null
+                                        }
+                                        {this.props.filmInfosState.movie_in_db[0] && this.state.fake_add <= 0 ?
                                         // {this.props.filmInfosState.movie_in_db[0] ?
                                             <div className = 'col-md-10 col-xl-12'>
                                                 <div>
-                                                    <iframe 
-                                                        width="100%" height="100%"
-                                                        src="https://www.youtube.com/embed/sODZLSHJm6Q"
-                                                        frameborder="0"
-                                                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-                                                        allowfullscreen>
-                                                    </iframe>
-                                                </div>
-                                                <div>
-                                                    <video width="100%" height="auto" controls>
+                                                    <video width="100%" height="auto" controls autoplay muted>
                                                         {this.props.filmInfosState.movie_in_db[0].path && this.props.filmInfosState.movie_in_db[0].path.indexOf(".mp4") === this.props.filmInfosState.movie_in_db[0].path.length - 4 ?
                                                             <source src={"./torrents/" + this.props.filmInfosState.movie_in_db[0].path} type='video/mp4'/> : null
                                                         }
@@ -464,11 +478,13 @@ class Play extends Component {
                                                         src={"./torrents/" + this.props.filmInfosState.movie_in_db[0].path}
                                                     /> */}
                                                 </div>
+                                                {/* <div id="torrent_live"></div> */}
                                             </div>
-                                            : <div>
-                                                <h1>This movie is not the database --> TO BE DONE</h1>
-                                                <div id="torrent_live"></div>
-                                            </div>
+                                            : this.state.fake_add === 1 ?
+                                                <div>
+                                                    <h1>This movie is not the database --> TO BE DONE</h1>
+                                                </div>
+                                                : null
                                         }
 
                                         <div className="comment_section col-md-12 text-center">
@@ -543,8 +559,8 @@ class Play extends Component {
                                 : null
                                 }     
 
-                                 {/* TRAILER */}
-                                 {this.props.filmInfosState.film_infos.videos.results[0] ?
+                                {/* TRAILER */}
+                                {this.props.filmInfosState.film_infos.videos.results[0] ?
                                     <div className = 'col-md-10 col-xl-12 text-center trailer-div'>
                                         <br></br>
                                         <h4>TRAILER</h4>
@@ -564,8 +580,7 @@ class Play extends Component {
                                     </div>
                                     : null
                                 }
-                                <ul className="container-fluid text-center list-films">
-                                        
+                                    <ul className="container-fluid text-center list-films">
                                         <li>
                                             {this.props.filmInfosState.film_infos.release_date ?
                                             <div className = 'col-md-6'>
@@ -599,7 +614,7 @@ class Play extends Component {
                                             : null}
                                         </li>
                                         <li>
-                                            {this.props.filmInfosState.film_infos.production_countries ?
+                                            {this.props.filmInfosState.film_infos.production_countries && this.props.filmInfosState.film_infos.production_countries[0] ?
                                             <div className = 'col-md-6'>
                                                 <h3>Production Countries: </h3> 
                                                 <p>{this.props.filmInfosState.film_infos.production_countries[0].name}</p>

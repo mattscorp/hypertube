@@ -437,6 +437,7 @@ h1.jumbotron span{
 
 .trailer-div {
     margin-bottom: 2.5vw;
+    min-height: 400px;
 }
 
 .comment{
