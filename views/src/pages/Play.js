@@ -443,11 +443,26 @@ class Play extends Component {
                                                     </iframe>
                                                 </div>
                                                 <div>
-                                                    <Player
+                                                    <video width="100%" height="auto" controls>
+                                                        {this.props.filmInfosState.movie_in_db[0].path && this.props.filmInfosState.movie_in_db[0].path.indexOf(".mp4") === this.props.filmInfosState.movie_in_db[0].path.length - 4 ?
+                                                            <source src={"./torrents/" + this.props.filmInfosState.movie_in_db[0].path} type='video/mp4'/> : null
+                                                        }
+                                                        {this.props.filmInfosState.movie_in_db[0].path && this.props.filmInfosState.movie_in_db[0].path.indexOf(".ogg") === this.props.filmInfosState.movie_in_db[0].path.length - 4 ?
+                                                            <source src={"./torrents/" + this.props.filmInfosState.movie_in_db[0].path} type='video/ogg'/> : null
+                                                        }
+                                                        {this.props.filmInfosState.movie_in_db[0].path && this.props.filmInfosState.movie_in_db[0].path.indexOf(".webm") === this.props.filmInfosState.movie_in_db[0].path.length - 5 ?
+                                                            <source src={"./torrents/" + this.props.filmInfosState.movie_in_db[0].path} type='video/webm'/> : null
+                                                        }
+                                                        {this.props.filmInfosState.movie_in_db[0].path && this.props.filmInfosState.movie_in_db[0].path.indexOf(".mkv") === this.props.filmInfosState.movie_in_db[0].path.length - 4 ?
+                                                            <source src={"./torrents/" + this.props.filmInfosState.movie_in_db[0].path} type='video/mkv'/> : null
+                                                        }
+                                                    </video>
+                                                    {/* <Player
                                                         playsInline
+                                                        volume='1'
                                                         poster={this.props.filmInfosState.film_infos.poster_path ? 'https://image.tmdb.org/t/p/w185_and_h278_bestv2' + this.props.filmInfosState.film_infos.poster_path : "https://upload.wikimedia.org/wikipedia/commons/f/fc/No_picture_available.png"} alt={"Poster of " + this.props.filmInfosState.film_infos.title}
                                                         src={"./torrents/" + this.props.filmInfosState.movie_in_db[0].path}
-                                                    />
+                                                    /> */}
                                                 </div>
                                             </div>
                                             : <div>

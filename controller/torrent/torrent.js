@@ -40,14 +40,12 @@ const dowload_torrent = async (torrents, movie_infos) => {
         console.log(torrents[0]);
         const magnet = await TorrentSearchApi.getMagnet(torrents[0]);
         if (magnet) {
-            console.log('MAGNET ****' + magnet);
             try {
                 const webtorrent_client = new webtorrent();
                 webtorrent_client.add(magnet, TORRENT_OPTIONS, function (torrent) {
                     // Torrents can contain many files. Let's use the .mp4 file
                     var file = torrent.files.find(function (file) {
-                        console.log(file.name);
-                        return file.name.endsWith('.mp4') || file.name.endsWith('.mkv') || file.name.endsWith('.avi') || file.name.endsWith('.webm')
+                        return file.name.endsWith('.mp4') || file.name.endsWith('.ogg') || file.name.endsWith('.webm') || file.name.endsWith('.mkv') || file.name.endsWith('.avi')
                     });
                     console.log(file);
                     const extension_split = file.name.split('.');
@@ -55,12 +53,10 @@ const dowload_torrent = async (torrents, movie_infos) => {
                     const year = movie_infos.release_date.split('-')[0];
                     films_db.add_torrent(movie_infos.id, file.path, extension, file.name, year, magnet);
                     // A la fin du DL on update la db
-                    console.log("IN DOWNLOAD_TORRENT --> BEFORE 'done");
                     torrent.on('done', function () {
-                        console.log("*/*/*/*/*/ TORRENT DONE \\*\\*\\*\\*\\*");
+                        console.log("*/*/ TORRENT DOWNLOAD COMPLETE \\*\\*");
                         films_db.torrent_done(magnet);
                     });
-                    console.log("IN DOWNLOAD_TORRENT --> AFTER 'done");
                 });
             } catch(err) { console.log('Error downloading the torrent : ' + err) }
 
