@@ -60,42 +60,47 @@ class Play extends Component {
             .then(async (res) => {
                 if (res.status === 401)
                     window.location.assign('/');
-                else if (res.status === 200)
+                else if (res.status === 200|| res.status === 206 || res.status === 201)
                 {
                     // 2. Si oui et fini de telecharger, l'envoyer, si oui mais pas fini passer a l'etape 4
                     console.log(res);
                     this.props.setMovieInDb(await res.json());
                 }
-                else if (res.status === 206 || res.status === 201) // 206 Si le film est en train de telecharger mais le dl n'est pas fini || 204 si on vient de commencer le dl
-                {
-                    // alert((await res.json())[0].magnet);
-                    // test Parasite
-                    // let torrentId = 'magnet:?xt=urn:btih:a39e4232842fd09608162521df562b34e61bb22a&dn=Parasite.2019.KOREAN.1080p.WEBRip.x264.AAC2.0-NOGRP&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fparasite.2019.korean.1080p.webrip.x264.aac2.0-nogrp.torrent';
-                    // TEST lady and the tramp
-                    // let torrentId = 'magnet:?xt=urn:btih:23aafdf7027db833bb68e0fe29e81e806a430395&dn=Lady.and.the.Tramp.2019.iNTERNAL.720p.WEB.H264-AMRAP&tr=http%3A%2F%2Ftracker.trackerfix.com%3A80%2Fannounce&tr=udp%3A%2F%2F9.rarbg.me%3A2710&tr=udp%3A%2F%2F9.rarbg.to%3A2710&tr=udp%3A%2F%2Fopen.demonii.com%3A1337%2Fannounce';
-                    // demo webtorrent
-                    // let torrentId = 'magnet:?xt=urn:btih:08ada5a7a6183aae1e09d831df6748d566095a10&dn=Sintel&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel.torrent';
-                    // let torrentId = (await res.json())[0].magnet;
-                    // alert(torrentId);
-                    // console.log('TorrentId : ' + torrentId);
-                    // On va chercher le stream du torrent
-                    fetch(`http://localhost:8000/stream_dl?id=${this.props.filmInfosState.film_infos.id}&range=bytes0to0on0`, {
-                        method: 'GET',
-                        credentials: 'include',
-                        'range': '',
-                        headers: {'Content-Type': 'application/json'}
-                    })
-                    .then(res => {
-                        if (res.status === 401)
-                            window.location.assign('/');
-                        else if (res.status === 204)
-                            alert("Pas de magnet");
-                        else if (res.status === 416)
-                            alert("Pas de range");
-                    });
+                // else if (res.status === 206 || res.status === 201) // 206 Si le film est en train de telecharger mais le dl n'est pas fini || 204 si on vient de commencer le dl
+                // {
+                //     // alert((await res.json())[0].magnet);
+                //     // test Parasite
+                //     // let torrentId = 'magnet:?xt=urn:btih:a39e4232842fd09608162521df562b34e61bb22a&dn=Parasite.2019.KOREAN.1080p.WEBRip.x264.AAC2.0-NOGRP&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fparasite.2019.korean.1080p.webrip.x264.aac2.0-nogrp.torrent';
+                //     // TEST lady and the tramp
+                //     // let torrentId = 'magnet:?xt=urn:btih:23aafdf7027db833bb68e0fe29e81e806a430395&dn=Lady.and.the.Tramp.2019.iNTERNAL.720p.WEB.H264-AMRAP&tr=http%3A%2F%2Ftracker.trackerfix.com%3A80%2Fannounce&tr=udp%3A%2F%2F9.rarbg.me%3A2710&tr=udp%3A%2F%2F9.rarbg.to%3A2710&tr=udp%3A%2F%2Fopen.demonii.com%3A1337%2Fannounce';
+                //     // demo webtorrent
+                //     // let torrentId = 'magnet:?xt=urn:btih:08ada5a7a6183aae1e09d831df6748d566095a10&dn=Sintel&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel.torrent';
+                //     let torrentId = '';
+                //     let json_res = await res.json();
+                //     if (json_res && json_res !== undefined && json_res[0] !== undefined && json_res[0].path) {
+                //         torrentId = await json_res[0].path;
+                //         alert(torrentId);
+                //         if (torrentId.appendTo !== undefined)
+                //             torrentId.appendTo('body');
+                //     }
+                //     // console.log('TorrentId : ' + torrentId);
+                //     // On va chercher le stream du torrent
+                //     fetch(`http://localhost:8000/stream_dl?id=${this.props.filmInfosState.film_infos.id}&range=bytes0to0on0`, {
+                //         method: 'GET',
+                //         credentials: 'include',
+                //         'range': '',
+                //         headers: {'Content-Type': 'application/json'}
+                //     })
+                //     .then(res => {
+                //         if (res.status === 401)
+                //             window.location.assign('/');
+                //         else if (res.status === 204)
+                //             alert("Pas de magnet");
+                //         else if (res.status === 416)
+                //             alert("Pas de range");
+                //     });
 
 
-                    // torrentId.appendTo('body')
                             // client.add(torrentId, {transports: ['websocket']}, function (torrent) {
                             // alert(torrentId);
                             // console.log('Torrent tpusu : ' + torrent);
@@ -110,7 +115,7 @@ class Play extends Component {
                             //     // Supports video, audio, image files, and more!
                             //     file.appendTo('#torrent_live');
                             // });
-                }
+                // }
                     // 3. Si non : 
                     //      a. get active providers
                     //      b. chercher le film et verifier que les infos sont coherentes
@@ -423,6 +428,34 @@ class Play extends Component {
                                                 </form>
                                             </div>
                                         </div>
+
+                                        {/* MOVIE PLAYER */}
+                                        {this.props.filmInfosState.movie_in_db[0] ?
+                                        // {this.props.filmInfosState.movie_in_db[0] ?
+                                            <div className = 'col-md-10 col-xl-12'>
+                                                <div>
+                                                    <iframe 
+                                                        width="100%" height="100%"
+                                                        src="https://www.youtube.com/embed/sODZLSHJm6Q"
+                                                        frameborder="0"
+                                                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                                        allowfullscreen>
+                                                    </iframe>
+                                                </div>
+                                                <div>
+                                                    <Player
+                                                        playsInline
+                                                        poster={this.props.filmInfosState.film_infos.poster_path ? 'https://image.tmdb.org/t/p/w185_and_h278_bestv2' + this.props.filmInfosState.film_infos.poster_path : "https://upload.wikimedia.org/wikipedia/commons/f/fc/No_picture_available.png"} alt={"Poster of " + this.props.filmInfosState.film_infos.title}
+                                                        src={"./torrents/" + this.props.filmInfosState.movie_in_db[0].path}
+                                                    />
+                                                </div>
+                                            </div>
+                                            : <div>
+                                                <h1>This movie is not the database --> TO BE DONE</h1>
+                                                <div id="torrent_live"></div>
+                                            </div>
+                                        }
+
                                         <div className="comment_section col-md-12 text-center">
                                             <div className="all_comment">
                                                 <ul>
@@ -466,22 +499,6 @@ class Play extends Component {
                                             </form>
                                         </div>
                                     </div>
-                                    
-                                {/* MOVIE PLAYER */}
-                                    {this.props.filmInfosState.movie_in_db[0] && this.props.filmInfosState.movie_in_db[0].download_complete === 1 ?
-                                // {this.props.filmInfosState.movie_in_db[0] ?
-                                    <div className = 'col-md-10 col-xl-12'>
-                                        <Player
-                                            playsInline
-                                            poster={this.props.filmInfosState.film_infos.poster_path ? 'https://image.tmdb.org/t/p/w185_and_h278_bestv2' + this.props.filmInfosState.film_infos.poster_path : "https://upload.wikimedia.org/wikipedia/commons/f/fc/No_picture_available.png"} alt={"Poster of " + this.props.filmInfosState.film_infos.title}
-                                            src={"./torrents/" + this.props.filmInfosState.movie_in_db[0].path}
-                                        />
-                                    </div>
-                                    : <div>
-                                        <h1>This movie is not the database --> TO BE DONE</h1>
-                                        <div id="torrent_live"></div>
-                                    </div>
-                                }
 
                                 {this.props.filmInfosState.film_infos.overview ?
                                     <div className = 'col-md-12 text-center'>

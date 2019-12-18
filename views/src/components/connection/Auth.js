@@ -158,7 +158,6 @@ class AuthPage extends Component {
                     alert('Account successfully created');
                     this.switchModeHandler();
                 } else if (res.status === 200) {
-                    alert('Connection successful');
                     window.location.assign('http://localhost:3000');
                 } else if (res.status === 418) {
                     alert('This email is already used');

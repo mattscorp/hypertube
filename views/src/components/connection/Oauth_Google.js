@@ -16,10 +16,6 @@ class AccountPage extends Component {
             .then(res => {
                 if (res.status === 401)
                     alert('Error connecting to Google');
-                if (res.status === 201)
-                    alert('Connection successful');
-                else if (res.status === 200)
-                    alert('Connection successful');
                 window.location.assign('http://localhost:3000');
             })
             .catch (err => { console.log(err) });

@@ -14,13 +14,8 @@ class AccountPage extends Component {
                 headers: {'Content-Type': 'application/json'}
             })
             .then(res => {
-                if (res.status === 401) {
+                if (res.status === 401)
                     alert('Error connecting to Github');
-                } else if (res.status === 201) {
-                    alert('Connection successful');
-                } else if (res.status === 200) {
-                    alert('Connection successful');
-                }
                 window.location.assign('http://localhost:3000');
             })
             .catch (err => { console.log(err) })

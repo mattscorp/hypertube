@@ -79,7 +79,7 @@ const ft_torrent = async (movie_infos, source) => {
         const torrents = await get_magnet(movie_infos);
         // LIGNE A METTRE EN COMMENTAIRE POUR NE PAS DOWLOAD LE TORRENT
         // =====> =====> =====>
-       // dowload_torrent(torrents, movie_infos);
+        dowload_torrent(torrents, movie_infos);
         // <===== <===== <=====
         resolve(torrents);
     });
