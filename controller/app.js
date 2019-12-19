@@ -53,12 +53,11 @@ app.use(comment);
 const rating = require('./rating.js');
 app.use(rating);
 
+/**** SEND THE VIDEO ****/
+const movie_player = require('./movie_player.js');
+app.use(movie_player);
+
 // /**** ERROR 404 ****/
-// router.get('*', (req, res) => {
-//   if (req.query.movie_id && req.query.movie !== "") {
-//     res.sendFile(path.join(__dirname, './index.html'));
-//   }
-// });
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, './index.html'));
 });

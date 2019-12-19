@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Player } from 'video-react';
 import UserProfile from './UserProfile.js';
 import {fetch_post} from '../fetch.js';
 const hbjs = require('handbrake-js');
@@ -16,7 +15,7 @@ class Play extends Component {
         user_rating: -1,
         show_user: "",
         user_infos: "",
-        fake_add: 5
+        fake_add: 3
     }
 
     constructor(props) {
@@ -458,6 +457,7 @@ class Play extends Component {
                                         </div>
 
                                         {/* MOVIE PLAYER */}
+                                                                                
                                         {this.state.fake_add >= 0 ?
                                             <div className = 'col-md-10 col-xl-12 text-center trailer-div'>
                                                 <iframe 
@@ -474,12 +474,11 @@ class Play extends Component {
                                                 <h1>This movie is not the database --> TO BE DONE</h1>
                                             </div> 
                                             : null
-                                            
                                         }
                                         {this.props.filmInfosState.movie_in_db[0] && this.state.fake_add < 0 ?
                                         // {this.props.filmInfosState.movie_in_db[0] ?
                                             <div className = 'col-md-10 col-xl-12'>
-                                                <div>
+                                                {/* <div>
                                                     <video width="100%" height="auto" controls autoPlay muted htmlFor='video_player'>
                                                         {this.props.filmInfosState.movie_in_db[0].path && this.props.filmInfosState.movie_in_db[0].path.indexOf(".mp4") === this.props.filmInfosState.movie_in_db[0].path.length - 4 ?
                                                             <source src={"./torrents/" + this.props.filmInfosState.movie_in_db[0].path} type='video/mp4'/> : null
@@ -494,13 +493,11 @@ class Play extends Component {
                                                             <source src={"./torrents/" + this.props.filmInfosState.movie_in_db[0].path} type='video/mkv'/> : null
                                                         }
                                                     </video>
-                                                    {/* <Player
-                                                        playsInline
-                                                        volume='1'
-                                                        poster={this.props.filmInfosState.film_infos.poster_path ? 'https://image.tmdb.org/t/p/w185_and_h278_bestv2' + this.props.filmInfosState.film_infos.poster_path : "https://upload.wikimedia.org/wikipedia/commons/f/fc/No_picture_available.png"} alt={"Poster of " + this.props.filmInfosState.film_infos.title}
-                                                        src={"./torrents/" + this.props.filmInfosState.movie_in_db[0].path}
-                                                    /> */}
-                                                </div>
+                                                </div> */}
+                                                <video width="100%" height="auto" controls autoPlay muted htmlFor='video_player'>
+                                                    <source src={'http://localhost:8000/movie_player?moviedb_id=' + this.props.location.search.split('movie=')[1]}></source>
+                                                    {/* <track label="English" srclang="en" kind="subtitles" src="./public/torrents/The.Hunger.Games.Mockingjay.Part.2.2015.1080p.BluRay.H264.AAC-RARBG/Subs/The.Hunger.Games.Mockingjay.Part.2.2015.1080p.BluRay.H264.AAC-RARBG.sub"/> */}
+                                                </video>
                                             </div>
                                             : null
                                         }
@@ -594,7 +591,6 @@ class Play extends Component {
                                             webkitallowfullscreen="webkitallowfullscreen"
                                             allowFullScreen="allowFullScreen">
                                         </iframe>
-                                        
                                     </div>
                                     : null
                                 }
