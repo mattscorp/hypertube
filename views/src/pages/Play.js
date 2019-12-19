@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Player } from 'video-react';
 import UserProfile from './UserProfile.js';
-import {fetch_post} from '../fetch.js'
+import {fetch_post} from '../fetch.js';
+const hbjs = require('handbrake-js');
 
 class Play extends Component {
 
@@ -15,18 +16,19 @@ class Play extends Component {
         user_rating: -1,
         show_user: "",
         user_infos: "",
-        fake_add: 46
+        fake_add: 5
     }
 
     constructor(props) {
         super(props);
-         this.com = React.createRef();
-         this.rating = React.createRef();
-
+        this.com = React.createRef();
+        this.rating = React.createRef();
+        this.video_player = React.createRef();
     }
 
     componentDidMount () {
         // Starts a countdown to play the fake add before playing the movie
+        this.handle_video_advancement();
         this.fake_ad_countdown();
         // Call the API to get the movie details
         let URL = `http://localhost:8000/movie_infos?movie_id=${this.props.location.search.split('movie=')[1]}`;
@@ -66,7 +68,23 @@ class Play extends Component {
                 {
                     // 2. Si oui et fini de telecharger, l'envoyer, si oui mais pas fini passer a l'etape 4
                     console.log(res);
-                    this.props.setMovieInDb(await res.json());
+                    let movie_json = await res.json();
+                    if (movie_json !== undefined && movie_json[0].path !== undefined && movie_json[0].path.indexOf(".mp4") !== movie_json[0].path.length - 4) {
+                        alert("SALUT LA CONVERSION EN MP4");
+                        hbjs.spawn({ inpup: movie_json[0].path, output: 'converted.mp4' })
+                        .on('error', err => {
+                            console.log('error converting the video');
+                        })
+                        .on('progress', progress => {
+                        console.log(
+                            'Percent complete: %s, ETA: %s',
+                            progress.percentComplete,
+                            progress.eta
+                        )
+                        })
+                    }
+                    this.props.setMovieInDb(movie_json);
+                    console.log(movie_json);
                 }
                 // else if (res.status === 206 || res.status === 201) // 206 Si le film est en train de telecharger mais le dl n'est pas fini || 204 si on vient de commencer le dl
                 // {
@@ -158,7 +176,7 @@ class Play extends Component {
             else if (res3.status === 204)
                 window.location.assign('/unknown_movie');
             else if (res3.status !== 200)
-                console.log('Failed getting similar movies, themoviedb.org is not res2ponding');
+                console.log('Failed getting similar movies, themoviedb.org is not responding');
             else
                 return res3.json();
         })
@@ -231,8 +249,6 @@ class Play extends Component {
                         this.state.comment.unshift(resData[0])
                     ))
             }
-            // console.log(resData);
-            // this.props.setSimilarMovies(resData);
         })
     }
     // MAKE A COMM FONCTION
@@ -246,10 +262,6 @@ class Play extends Component {
                         || (new Date().toISOString().slice(0, 16).replace('T', ' ') !== this.state.comment[0].date.slice(0, 16).replace('T', ' '))
                         || ((parseInt(new Date().toISOString().slice(17, 19).replace('T', ' ')) - parseInt(this.state.comment[0].date.slice(17, 19).replace('T', ' ')) > 5) || (parseInt((new Date().toISOString().slice(17, 19).replace('T', ' '))) - parseInt(this.state.comment[0].date.slice(17, 19).replace('T', ' '))) < -5))))
             {
-                // this.setState(prevState => (
-                //     this.state.offset += 1,
-                //     this.state.comment.unshift({comment : this.com.current.value, name : this.props.userConnectState.first_name || this.props.userConnectState.login , date : new Date().toISOString().slice(0, 19).replace('T', ' ')}) 
-                // ))
                 fetch(`http://localhost:8000/add_comment`, {
                     method: 'POST',
                     credentials: 'include',
@@ -273,8 +285,6 @@ class Play extends Component {
     }
     // DELETE A COM
     delete_com = (elem) => {
-        // alert(this.props.userConnectState.uuid);
-        // alert(elem.uuid);
         if (elem.comment && elem.comment !== undefined && elem.comment_ID && elem.comment_ID !== undefined && elem.uuid && elem.uuid !== undefined && this.props.userConnectState.uuid && this.props.userConnectState.uuid !== undefined && this.props.userConnectState.uuid === elem.uuid)
         {
             fetch(`http://localhost:8000/delete_comment`, {
@@ -390,6 +400,12 @@ class Play extends Component {
         }, 1000)
     }
 
+    handle_video_advancement = () => {
+        setInterval(() => {
+            console.log(this.video_player);
+        }, 1000)
+    }
+
     hide_user = () => {
         this.setState(prevState => (
             this.state.show_user = "",
@@ -417,26 +433,26 @@ class Play extends Component {
                                             <h2>Average rating : {this.state.average_rating ? this.state.average_rating : "Not rated yet"} </h2>
                                             <div className="col-md-5 offset-4">
                                                 <form class="rating" onChange={this.rate_movie} > 
-                                                    <input type="radio" id="star10" name="rating" value="10" ref={this.rating} checked={this.state.user_rating > 9.5 && this.state.user_rating <= 10}/><label class = "full" for="star10" title="10 stars" ></label>
-                                                    <input type="radio" id="star9half" name="rating" value="9.5" ref={this.rating} checked={this.state.user_rating > 9 && this.state.user_rating <= 9.5} /><label class="half" for="star9half" title="9.5 stars" ></label>
-                                                    <input type="radio" id="star9" name="rating" value="9" ref={this.rating} checked={this.state.user_rating > 8.5 && this.state.user_rating <= 9} /><label class = "full" for="star9" title="9 stars" ></label>
-                                                    <input type="radio" id="star8half" name="rating" value="8.5" ref={this.rating} checked={this.state.user_rating > 8 && this.state.user_rating <= 8.5} /><label class="half" for="star8half" title="8.5 stars" ></label>
-                                                    <input type="radio" id="star8" name="rating" value="8" ref={this.rating} checked={this.state.user_rating > 7.5 && this.state.user_rating <= 8} /><label class = "full" for="star8" title="8 stars" ></label>
-                                                    <input type="radio" id="star7half" name="rating" value="7.5" ref={this.rating} checked={this.state.user_rating > 7 && this.state.user_rating <= 7.5} /><label class="half" for="star7half" title="7.5 stars" ></label>
-                                                    <input type="radio" id="star7" name="rating" value="7" ref={this.rating} checked={this.state.user_rating > 6.5 && this.state.user_rating <= 7} /><label class = "full" for="star7" title="7 stars" ></label>
-                                                    <input type="radio" id="star6half" name="rating" value="6.5" ref={this.rating} checked={this.state.user_rating > 6 && this.state.user_rating <= 6.5} /><label class="half" for="star6half" title="6.5 stars" ></label>
-                                                    <input type="radio" id="star6" name="rating" value="6" ref={this.rating} checked={this.state.user_rating > 5.5 && this.state.user_rating <= 6} /><label class = "full" for="star6" title="6 stars" ></label>
-                                                    <input type="radio" id="star5half" name="rating" value="5.5" ref={this.rating} checked={this.state.user_rating > 5 && this.state.user_rating <= 5.5} /><label class="half" for="star5half" title="Pretty good - 5.5 stars" ></label>
-                                                    <input type="radio" id="star5" name="rating" value="5" ref={this.rating} checked={this.state.user_rating > 4.5 && this.state.user_rating <= 5} /><label class = "full" for="star5" title="Awesome - 5 stars" ></label>
-                                                    <input type="radio" id="star4half" name="rating" value="4.5" ref={this.rating} checked={this.state.user_rating > 4 && this.state.user_rating <= 4.5} /><label class="half" for="star4half" title="Pretty good - 4.5 stars" ></label>
-                                                    <input type="radio" id="star4" name="rating" value="4" ref={this.rating} checked={this.state.user_rating > 3.5 && this.state.user_rating <= 4} /><label class = "full" for="star4" title="Pretty good - 4 stars" ></label>
-                                                    <input type="radio" id="star3half" name="rating" value="3.5" ref={this.rating} checked={this.state.user_rating > 3 && this.state.user_rating <= 3.5} /><label class="half" for="star3half" title="Meh - 3.5 stars" ></label>
-                                                    <input type="radio" id="star3" name="rating" value="3" ref={this.rating} checked={this.state.user_rating > 2.5 && this.state.user_rating <= 3} /><label class = "full" for="star3" title="Meh - 3 stars" ></label>
-                                                    <input type="radio" id="star2half" name="rating" value="2.5" ref={this.rating} checked={this.state.user_rating > 2 && this.state.user_rating <= 2.5} /><label class="half" for="star2half" title="Kinda bad - 2.5 stars" ></label>
-                                                    <input type="radio" id="star2" name="rating" value="2" ref={this.rating} checked={this.state.user_rating > 1.5 && this.state.user_rating <= 2} /><label class = "full" for="star2" title="Kinda bad - 2 stars" ></label>
-                                                    <input type="radio" id="star1half" name="rating" value="1.5" ref={this.rating} checked={this.state.user_rating > 1 && this.state.user_rating <= 1.5} /><label class="half" for="star1half" title="Meh - 1.5 stars" ></label>
-                                                    <input type="radio" id="star1" name="rating" value="1" ref={this.rating} checked={this.state.user_rating > 0.5 && this.state.user_rating <= 1} /><label class = "full" for="star1" title="Sucks big time - 1 star" ></label>
-                                                    <input type="radio" id="starhalf" name="rating" value="0.5" ref={this.rating} checked={this.state.user_rating > 0 && this.state.user_rating <= 0.5} /><label class="half" for="starhalf" title="Sucks big time - 0.5 stars" ></label>
+                                                    <input type="radio" id="star10" name="rating" value="10" ref={this.rating} checked={this.state.user_rating > 9.5 && this.state.user_rating <= 10}/><label class = "full" htmlFor="star10" title="10 stars" ></label>
+                                                    <input type="radio" id="star9half" name="rating" value="9.5" ref={this.rating} checked={this.state.user_rating > 9 && this.state.user_rating <= 9.5} /><label class="half" htmlFor="star9half" title="9.5 stars" ></label>
+                                                    <input type="radio" id="star9" name="rating" value="9" ref={this.rating} checked={this.state.user_rating > 8.5 && this.state.user_rating <= 9} /><label class = "full" htmlFor="star9" title="9 stars" ></label>
+                                                    <input type="radio" id="star8half" name="rating" value="8.5" ref={this.rating} checked={this.state.user_rating > 8 && this.state.user_rating <= 8.5} /><label class="half" htmlFor="star8half" title="8.5 stars" ></label>
+                                                    <input type="radio" id="star8" name="rating" value="8" ref={this.rating} checked={this.state.user_rating > 7.5 && this.state.user_rating <= 8} /><label class = "full" htmlFor="star8" title="8 stars" ></label>
+                                                    <input type="radio" id="star7half" name="rating" value="7.5" ref={this.rating} checked={this.state.user_rating > 7 && this.state.user_rating <= 7.5} /><label class="half" htmlFor="star7half" title="7.5 stars" ></label>
+                                                    <input type="radio" id="star7" name="rating" value="7" ref={this.rating} checked={this.state.user_rating > 6.5 && this.state.user_rating <= 7} /><label class = "full" htmlFor="star7" title="7 stars" ></label>
+                                                    <input type="radio" id="star6half" name="rating" value="6.5" ref={this.rating} checked={this.state.user_rating > 6 && this.state.user_rating <= 6.5} /><label class="half" htmlFor="star6half" title="6.5 stars" ></label>
+                                                    <input type="radio" id="star6" name="rating" value="6" ref={this.rating} checked={this.state.user_rating > 5.5 && this.state.user_rating <= 6} /><label class = "full" htmlFor="star6" title="6 stars" ></label>
+                                                    <input type="radio" id="star5half" name="rating" value="5.5" ref={this.rating} checked={this.state.user_rating > 5 && this.state.user_rating <= 5.5} /><label class="half" htmlFor="star5half" title="Pretty good - 5.5 stars" ></label>
+                                                    <input type="radio" id="star5" name="rating" value="5" ref={this.rating} checked={this.state.user_rating > 4.5 && this.state.user_rating <= 5} /><label class = "full" htmlFor="star5" title="Awesome - 5 stars" ></label>
+                                                    <input type="radio" id="star4half" name="rating" value="4.5" ref={this.rating} checked={this.state.user_rating > 4 && this.state.user_rating <= 4.5} /><label class="half" htmlFor="star4half" title="Pretty good - 4.5 stars" ></label>
+                                                    <input type="radio" id="star4" name="rating" value="4" ref={this.rating} checked={this.state.user_rating > 3.5 && this.state.user_rating <= 4} /><label class = "full" htmlFor="star4" title="Pretty good - 4 stars" ></label>
+                                                    <input type="radio" id="star3half" name="rating" value="3.5" ref={this.rating} checked={this.state.user_rating > 3 && this.state.user_rating <= 3.5} /><label class="half" htmlFor="star3half" title="Meh - 3.5 stars" ></label>
+                                                    <input type="radio" id="star3" name="rating" value="3" ref={this.rating} checked={this.state.user_rating > 2.5 && this.state.user_rating <= 3} /><label class = "full" htmlFor="star3" title="Meh - 3 stars" ></label>
+                                                    <input type="radio" id="star2half" name="rating" value="2.5" ref={this.rating} checked={this.state.user_rating > 2 && this.state.user_rating <= 2.5} /><label class="half" htmlFor="star2half" title="Kinda bad - 2.5 stars" ></label>
+                                                    <input type="radio" id="star2" name="rating" value="2" ref={this.rating} checked={this.state.user_rating > 1.5 && this.state.user_rating <= 2} /><label class = "full" htmlFor="star2" title="Kinda bad - 2 stars" ></label>
+                                                    <input type="radio" id="star1half" name="rating" value="1.5" ref={this.rating} checked={this.state.user_rating > 1 && this.state.user_rating <= 1.5} /><label class="half" htmlFor="star1half" title="Meh - 1.5 stars" ></label>
+                                                    <input type="radio" id="star1" name="rating" value="1" ref={this.rating} checked={this.state.user_rating > 0.5 && this.state.user_rating <= 1} /><label class = "full" htmlFor="star1" title="Sucks big time - 1 star" ></label>
+                                                    <input type="radio" id="starhalf" name="rating" value="0.5" ref={this.rating} checked={this.state.user_rating > 0 && this.state.user_rating <= 0.5} /><label class="half" htmlFor="starhalf" title="Sucks big time - 0.5 stars" ></label>
                                                 </form>
                                             </div>
                                         </div>
@@ -449,17 +465,22 @@ class Play extends Component {
                                                     src="https://www.youtube.com/embed/sODZLSHJm6Q?autoplay=1"
                                                     frameborder="0"
                                                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-                                                    allowfullscreen>
+                                                    allowFullScreen>
                                                 </iframe>
                                                 <p>Your video will be played in {this.state.fake_add} seconds.</p>
                                             </div> 
+                                            : !this.props.filmInfosState.movie_in_db[0] ?
+                                            <div>
+                                                <h1>This movie is not the database --> TO BE DONE</h1>
+                                            </div> 
                                             : null
+                                            
                                         }
-                                        {this.props.filmInfosState.movie_in_db[0] && this.state.fake_add <= 0 ?
+                                        {this.props.filmInfosState.movie_in_db[0] && this.state.fake_add < 0 ?
                                         // {this.props.filmInfosState.movie_in_db[0] ?
                                             <div className = 'col-md-10 col-xl-12'>
                                                 <div>
-                                                    <video width="100%" height="auto" controls autoplay muted>
+                                                    <video width="100%" height="auto" controls autoPlay muted htmlFor='video_player'>
                                                         {this.props.filmInfosState.movie_in_db[0].path && this.props.filmInfosState.movie_in_db[0].path.indexOf(".mp4") === this.props.filmInfosState.movie_in_db[0].path.length - 4 ?
                                                             <source src={"./torrents/" + this.props.filmInfosState.movie_in_db[0].path} type='video/mp4'/> : null
                                                         }
@@ -480,13 +501,8 @@ class Play extends Component {
                                                         src={"./torrents/" + this.props.filmInfosState.movie_in_db[0].path}
                                                     /> */}
                                                 </div>
-                                                {/* <div id="torrent_live"></div> */}
                                             </div>
-                                            : this.state.fake_add === 1 ?
-                                                <div>
-                                                    <h1>This movie is not the database --> TO BE DONE</h1>
-                                                </div>
-                                                : null
+                                            : null
                                         }
 
                                         <div className="comment_section col-md-12 text-center">

@@ -84,7 +84,7 @@ class AuthPage extends Component {
     // FORGOTTEN PASSWORD
     forgottenPassword = (event) => {
         event.preventDefault();
-        if (this.forgottenPasswordEl.current.value.trim() === null || this.forgottenPasswordEl.current.value.trim() === undefined || this.forgottenPasswordEl.current.value.trim() == "")
+        if (this.forgottenPasswordEl.current.value.trim() === null || this.forgottenPasswordEl.current.value.trim() === undefined || this.forgottenPasswordEl.current.value.trim() === "")
             alert('Invalid email address');
         else {
             const requestBody = {
