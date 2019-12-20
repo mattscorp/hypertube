@@ -3,6 +3,9 @@ import FilmsList from '../components/listfilms/index.js';
 
 class HomePage extends Component {
 
+  componentDidMount = async () => {
+    this.props.resetFilmsBeforeSearch();
+  }
   setSearch = (event) => {
     this.props.resetFilmsBeforeSearch();
   }
