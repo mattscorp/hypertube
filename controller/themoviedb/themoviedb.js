@@ -34,7 +34,6 @@ router.get('/moviedb', with_auth, async (req, res) => {
             res.send(popular_movies.results);
         }
         // ** SEARCH ** --> search movies by name
-        //    "movie_name": 
         else if (req.query.action.toLowerCase() == "search") {
             let name = req.query.movie_name;
             page = req.query.page;
@@ -94,7 +93,7 @@ router.get('/movie_in_db', with_auth, async (req, res) => {
         if (movie_infos_db == 'vide') {
             let movie_infos_api = await films.movie_infos(req.query.movie_id);
             // On prend les providers
-            let torrent_infos = await torrents.ft_torrent(movie_infos_api, ['Rarbg']);
+            let torrent_infos = await torrents.ft_torrent(movie_infos_api, ['Rarbg', 'Torrentz2', 'ThePirateBay', 'KickassTorrents', 'TorrentProject']);
             res.status(201).send(torrent_infos);
         }
         else {

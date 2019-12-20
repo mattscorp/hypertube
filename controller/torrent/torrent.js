@@ -12,10 +12,14 @@ const TORRENT_OPTIONS = {
 
 // Enable provider
 const enable_providers = async (source) => {
-    TorrentSearchApi.enableProvider(source);
+    let providers = '';
     return new Promise(async (resolve, reject) => {
-        const providers = await TorrentSearchApi.getActiveProviders();
-        console.log(providers);
+        source.map(async (elem) => {
+            console.log('elem : ' + elem);
+            TorrentSearchApi.enableProvider(elem);
+            providers = await TorrentSearchApi.getActiveProviders();
+        });
+        console.log('providers : ' + providers);
         resolve(providers);
     });
 }
@@ -26,7 +30,7 @@ const get_magnet = async (movie_infos) => {
     console.log(movie_infos.title);
     console.log('****************************');
     return new Promise(async (resolve, reject) => {
-        const torrents = await TorrentSearchApi.search(movie_infos.title, 'Movies', 20)
+        const torrents = await TorrentSearchApi.search(movie_infos.title, 'Movies', 1)
         console.log('IN TORRENT.JS');
         console.log(torrents);
         resolve(torrents);
@@ -35,9 +39,7 @@ const get_magnet = async (movie_infos) => {
 
 //
 const dowload_torrent = async (torrents, movie_infos) => {
-    // console.log('IN dowload_torrent : ' + torrents[0].title);
     if (torrents[0]) {
-        console.log(torrents[0]);
         const magnet = await TorrentSearchApi.getMagnet(torrents[0]);
         if (magnet) {
             try {
@@ -70,8 +72,8 @@ const dowload_torrent = async (torrents, movie_infos) => {
 
 const ft_torrent = async (movie_infos, source) => {
     return new Promise(async (resolve, reject) => {
-        const providers = await enable_providers(source[0]);
-        console.log('return de providers : ' + providers);
+        const providers = await enable_providers(source);
+        console.log('return de providers : ' + JSON.stringify(providers));
         const torrents = await get_magnet(movie_infos);
         // LIGNE A METTRE EN COMMENTAIRE POUR NE PAS DOWLOAD LE TORRENT
         // =====> =====> =====>

@@ -23,6 +23,8 @@ class Play extends Component {
         this.com = React.createRef();
         this.rating = React.createRef();
         this.video_player = React.createRef();
+        // this.player = React.createRef();
+
     }
 
     componentDidMount () {
@@ -68,7 +70,7 @@ class Play extends Component {
                     // 2. Si oui et fini de telecharger, l'envoyer, si oui mais pas fini passer a l'etape 4
                     console.log(res);
                     let movie_json = await res.json();
-                    if (movie_json !== undefined && movie_json[0].path !== undefined && movie_json[0].path.indexOf(".mp4") !== movie_json[0].path.length - 4) {
+                    if (movie_json !== undefined && movie_json[0] && movie_json[0].path !== undefined && movie_json[0].path.indexOf(".mp4") !== movie_json[0].path.length - 4) {
                         alert("SALUT LA CONVERSION EN MP4");
                         hbjs.spawn({ inpup: movie_json[0].path, output: 'converted.mp4' })
                         .on('error', err => {
@@ -455,9 +457,7 @@ class Play extends Component {
                                                 </form>
                                             </div>
                                         </div>
-
                                         {/* MOVIE PLAYER */}
-                                                                                
                                         {this.state.fake_add >= 0 ?
                                             <div className = 'col-md-10 col-xl-12 text-center trailer-div'>
                                                 <iframe 
@@ -470,8 +470,9 @@ class Play extends Component {
                                                 <p>Your video will be played in {this.state.fake_add} seconds.</p>
                                             </div> 
                                             : !this.props.filmInfosState.movie_in_db[0] ?
-                                            <div>
-                                                <h1>This movie is not the database --> TO BE DONE</h1>
+                                            <div className="mx-auto">
+                                                <h3>This movie is not our database ='(</h3>
+                                                <button>Keep me informed!</button>
                                             </div> 
                                             : null
                                         }
@@ -494,14 +495,16 @@ class Play extends Component {
                                                         }
                                                     </video>
                                                 </div> */}
-                                                <video width="100%" height="auto" controls autoPlay muted htmlFor='video_player'>
+                                                <video width="100%" height="auto"
+                                                    controls autoPlay muted
+                                                    htmlFor='video_player'
+                                                    preload="metadata" controlsList="nodownload">
                                                     <source src={'http://localhost:8000/movie_player?moviedb_id=' + this.props.location.search.split('movie=')[1]}></source>
                                                     {/* <track label="English" srclang="en" kind="subtitles" src="./public/torrents/The.Hunger.Games.Mockingjay.Part.2.2015.1080p.BluRay.H264.AAC-RARBG/Subs/The.Hunger.Games.Mockingjay.Part.2.2015.1080p.BluRay.H264.AAC-RARBG.sub"/> */}
                                                 </video>
                                             </div>
                                             : null
                                         }
-
                                         <div className="comment_section col-md-12 text-center">
                                             <div className="all_comment">
                                                 <ul>
