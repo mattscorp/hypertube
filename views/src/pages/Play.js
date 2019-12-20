@@ -15,7 +15,8 @@ class Play extends Component {
         user_rating: -1,
         show_user: "",
         user_infos: "",
-        fake_add: 3
+        fake_add: 3,
+        url_movie: ''
     }
 
     constructor(props) {
@@ -29,6 +30,9 @@ class Play extends Component {
 
     componentDidMount () {
         // Starts a countdown to play the fake add before playing the movie
+        this.setState(prevState =>(
+           this.state.url_movie = parseInt(this.props.location.search.split('movie=')[1].trim())
+        ));
         this.handle_video_advancement();
         this.fake_ad_countdown();
         // Call the API to get the movie details
@@ -419,7 +423,7 @@ class Play extends Component {
             <React.Fragment>
                 <div className="film-container" style={{background:this.state.background}} onClick={this.state.show_user != "" ? this.hide_user : null}>
                     <div className="container under">
-                        {this.props.filmInfosState.film_infos.id !== parseInt(this.props.location.search.split('movie=')[1].trim()) ? null :
+                        {this.props.filmInfosState.film_infos.id !== this.state.url_movie ? null :
                             <div>
                                 <div className = "row">
                                     {/* Movie infos */}
