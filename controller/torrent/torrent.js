@@ -19,10 +19,10 @@ const enable_providers = async (source) => {
             TorrentSearchApi.enableProvider(elem);
             providers = await TorrentSearchApi.getActiveProviders();
         });
-        console.log('providers : ' + providers);
         resolve(providers);
     });
 }
+module.exports.enable_providers = enable_providers;
 
 // Search the API to return infos and the magnet
 const get_magnet = async (movie_infos) => {
@@ -31,11 +31,11 @@ const get_magnet = async (movie_infos) => {
     console.log('****************************');
     return new Promise(async (resolve, reject) => {
         const torrents = await TorrentSearchApi.search(movie_infos.title, 'Movies', 1)
-        console.log('IN TORRENT.JS');
         console.log(torrents);
         resolve(torrents);
     });
 }
+module.exports.get_magnet = get_magnet;
 
 //
 const dowload_torrent = async (torrents, movie_infos) => {

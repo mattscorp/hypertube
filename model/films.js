@@ -116,6 +116,7 @@ const movie_infos = async (movie_id) => {
     return new Promise((resolve, reject) => {
         let url = `https://api.themoviedb.org/3/movie/${movie_id}?api_key=${API_KEY}&language=en-US&append_to_response=videos`;
         request(url, {json: true}, function (error, response, body) {
+            console.log(url)
             resolve(body);
         });
     });
@@ -146,6 +147,7 @@ module.exports.movie_cast = movie_cast;
 
 // ADD torrent movie to BDD
 const add_torrent = async (moviedb_ID, path, extension, name, year, magnet) => {
+    console.log("On ajoute " + name + " dans la base de donnees")
     const sql = "INSERT INTO `films` (`moviedb_ID`, `path`, `extension`, `name`, `year`, `magnet`) VALUES (?, ?, ?, ?, ?, ?)";
     const values = [moviedb_ID, path, extension, name, year, magnet];
     con.query(sql, values, (err) => {
