@@ -71,6 +71,7 @@ class MainNavigation extends Component {
     }
 
     componentDidMount = async () => {
+        
         let URL = 'http://localhost:8000/user_infos';
         fetch(URL, {
             method: 'POST',
@@ -91,7 +92,6 @@ class MainNavigation extends Component {
                     this.props.setDarkMode();
             }
         })
-
         // googleTranslate.detectLanguage('Gracias', function(err, detection) {
         //     console.log(detection.language);
         //     // =>  es
@@ -199,6 +199,10 @@ class MainNavigation extends Component {
         });
         document.getElementById("searchInput").value = "";
     }
+    submitQuery = (event) => {
+        event.preventDefault();
+
+    }
 
     render() {
         return (
@@ -231,10 +235,10 @@ class MainNavigation extends Component {
                                 </select>  
                             </li>
                             }
-                            {this.props.userConnectState.uuid ? 
+                            {this.props.userConnectState.uuid && window.location.href === "http://localhost:3000/home"? 
                             <div>
                                 <li className="col-xs-6 col-md-7 col-md-offset-2">
-                                    <form id="myForm">
+                                    <form id="myForm" onSubmit={this.submitQuery}>
                                         <input onChange={this.setSearch} 
                                             className="form-control text-center " type="text" placeholder="Search" 
                                             name="search_query"
