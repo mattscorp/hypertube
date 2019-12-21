@@ -87,63 +87,6 @@ class Play extends Component {
                     this.props.setMovieInDb(movie_json);
                     console.log(movie_json);
                 }
-                // else if (res.status === 206 || res.status === 201) // 206 Si le film est en train de telecharger mais le dl n'est pas fini || 204 si on vient de commencer le dl
-                // {
-                //     // alert((await res.json())[0].magnet);
-                //     // test Parasite
-                //     // let torrentId = 'magnet:?xt=urn:btih:a39e4232842fd09608162521df562b34e61bb22a&dn=Parasite.2019.KOREAN.1080p.WEBRip.x264.AAC2.0-NOGRP&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fparasite.2019.korean.1080p.webrip.x264.aac2.0-nogrp.torrent';
-                //     // TEST lady and the tramp
-                //     // let torrentId = 'magnet:?xt=urn:btih:23aafdf7027db833bb68e0fe29e81e806a430395&dn=Lady.and.the.Tramp.2019.iNTERNAL.720p.WEB.H264-AMRAP&tr=http%3A%2F%2Ftracker.trackerfix.com%3A80%2Fannounce&tr=udp%3A%2F%2F9.rarbg.me%3A2710&tr=udp%3A%2F%2F9.rarbg.to%3A2710&tr=udp%3A%2F%2Fopen.demonii.com%3A1337%2Fannounce';
-                //     // demo webtorrent
-                //     // let torrentId = 'magnet:?xt=urn:btih:08ada5a7a6183aae1e09d831df6748d566095a10&dn=Sintel&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel.torrent';
-                //     let torrentId = '';
-                //     let json_res = await res.json();
-                //     if (json_res && json_res !== undefined && json_res[0] !== undefined && json_res[0].path) {
-                //         torrentId = await json_res[0].path;
-                //         alert(torrentId);
-                //         if (torrentId.appendTo !== undefined)
-                //             torrentId.appendTo('body');
-                //     }
-                //     // console.log('TorrentId : ' + torrentId);
-                //     // On va chercher le stream du torrent
-                //     fetch(`http://localhost:8000/stream_dl?id=${this.props.filmInfosState.film_infos.id}&range=bytes0to0on0`, {
-                //         method: 'GET',
-                //         credentials: 'include',
-                //         'range': '',
-                //         headers: {'Content-Type': 'application/json'}
-                //     })
-                //     .then(res => {
-                //         if (res.status === 401)
-                //             window.location.assign('/');
-                //         else if (res.status === 204)
-                //             alert("Pas de magnet");
-                //         else if (res.status === 416)
-                //             alert("Pas de range");
-                //     });
-
-
-                            // client.add(torrentId, {transports: ['websocket']}, function (torrent) {
-                            // alert(torrentId);
-                            // console.log('Torrent tpusu : ' + torrent);
-                            //     console.log('yolo  : ' + torrentId);
-                            //     // Torrents can contain many files. Let's use the .mp4 file
-                            //     let file = torrent.files.find(function (file) {
-                            //         console.log(file);
-                            //         alert(file);
-                            //         return (file.name.endsWith('.mp4') || file.name.endsWith('.mvk') || file.name.endsWith('.avi') || file.name.endsWith('.webm'));
-                            //     });
-                            //     // Display the file by adding it to the DOM.
-                            //     // Supports video, audio, image files, and more!
-                            //     file.appendTo('#torrent_live');
-                            // });
-                // }
-                    // 3. Si non : 
-                    //      a. get active providers
-                    //      b. chercher le film et verifier que les infos sont coherentes
-                    //      c. telecharger jsp comment
-                    
-                    // 4. Envoyer le film pendant le telechargement
-                    // 5. Si on trouve pas le bon film, mettre en liste d'attente par email
             })
         })
         // Call the API to get the cast
@@ -397,7 +340,9 @@ class Play extends Component {
         setInterval(() => {
             this.setState(prevState => (
                 this.state.fake_add += -1
-            ))
+            ));
+            if (this.state.fake_add && this.state.fake_add === -1)
+                this.video_player.current.play();
         }, 1000)
     }
 
@@ -471,14 +416,14 @@ class Play extends Component {
                                             </div> 
                                             : !this.props.filmInfosState.movie_in_db[0] ?
                                             <div className="mx-auto">
-                                                <h3>This movie is not our database ='(</h3>
-                                                <button>Keep me informed!</button>
+                                                <h3>This movie is not available yet ='(</h3>
+                                                <button>Add to my list!</button>
                                             </div> 
                                             : null
                                         }
-                                        {this.props.filmInfosState.movie_in_db[0] && this.state.fake_add < 0 ?
+                                        {this.props.filmInfosState.movie_in_db[0] ?
                                         // {this.props.filmInfosState.movie_in_db[0] ?
-                                            <div className = 'col-md-10 col-xl-12'>
+                                            <div className = 'col-md-10 col-xl-12' style={this.state.fake_add > -1 ? {display:'none'} : null}>
                                                 {/* <div>
                                                     <video width="100%" height="auto" controls autoPlay muted htmlFor='video_player'>
                                                         {this.props.filmInfosState.movie_in_db[0].path && this.props.filmInfosState.movie_in_db[0].path.indexOf(".mp4") === this.props.filmInfosState.movie_in_db[0].path.length - 4 ?
@@ -496,7 +441,8 @@ class Play extends Component {
                                                     </video>
                                                 </div> */}
                                                 <video width="100%" height="auto"
-                                                    controls autoPlay muted
+                                                    ref={this.video_player}
+                                                    controls muted
                                                     htmlFor='video_player'
                                                     preload="metadata" controlsList="nodownload">
                                                     <source src={'http://localhost:8000/movie_player?moviedb_id=' + this.props.location.search.split('movie=')[1]}></source>

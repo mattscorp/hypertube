@@ -123,38 +123,90 @@ router.post('/torrent_done', with_auth, (req, res) => {
 /*
     On envoie le flux video pendant le telechargement
 */
-router.get('/stream_dl', with_auth, async (req, res) => {
-    console.log('IN STREAM_DL : ' + req.query.id);
-    let movie_infos = await films.film_db(req.query.id);
-    console.log(movie_infos);
-    if (movie_infos == 'vide')     {
-        res.status(204).send('Pas de magnet');
-    } else {
-        let path = JSON.parse(movie_infos)[0].path;
-        console.log(path);
-        if (fs.existsSync(`./views/public/torrents/${path}`)) {
-            console.log('IN "/stream_DL" : Le fichier existe');
-            fs.stat(`./views/public/torrents/${path}`, function(err, stats) {
-                if (err) { /* If we can't get information about the file */
-                    if (err.code === 'ENOENT') {
-                        console.log('ERROR');
-                        // 404 Error if file not found
-                        return res.sendStatus(404);
-                    }
-                res.end(err);
-                } else { /* If we have information about the file available */
-                    console.log(stats);
-                    let range = req.query.range;
-                    console.log('range : ' + range);
-                    if (!range) {
-                        // 416 Wrong range
-                        return res.sendStatus(416);
-                    }
-                }
-            });
-        } else
-        console.log('IN "/stream_DL" : Le fichier n\'existe pas');
-    }
-})
+// router.get('/stream_dl', with_auth, async (req, res) => {
+//     console.log('IN STREAM_DL : ' + req.query.id);
+//     let movie_infos = await films.film_db(req.query.id);
+//     console.log(movie_infos);
+//     if (movie_infos == 'vide')     {
+//         res.status(204).send('Pas de magnet');
+//     } else {
+//         let path = JSON.parse(movie_infos)[0].path;
+//         console.log(path);
+//         if (fs.existsSync(`./views/public/torrents/${path}`)) {
+//             console.log('IN "/stream_DL" : Le fichier existe');
+//             fs.stat(`./views/public/torrents/${path}`, function(err, stats) {
+//                 if (err) { /* If we can't get information about the file */
+//                     if (err.code === 'ENOENT') {
+//                         console.log('ERROR');
+//                         // 404 Error if file not found
+//                         return res.sendStatus(404);
+//                     }
+//                 res.end(err);
+//                 } else { /* If we have information about the file available */
+//                     console.log(stats);
+//                     let range = req.query.range;
+//                     console.log('range : ' + range);
+//                     if (!range) {
+//                         // 416 Wrong range
+//                         return res.sendStatus(416);
+//                     }
+//                 }
+//             });
+//         } else
+//         console.log('IN "/stream_DL" : Le fichier n\'existe pas');
+//     }
+// })
 
 module.exports = router;
+
+// router.route("/stream/:magnet").get((req, res) => {
+//     const engine = torrentStream(req.params.magnet, { path: "./torrents" })
+//     engine.on("ready", () => {
+//         engine.files.forEach((file) => {
+//             if (
+//                 path.extname(file.name) === ".mp4" ||
+//                 path.extname(file.name) === ".mkv" ||
+//                 path.extname(file.name) === ".avi"
+//             ) {
+//                 if (fs.existsSync(`./torrents/${file.path}`)) {
+//                     fs.stat(`./torrents/${file.path}`, function(err, stats) {
+//                     if (err) {
+//                         if (err.code === 'ENOENT') {
+//                             // 404 Error if file not found
+//                             return res.sendStatus(404);
+//                         }
+//                         res.end(err);
+//                     }
+//                     var range = req.headers.range;
+//                     if (!range) {
+//                         // 416 Wrong range
+//                         return res.sendStatus(416);
+//                     }
+//                     const positions = range.replace(/bytes=/, "").split("-");
+//                     let start = parseInt(positions[0], 10);
+//                     const total = stats.size;
+//                     const end = positions[1] ? parseInt(positions[1], 10) : total - 1;
+//                     if (start >= end)
+//                         start = end
+//                     const chunksize = (end - start) + 1;
+//                     res.writeHead(206, {
+//                         "Content-Range": "bytes " + start + "-" + end + "/" + total,
+//                         "Accept-Ranges": "bytes",
+//                         "Content-Length": chunksize,
+//                         "Content-Type": "video/mp4"
+//                     })
+//                     var stream = fs.createReadStream(`./torrents/${file.path}`, { start, end })
+//                         .on("open", function() {
+//                         stream.pipe(res);
+//                         }).on("error", function(err) {
+//                             res.end(err);
+//                         })
+//                     })
+//                 } else {
+//                     const fileStream = file.createReadStream()
+//                     fileStream.pipe(res)
+//                 }
+//             }
+//         })
+//     })
+// })
