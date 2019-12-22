@@ -15,7 +15,7 @@ const enable_providers = async (source) => {
     let providers = '';
     return new Promise(async (resolve, reject) => {
         source.map(async (elem) => {
-            console.log('elem : ' + elem);
+            // console.log('elem : ' + elem);
             TorrentSearchApi.enableProvider(elem);
             providers = await TorrentSearchApi.getActiveProviders();
         });

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import UserProfile from './UserProfile.js';
 import {fetch_post} from '../fetch.js';
 import unavailable from '../resources/unavailable.gif'
-const hbjs = require('handbrake-js');
+// const hbjs = require('handbrake-js');
 
 class Play extends Component {
 
@@ -353,7 +353,7 @@ class Play extends Component {
 
     handle_video_advancement = () => {
         setInterval(() => {
-            console.log(this.video_player);
+            // console.log(this.video_player);
         }, 1000)
     }
 
@@ -367,7 +367,7 @@ class Play extends Component {
     render () {
         return (
             <React.Fragment>
-                <div className="film-container" style={{background:this.state.background}} onClick={this.state.show_user != "" ? this.hide_user : null}>
+                <div className="film-container" style={{background:this.state.background}} onClick={this.state.show_user !== "" ? this.hide_user : null}>
                     <div className="container under">
                         {this.props.filmInfosState.film_infos.id !== this.state.url_movie ? null :
                             <div>
@@ -410,7 +410,7 @@ class Play extends Component {
                                         {/* MOVIE PLAYER */}
                                         {this.state.fake_add >= 0 ?
                                             <div className = 'col-md-10 col-xl-12 text-center trailer-div'>
-                                                <iframe 
+                                                <iframe title="trailer"
                                                     width="100%" height="100%"
                                                     src="https://www.youtube.com/embed/sODZLSHJm6Q?autoplay=1"
                                                     frameborder="0"
@@ -600,7 +600,7 @@ class Play extends Component {
                                         </li>
                                     </ul>
                                 </div>
-                                {this.props.filmInfosState.similar_movies !== "" && this.props.filmInfosState.similar_movies[0] && this.props.filmInfosState.similar_movies[0] != undefined ?
+                                {this.props.filmInfosState.similar_movies !== "" && this.props.filmInfosState.similar_movies[0] && this.props.filmInfosState.similar_movies[0] !== undefined ?
                                 <div className="container mt-3 similar_movies">
                                     <div className="col-md-12 text-center">
                                         <h3>Similar movies</h3>

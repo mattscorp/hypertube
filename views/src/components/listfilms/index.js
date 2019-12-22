@@ -51,12 +51,9 @@ class FilmsList extends Component{
         }
         let research = this.props.homeSearch;
         let URL = '';
-        let parseResarch = research.split(" ");
         // Utilisation de parseResearch pour definir si la recherche se fait via un titre ou via une recherche affinnee
         // si parseResearch[0] === "Categories" => action en fonction
-        // si 
         if (research === "Trending movies") {
-            // const {this.props.page, this.props.films, this.props.scrolling} = this.state;
             URL = `http://localhost:8000/moviedb?action=popular&page=${this.props.page}${decade}${genderSearch}${public_category}${rating}${duration}`;
             fetch(URL, {
                 method: 'GET',
@@ -80,33 +77,30 @@ class FilmsList extends Component{
             if (this.props.mode === null)
             {
                 // CASE RESET_FILMS_BEFORE_SEARCH
-                // this.props.nextPageSearch(() => {
-                    let search_query = this.props.homeSearch.split(':')[1].trim();
-                    URL = `http://localhost:8000/moviedb?action=search&page=${this.props.page}&movie_name=${search_query}${decade}${genderSearch}${public_category}${rating}${duration}`;
-                    fetch(URL, {
-                        credentials: 'include',
-                        method: 'GET',
-                        headers: {'Content-Type': 'application/json'}
-                    })
-                    .then(res => {
-                        if (res.status === 401)
-                            window.location.assign('/');
-                        else if (res.status !== 200 && res.status !== 201)
-                            throw new Error('Failed');
-                        return res.json();
-                    })
-                    // CASE FIRST_PAGE_SEARCH
-                    .then(resData => {
-                        this.props.nextPageSearch(resData)
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    });
-                // })
+                let search_query = this.props.homeSearch.split(':')[1].trim();
+                URL = `http://localhost:8000/moviedb?action=search&page=${this.props.page}&movie_name=${search_query}${decade}${genderSearch}${public_category}${rating}${duration}`;
+                fetch(URL, {
+                    credentials: 'include',
+                    method: 'GET',
+                    headers: {'Content-Type': 'application/json'}
+                })
+                .then(res => {
+                    if (res.status === 401)
+                        window.location.assign('/');
+                    else if (res.status !== 200 && res.status !== 201)
+                        throw new Error('Failed');
+                    return res.json();
+                })
+                // CASE FIRST_PAGE_SEARCH
+                .then(resData => {
+                    this.props.nextPageSearch(resData)
+                })
+                .catch(err => {
+                    console.log(err);
+                });
             }
             else if (this.props.mode === 1)
             {
-                let search_query = this.props.homeSearch.split(':')[1].trim();
                 URL = `http://localhost:8000/moviedb?action=search&page=${this.props.reloadSearch.page}&movie_name=${decade}${genderSearch}${public_category}${rating}${duration}`;
                 fetch(URL, {
                     method: 'GET',

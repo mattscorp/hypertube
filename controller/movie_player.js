@@ -83,14 +83,50 @@ router.get('/movie_player', with_auth, async (req, res) => {
                                                 console.log("*/*/ TORRENT DOWNLOAD COMPLETE \\*\\*");
                                                 movie_model.torrent_done(magnet);
                                             });
-                                            torrent_ret.on('download', function(bytes) {
-                                                console.log('progress : ' + torrent_ret.downloaded);
+                                            // torrent_ret.on('download', function(bytes) {
+                                            //     console.log('progress : ' + torrent_ret.downloaded);
                                                 
-                                            })
+                                            // })
                                             torrent_ret.files.forEach(function (file) {
                                                 const fileStream = file.createReadStream();
                                                 fileStream.pipe(res);
                                             });
+                                            webtorrent_client.on('torrent', function () {
+                                                console.log("******ON TORRENT 1*****")
+                                                const fileStream = file.createReadStream();
+                                                console.log('PLOP 2');
+                                                console.log(fileStream);
+                                                fileStream.pipe(res);
+                                                // const range = req.headers.range;
+                                                // if (range) {
+                                                //     const parts = range.replace(/bytes=/, "").split("-");
+                                                //     const start = parseInt(parts[0], 10);
+                                                //     const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
+                                                //     const chunksize = parseInt(end-start, 10) + 1
+                                                //     const file = fs.createReadStream(movie_in_db, {start, end})
+                                                //     const head = {
+                                                //         'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+                                                //         'Accept-Ranges': 'bytes',
+                                                //         'Content-Length': chunksize,
+                                                //         'Content-Type': 'video/mp4',
+                                                //     }
+                                                //     res.writeHead(206, head);
+                                                //     file.pipe(res);
+                                                // } else {
+                                                //     const head = {
+                                                //         'Content-Length': fileSize,
+                                                //         'Content-Type': 'video/mp4',
+                                                //     }
+                                                //     res.writeHead(200, head)
+                                                //     fs.createReadStream(movie_in_db).pipe(res)
+                                                // }
+                                            })
+                                            webtorrent_client.on('ready', function () {
+                                                const fileStream = file.createReadStream();
+                                                console.log('PLOP 2');
+                                                console.log(fileStream);
+                                                fileStream.pipe(res);
+                                            })
                                         });
                                     }
                                     catch(err) {
@@ -115,7 +151,6 @@ router.get('/movie_player', with_auth, async (req, res) => {
                                 try {
                                     const webtorrent_client = new webtorrent();
                                     console.log(magnet);
-                                    console.log(TORRENT_OPTIONS);
                                     webtorrent_client.add(magnet, TORRENT_OPTIONS, async function (torrent_ret) {
                                         let file = await torrent_ret.files.find(async function (file) {
                                             return file.name.endsWith('.mp4') || file.name.endsWith('.ogg') || file.name.endsWith('.webm') || file.name.endsWith('.avi') || file.name.endsWith('.mkv')
@@ -134,12 +169,44 @@ router.get('/movie_player', with_auth, async (req, res) => {
                                             const fileStream = file.createReadStream();
                                             fileStream.pipe(res);
                                         });
-                                        torrent_ret.on('download', function(bytes) {
-                                            console.log('progress : ' + torrent_ret.downloaded);
+                                        // torrent_ret.on('download', function(bytes) {
+                                        //     console.log('progress : ' + torrent_ret.downloaded);
                                             
-                                        })
-                                        torrent_ret.on('ready', function () {
+                                        // })
+                                        webtorrent_client.on('torrent', function () {
+                                            console.log("******ON TORRENT 2*****")
                                             const fileStream = file.createReadStream();
+                                            console.log('PLOP 2');
+                                            console.log(fileStream);
+                                            fileStream.pipe(res);
+                                            // const range = req.headers.range;
+                                            // if (range) {
+                                            //     const parts = range.replace(/bytes=/, "").split("-");
+                                            //     const start = parseInt(parts[0], 10);
+                                            //     const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
+                                            //     const chunksize = parseInt(end-start, 10) + 1
+                                            //     const file = fs.createReadStream(movie_in_db, {start, end})
+                                            //     const head = {
+                                            //         'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+                                            //         'Accept-Ranges': 'bytes',
+                                            //         'Content-Length': chunksize,
+                                            //         'Content-Type': 'video/mp4',
+                                            //     }
+                                            //     res.writeHead(206, head);
+                                            //     file.pipe(res);
+                                            // } else {
+                                            //     const head = {
+                                            //         'Content-Length': fileSize,
+                                            //         'Content-Type': 'video/mp4',
+                                            //     }
+                                            //     res.writeHead(200, head)
+                                            //     fs.createReadStream(movie_in_db).pipe(res)
+                                            // }
+                                        })
+                                        webtorrent_client.on('ready', function () {
+                                            const fileStream = file.createReadStream();
+                                            console.log('PLOP 1');
+                                            console.log(fileStream);
                                             fileStream.pipe(res);
                                         })
                                     });
@@ -151,20 +218,6 @@ router.get('/movie_player', with_auth, async (req, res) => {
                         }
                     }
 
-
-
-                    // const engine = torrentStream(movie_in_db.magnet, { path: "./views/public/torrents/" })
-                    // engine.files.forEach((file) => {
-                    //     if (
-                    //     path.extname(file.name) === ".mp4" ||
-                    //     path.extname(file.name) === ".mkv" ||
-                    //     path.extname(file.name) === ".avi"
-                    //     ) {
-                    //         console.log('LAAAAAAA');
-                    //         const fileStream = file.createReadStream()
-                    //         fileStream.pipe(res)
-                    //     }
-                    // })
                 }
             ; 1000})
         }
