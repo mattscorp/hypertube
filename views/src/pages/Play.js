@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import UserProfile from './UserProfile.js';
 import {fetch_post} from '../fetch.js';
 import unavailable from '../resources/unavailable.gif'
-// const hbjs = require('handbrake-js');
 
 class Play extends Component {
 
@@ -58,42 +57,6 @@ class Play extends Component {
             })
         })
         
-        // // Torrent
-        // .then(() => {
-        //     console.log('Torrent');
-        //     // 1. Verifier si le film est deja en BDD, sinon le telecharge en backend
-        //     fetch(`http://localhost:8000/movie_in_db?movie_id=${this.props.location.search.split('movie=')[1]}`, {
-        //         method: 'GET',
-        //         credentials: 'include',
-        //         headers: {'Content-Type': 'application/json'}
-        //     })
-        //     .then(async (res) => {
-        //         if (res.status === 401)
-        //             window.location.assign('/');
-        //         else if (res.status === 200|| res.status === 206 || res.status === 201)
-        //         {
-        //             // 2. Si oui et fini de telecharger, l'envoyer, si oui mais pas fini passer a l'etape 4
-        //             console.log(res);
-        //             let movie_json = await res.json();
-        //             if (movie_json !== undefined && movie_json[0] && movie_json[0].path !== undefined && movie_json[0].path.indexOf(".mp4") !== movie_json[0].path.length - 4) {
-        //                 alert("SALUT LA CONVERSION EN MP4");
-        //                 hbjs.spawn({ inpup: movie_json[0].path, output: 'converted.mp4' })
-        //                 .on('error', err => {
-        //                     console.log('error converting the video');
-        //                 })
-        //                 .on('progress', progress => {
-        //                 console.log(
-        //                     'Percent complete: %s, ETA: %s',
-        //                     progress.percentComplete,
-        //                     progress.eta
-        //                 )
-        //                 })
-        //             }
-        //             this.props.setMovieInDb(movie_json);
-        //             console.log(movie_json);
-        //         }
-        //     })
-        // })
         // Call the API to get the cast
         let URL2 = `http://localhost:8000/movie_cast?movie_id=${this.props.location.search.split('movie=')[1]}`;
         fetch(URL2, {
@@ -430,22 +393,6 @@ class Play extends Component {
                                         {this.props.filmInfosState.movie_in_db[0] ?
                                         // {this.props.filmInfosState.movie_in_db[0] ?
                                             <div className = 'col-md-10 col-xl-12' style={this.state.fake_add > -1 ? {display:'none'} : null}>
-                                                {/* <div>
-                                                    <video width="100%" height="auto" controls autoPlay muted htmlFor='video_player'>
-                                                        {this.props.filmInfosState.movie_in_db[0].path && this.props.filmInfosState.movie_in_db[0].path.indexOf(".mp4") === this.props.filmInfosState.movie_in_db[0].path.length - 4 ?
-                                                            <source src={"./torrents/" + this.props.filmInfosState.movie_in_db[0].path} type='video/mp4'/> : null
-                                                        }
-                                                        {this.props.filmInfosState.movie_in_db[0].path && this.props.filmInfosState.movie_in_db[0].path.indexOf(".ogg") === this.props.filmInfosState.movie_in_db[0].path.length - 4 ?
-                                                            <source src={"./torrents/" + this.props.filmInfosState.movie_in_db[0].path} type='video/ogg'/> : null
-                                                        }
-                                                        {this.props.filmInfosState.movie_in_db[0].path && this.props.filmInfosState.movie_in_db[0].path.indexOf(".webm") === this.props.filmInfosState.movie_in_db[0].path.length - 5 ?
-                                                            <source src={"./torrents/" + this.props.filmInfosState.movie_in_db[0].path} type='video/webm'/> : null
-                                                        }
-                                                        {this.props.filmInfosState.movie_in_db[0].path && this.props.filmInfosState.movie_in_db[0].path.indexOf(".mkv") === this.props.filmInfosState.movie_in_db[0].path.length - 4 ?
-                                                            <source src={"./torrents/" + this.props.filmInfosState.movie_in_db[0].path} type='video/mkv'/> : null
-                                                        }
-                                                    </video>
-                                                </div> */}
                                                 <video width="100%" height="auto"
                                                     ref={this.video_player}
                                                     controls

@@ -7,14 +7,6 @@ CREATE DATABASE IF NOT EXISTS `hypertube`;
 
 USE `hypertube`;
 
-CREATE TABLE IF NOT EXISTS `sessions`(
-    `session_id` INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `user` varchar(255) DEFAULT NULL,
-    `token` varchar(255) DEFAULT NULL,
-    `data` varchar(255) DEFAULT NULL,
-    `expires` datetime
-);
-
 CREATE TABLE IF NOT EXISTS `users` (
     `user_ID` INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `uuid` text,

@@ -26,12 +26,8 @@ module.exports.enable_providers = enable_providers;
 
 // Search the API to return infos and the magnet
 const get_magnet = async (movie_infos) => {
-    console.log('****************************');
-    console.log(movie_infos.title);
-    console.log('****************************');
     return new Promise(async (resolve, reject) => {
         const torrents = await TorrentSearchApi.search(movie_infos.title, 'Movies', 1)
-        console.log(torrents);
         resolve(torrents);
     });
 }
