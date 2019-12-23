@@ -6,7 +6,6 @@
     "@google-cloud/translate": "^5.0.1",
     "axios": "^0.19.0",
     "google-translate": "^3.0.0",
-    "handbrake-js": "^5.0.0",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "react-redux": "^7.1.1",
@@ -15,8 +14,7 @@
     "redux": "^4.0.4",
     "redux-logger": "^3.0.6",
     "torrent-search-api": "^2.0.10",
-    "video-react": "^0.14.1",
-    "webtorrent": "^0.107.17"
+    "video-react": "^0.14.1"
   },
   "scripts": {
     "start": "react-scripts start",

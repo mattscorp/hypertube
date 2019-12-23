@@ -146,9 +146,10 @@ class Play extends Component {
     // GET THE SUBTITLES FOR THE MOVIE
     get_subtitles = async () => {
         let subtitles = await fetch_get('/subtitles', `imdb_id=${this.props.filmInfosState.film_infos.imdb_id}`);
-        if (subtitles.response !== undefined && (subtitles.response['en'] || subtitles.response['fre'])) {
+        console.log(subtitles.subtitles['en']);
+        if (subtitles !== undefined && (subtitles.subtitles['en'] || subtitles.subtitles['fre'])) {
             // Adding the subtitles to the props
-            this.props.setSubtitles(subtitles.response);
+            this.props.setSubtitles(subtitles.subtitles);
         } else {
             console.log('No subtitles available');
         }
@@ -397,12 +398,12 @@ class Play extends Component {
                                                 </iframe>
                                                 <p>Your video will be played in {this.state.fake_add} seconds.</p>
                                             </div> 
-                                            : !this.props.filmInfosState.movie_in_db[0] ?
-                                            <div className="mx-auto">
-                                                <img className="mx-auto d-block" src={unavailable} alt="Movie unavailable"/>
-                                                <h3>This movie is not available yet ='(</h3>
-                                                <button>Add to my list!</button>
-                                            </div> 
+                                            // : !this.props.filmInfosState.movie_in_db[0] ?
+                                            // <div className="mx-auto">
+                                            //     <img className="mx-auto d-block" src={unavailable} alt="Movie unavailable"/>
+                                            //     <h3>This movie is not available yet ='(</h3>
+                                            //     <button>Add to my list!</button>
+                                            // </div> 
                                             : null
                                         }
                                         {/* Film */}
@@ -416,22 +417,17 @@ class Play extends Component {
                                                     preload="metadata" controlsList="nodownload">
                                                     <source src={'http://localhost:8000/movie_player?moviedb_id=' + this.props.location.search.split('movie=')[1]}></source>
                                                     {/* Subtitles */}
-                                                    {/* {this.props.subtitles.subtitles ? 
-                                                        // this.props.subtitles.subtitles.map(() => (
-                                                            <track
-                                                            Access-Control-Allow-Origin="*"
-                                                            crossorigin="true"
-                                                            label={this.props.subtitles.subtitles['en'].lang}
-                                                            language={this.props.subtitles.subtitles['en'].langcode}
-                                                            kind="subtitles"
-                                                            srcLang={this.props.subtitles.subtitles['en'].langcode}
-                                                            src={this.props.subtitles.subtitles['en'].langcode}
-                                                            // src={`data:text/vtt;base64, ${this.props.subtitles.subtitles['en'].vtt}`}
-                                                            default='true'
-                                                            />
-                                                        // ))
+                                                    
+                                                    {this.props.subtitles.subtitles['en'] ? 
+                                                            <track label='en' language='en' kind="subtitles" srcLang='en' default='true'
+                                                            src={`data:text/vtt;base64, ${this.props.subtitles.subtitles['en']}`}/>
                                                     :null } */}
-                                                    {/* {Object.entries(subtitles).map(entry => (
+                                                    {this.props.subtitles.subtitles['fr'] ? 
+                                                            <track label='fr' language='fr' kind="subtitles" srcLang='fr'
+                                                            src={`data:text/vtt;base64, ${this.props.subtitles.subtitles['fr']}`}/>
+                                                    :null }
+                                                    {/* {
+                                                    Object.entries(subtitles).map(entry => (
                                                         <track
                                                         label={translations[language].movie.subtitles[entry[0]]}
                                                         key={ `language-${entry[0]}` }
@@ -440,7 +436,8 @@ class Play extends Component {
                                                         src={ `data:text/vtt;base64, ${entry[1]}` }
                                                         default={ entry[0] === language ? true : false }
                                                         />
-                                                    ))} */}
+                                                    ))
+                                                    } */}
                                                 </video>
                                             </div>
                                             {/* : null */}

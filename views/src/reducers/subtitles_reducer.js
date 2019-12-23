@@ -1,5 +1,5 @@
 const subtitlesReducer = (state = {
-    subtitles: ""
+    subtitles: []
 }, action) => {
     switch (action.type) {
         case "SET_SUBTITLES":
@@ -11,7 +11,7 @@ const subtitlesReducer = (state = {
         case "REMOVE_SUBTITLES":
             state = {
                 ...state,
-                subtitles: ""
+                subtitles: []
             }
             break;
     }

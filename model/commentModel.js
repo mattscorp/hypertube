@@ -86,7 +86,7 @@ module.exports.get_comment_after_new = get_comment_after_new;
 // DELETE COMMENT 
 
 const delete_comment = async (comment, comment_ID, uuid) => {
-console.log(comment);
+console.log(comment_ID);
 console.log(uuid);
     return new Promise( async (resolve, reject) => {
         let sql = "DELETE FROM `comments` WHERE `comment` = ? AND `uuid` = ? AND `comment_ID` = ?";

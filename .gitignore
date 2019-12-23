@@ -3,5 +3,6 @@ views/.env
 views/public/profile_pictures
 views/public/torrents
 views/public/torrents
+views/public/subtitles
 sandbox
 model/db_connect.js
