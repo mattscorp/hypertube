@@ -5,16 +5,60 @@ const with_auth = require('./user/authentification_middleware');
 const fs = require("fs");
 const express = require('express');
 const router = express.Router();
+const OpenSubtitles = require("opensubtitles-api")
+const OS = new OpenSubtitles({
+  useragent: "TemporaryUserAgent",
+  ssl: false,
+})
 
 const movie_model = require('../model/films.js');
 const torrent = require('./torrent/torrent.js');
 const path = require("path");
 
+OS.login()
+.then((res) => {
+    console.log('\x1b[36m%s\x1b[0m', '-> OpenSubtitles connection established');
+})
+.catch((error) => {
+    console.log('\x1b[31m%s\x1b[0m', '-> OpenSubtitles connection error');
+});
 
-router.get('/movie_player', with_auth, async (req, res) => {
+/*
+    Get subtitles
+*/
+const getSubtitles = async(imdbid, langs) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const response = await OS.search({ imdbid, sublanguageid: langs.join(), limit: 'best' })
+            resolve(response);
+        } catch (err) {
+            console.log('Error in getting the subtitles : ' + err);
+        }
+    });
+}
+
+router.get('/subtitles', async (req, res) => {
+    if (req.query && req.query.imdb_id && req.query.imdb_id != '') {
+        const langs = ["fre", "eng"];
+        try {
+            const response = await getSubtitles(req.query.imdb_id, langs)
+            if (response) {
+                res.json({ response })
+            }
+        } catch (error) {
+            res.json({ error })
+        }
+    }
+});
+
+/*
+    If the movie is already downloaded, send it by chunks
+    Else download it and in the same time pipe it to the frontend
+*/
+router.get('/movie_player', async (req, res) => {
     if (req.query && req.query.moviedb_id && req.query.moviedb_id != '') {
+        console.log('In movie player : ' + req.query.moviedb_id)
         let movie_infos_api = await movie_model.movie_infos(req.query.moviedb_id);
-        console.log(movie_infos_api);
         if (movie_infos_api.status_code == 34) {
             console.log('The movie could not be found');
             res.sendStatus(404);
@@ -22,15 +66,11 @@ router.get('/movie_player', with_auth, async (req, res) => {
             const providers = await torrent.enable_providers(['Rarbg', 'Torrentz2', 'ThePirateBay', 'KickassTorrents', 'TorrentProject']);
             const torrents = await torrent.get_magnet(movie_infos_api);
             if (torrents && torrents[0] && torrents[0].magnet && torrents[0] !== undefined) {
-                console.log(torrents[0].magnet);
                 const engine = torrentStream(torrents[0].magnet, { path: "./views/public/torrents" })
                 engine.on("ready", () => {
                     engine.files.forEach((file) => {
-                        console.log("READY SA MERE");
                         if (path.extname(file.name) === ".mp4" || path.extname(file.name) === ".mkv" || path.extname(file.name) === ".avi" ) {
-                            console.log('path : ' + file.path);
                             if (fs.existsSync(`./views/public/torrents/${file.path}`)) {
-                                console.log('EXISTS');
                                 fs.stat(`./views/public/torrents/${file.path}`, function(err, stats) {
                                     if (err) {
                                         if (err.code === 'ENOENT') {
@@ -39,7 +79,6 @@ router.get('/movie_player', with_auth, async (req, res) => {
                                         }
                                         res.end(err);
                                     } else {
-                                        console.log(stats);
                                         let range = req.headers.range;
                                         if (!range) {
                                             // 416 Wrong range
@@ -60,10 +99,8 @@ router.get('/movie_player', with_auth, async (req, res) => {
                                             })
                                             var stream = fs.createReadStream(`./views/public/torrents/${file.path}`, { start, end })
                                             .on("open", function() {
-                                                console.log('ON STREAM')
                                                 stream.pipe(res);
                                             }).on("error", function(err) {
-                                                console.log('GROSSE ERREUR')
                                                 res.end(err);
                                             })
                                         }

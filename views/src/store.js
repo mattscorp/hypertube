@@ -6,6 +6,7 @@ import userConnectReducer from './reducers/user_connect_reducer.js';
 import advancedSearchReducer from './reducers/advanced_search_reducer.js';
 import darkModeReducer from './reducers/dark_mode_reducer.js';
 import filmInfosReducer from './reducers/film_infos_reducer.js';
+import subtitlesReducer from './reducers/subtitles_reducer.js';
 
 export default createStore(
     combineReducers({
@@ -14,7 +15,8 @@ export default createStore(
         userConnect: userConnectReducer,
         advancedSearch: advancedSearchReducer,
         darkMode: darkModeReducer,
-        filmInfo: filmInfosReducer
+        filmInfo: filmInfosReducer,
+        subtitles: subtitlesReducer
     }),
     {},
     applyMiddleware(logger)

@@ -8,6 +8,7 @@ import { user_connect, user_disconnect } from './actions/user_connect_action.js'
 import { modif_advanced_search, reset_advanced_search } from './actions/advanced_search_action.js'
 import { set_dark_mode, stop_dark_mode } from './actions/dark_mode_action.js'
 import { film_infos, cast_infos, similar_movies, movie_in_db } from './actions/film_infos_action.js'
+import { set_subtitles, remove_subtitles } from './actions/subtitles_action.js'
 import "../node_modules/video-react/dist/video-react.css"; // import css
 
 // BOOTSTRAP
@@ -76,6 +77,9 @@ class App extends Component {
                     setMovieInDb={(resData) => {this.props.setMovieInDb(resData)}}
                     darkModeState = {this.props.darkModeState.dark_mode}
                     userConnectState={this.props.userConnect}
+                    subtitles={this.props.subtitlesState}
+                    setSubtitles={(subtitles) => this.props.setSubtitles(subtitles)}
+                    removeSubtitles={() => this.props.removeSubtitles()}
                     />
               }/>
               <Route path="/home" render={
@@ -115,7 +119,8 @@ const mapStateToProps  = (state) => {
     userConnect: state.userConnect,
     advancedSearch: state.advancedSearch,
     darkModeState: state.darkMode,
-    filmInfosState: state.filmInfo
+    filmInfosState: state.filmInfo,
+    subtitlesState: state.subtitles
   };
 }
 
@@ -171,6 +176,12 @@ const mapDispatchToProps  = (dispatch) => {
     },
     setMovieInDb: (movieInDb) => {
       dispatch(movie_in_db(movieInDb));
+    },
+    setSubtitles: (subtitles) => {
+      dispatch(set_subtitles(subtitles));
+    },
+    removeSubtitles: () => {
+      dispatch(remove_subtitles());
     }
   };
 }

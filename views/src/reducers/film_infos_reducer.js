@@ -22,11 +22,13 @@ const filmInfosReducer = (state = {
                 ...state,
                 similar_movies: action.payload
             }
-            case "MOVIE_IN_DB":
-                state ={
-                    ...state,
-                    movie_in_db: action.payload
-                }
+            break;
+        case "MOVIE_IN_DB":
+            state ={
+                ...state,
+                movie_in_db: action.payload
+            }
+            break;
     }
     return state;
 }
