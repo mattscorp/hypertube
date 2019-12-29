@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Facebook, Twitter } from 'react-sharingbuttons';
+import 'react-sharingbuttons/dist/main.css';
 import UserProfile from './UserProfile.js';
 import {fetch_post} from '../fetch.js';
 import {fetch_get} from '../fetch.js';
@@ -356,6 +358,10 @@ class Play extends Component {
                                             {this.props.filmInfosState.film_infos.title}
                                         </h1>
                                     </div>
+                                    {/* Twitter share */}
+                                    <div className="col-md-12 text-center rating_section">
+                                        <Twitter url={this.props.location} text={'Share on Twiter'} shareText={'I\'m watching ' + this.props.filmInfosState.film_infos.title + ' with Hypertube! Watch movies with Hypertube: http://localhost:3000'  + this.props.location.search} />
+                                    </div>
                                     {/* Ratings */}
                                     <div className="rate_and_comment container-fluid row">
                                         <div className="col-md-12 text-center rating_section">
@@ -385,7 +391,7 @@ class Play extends Component {
                                                 </form>
                                             </div>
                                         </div>
-                                        {/* Fake add */}
+                                        
                                         {this.state.fake_add >= 0 ?
                                             <div className = 'col-md-10 col-xl-12 text-center trailer-div'>
                                                 <iframe title="trailer"
