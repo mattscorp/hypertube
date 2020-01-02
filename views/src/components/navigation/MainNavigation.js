@@ -270,7 +270,7 @@ class MainNavigation extends Component {
 </header>
 
                 {/* ACCOUNT SIDEBAR (Onclick on the profile picture - or if not the account <li>) */}
-                {this.state.isAccount === 1 || this.state.isAccount === 2 ? 
+                {(this.state.isAccount === 1 || this.state.isAccount === 2) ? 
                     <div className={this.state.isAccount === 1 ? (this.props.darkModeState ? "bg-dark AccountDiv col-md-2" : "bg-white AccountDiv col-md-2") : (this.props.darkModeState ? "bg-dark DisappearAccountDiv col-md-2" : "bg-white DisappearAccountDiv col-md-2")}>
                         <Account
                             userConnectState={this.props.userConnectState}

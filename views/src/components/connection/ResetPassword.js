@@ -48,7 +48,6 @@ class ResetPassword extends Component {
         this.setState({
           recaptchaResponse: response,
         });
-        alert(this.state.recaptchaResponse);
     }
 
     render() {

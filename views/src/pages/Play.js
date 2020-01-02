@@ -418,7 +418,7 @@ class Play extends Component {
                                                     controls
                                                     crossorigin="anonymous"
                                                     htmlFor='video_player'
-                                                    preload="metadata" controlsList="nodownload">
+                                                    preload="auto" controlsList="nodownload">
                                                     <source src={'http://localhost:8000/movie_player?moviedb_id=' + this.props.location.search.split('movie=')[1]}></source>
                                                     {/* Subtitles */}
                                                     {this.props.subtitles.subtitles['en'] ? 
