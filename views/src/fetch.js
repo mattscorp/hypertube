@@ -2,7 +2,6 @@
 
 const fetch_post = async (path, body) => {
     return new Promise((resolve, reject) => {
-        alert("ICI");
         fetch(`http://localhost:8000${path}`, {
             credentials: 'include',
             method: 'POST',

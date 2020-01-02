@@ -61,9 +61,10 @@ CREATE TABLE IF NOT EXISTS `comments` (
 
 CREATE TABLE IF NOT EXISTS `views` (
     `view_ID` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `film_ID` int(11) DEFAULT NULL,
-    `user_ID` int(11) DEFAULT NULL,
+    `moviedb_ID` int(11) DEFAULT NULL,
+    `user_ID` text,
     `viewed` int(1) DEFAULT 0,
-    `time_viewed` int(4) DEFAULT 0,
+    `time_viewed` FLOAT,
+    `duration` FLOAT,
     `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

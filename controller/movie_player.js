@@ -151,5 +151,15 @@ router.get('/movie_player', async (req, res) => {
         }
     }
 })
-module.exports = router;
 
+/*
+    MOVIE_ADVANCEMENT: sent every minute to update the viewer's advancement
+*/
+router.post('/movie_advancement', with_auth, async (req, res) => {
+    console.log(req.uuid);
+    movie_model.update_time_viewed(req.uuid, req.body.imdb_ID, req.body.duration, req.body.current_time)
+
+})
+
+
+module.exports = router;

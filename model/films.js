@@ -165,3 +165,39 @@ const torrent_done = (magnet) => {
     });
 }
 module.exports.torrent_done = torrent_done;
+
+
+const update_time_viewed = (uuid, imdb_id, duration, current_time) => {
+    if (uuid != '' && imdb_id != '' && duration != '' && current_time != '') {
+        const sql = "SELECT * FROM `views` WHERE `user_ID` = ? AND `moviedb_ID` = ?"
+        con.query(sql, [uuid, imdb_id], (err, result) => {
+            if (err)
+                throw err;
+            else {
+                if (result != '') {
+                    let viewed = 0;
+                    console.log('EXISTE DEJA');
+                    if (result[0].viewed == 0) {
+                        if (current_time / duration > 0.95)
+                            viewed = 1;
+                    }
+                    const sql1 = "UPDATE `views` SET `viewed` = ?, `time_viewed` = ? WHERE `user_ID` = ? AND `moviedb_ID` = ?";
+                    const values1 = [viewed, current_time, uuid, imdb_id];
+                    con.query(sql1, values1, (err, result) => {
+                        if (err) 
+                            throw err;
+                    });
+                } else {
+                    console.log('EXISTE PAS ENCORE')
+                    const sql2 = "INSERT INTO `views` (`user_ID`, `moviedb_ID`, `viewed`, `time_viewed`, `duration`) VALUES (?, ?, ?, ?, ?)";
+                    const values2 = [uuid, imdb_id, 0, current_time, duration];
+                    con.query(sql2, values2, (err, result) => {
+                        if (err) 
+                            throw err;
+                    });
+                }
+            }
+        })
+    }
+}
+module.exports.update_time_viewed = update_time_viewed;

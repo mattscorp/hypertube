@@ -333,8 +333,13 @@ class Play extends Component {
 
     handle_video_advancement = () => {
         setInterval(() => {
-            // console.log(this.video_player);
-        }, 1000)
+            if (this.video_player && this.video_player !== undefined && this.props.filmInfosState.film_infos.imdb_id && this.video_player.current && this.video_player.current.duration && this.video_player.current.duration !== undefined && this.video_player.current.currentTime && this.video_player.current.currentTime !== undefined)
+            {
+                console.log(this.video_player.current.duration);
+                console.log(this.video_player.current.currentTime);
+                fetch_post('/movie_advancement', {'imdb_ID': this.props.filmInfosState.film_infos.imdb_id, 'duration': this.video_player.current.duration, 'current_time': this.video_player.current.currentTime});
+            }
+        }, 5000)
     }
 
     hide_user = () => {
@@ -412,7 +417,7 @@ class Play extends Component {
                                             : null
                                         }
                                         {/* Film */}
-                                            <div className = 'col-md-10 col-xl-12' style={this.state.fake_add > -1 ? {display:'none'} : null}>
+                                            <div className = 'videoPlayer col-md-10 col-xl-12' style={this.state.fake_add > -1 ? {display:'none'} : null}>
                                                 <video width="100%" height="auto"
                                                     ref={this.video_player}
                                                     controls
@@ -422,12 +427,12 @@ class Play extends Component {
                                                     <source src={'http://localhost:8000/movie_player?moviedb_id=' + this.props.location.search.split('movie=')[1]}></source>
                                                     {/* Subtitles */}
                                                     {this.props.subtitles.subtitles['en'] ? 
-                                                            <track label='en' language='en' kind="subtitles" srcLang='en' default='true'
-                                                            src={`data:text/vtt;base64, ${this.props.subtitles.subtitles['en']}`}/>
+                                                        <track label='en' language='en' kind="subtitles" srcLang='en' default='true'
+                                                        src={`data:text/vtt;base64, ${this.props.subtitles.subtitles['en']}`}/>
                                                     :null } */}
                                                     {this.props.subtitles.subtitles['fr'] ? 
-                                                            <track label='fr' language='fr' kind="subtitles" srcLang='fr'
-                                                            src={`data:text/vtt;base64, ${this.props.subtitles.subtitles['fr']}`}/>
+                                                        <track label='fr' language='fr' kind="subtitles" srcLang='fr'
+                                                        src={`data:text/vtt;base64, ${this.props.subtitles.subtitles['fr']}`}/>
                                                     :null }
                                                 </video>
                                             </div>
