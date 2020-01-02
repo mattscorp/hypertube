@@ -174,12 +174,16 @@ const update_time_viewed = (uuid, imdb_id, duration, current_time) => {
             if (err)
                 throw err;
             else {
-                if (result != '') {
+                console.log(imdb_id)
+                console.log(result);
+                if (result != '' && result != null && result != [] && result[0] != '' && result[0] != null) {
                     let viewed = 0;
                     console.log('EXISTE DEJA');
                     if (result[0].viewed == 0) {
                         if (current_time / duration > 0.95)
                             viewed = 1;
+                    } else if (result[0].viewed == 1) {
+                        viewed = 1;
                     }
                     const sql1 = "UPDATE `views` SET `viewed` = ?, `time_viewed` = ? WHERE `user_ID` = ? AND `moviedb_ID` = ?";
                     const values1 = [viewed, current_time, uuid, imdb_id];

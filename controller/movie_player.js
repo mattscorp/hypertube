@@ -6,6 +6,8 @@ const http = require("http")
 const fs = require("fs");
 const express = require('express');
 const router = express.Router();
+var ffmpeg = require('fluent-ffmpeg');
+var command = ffmpeg();
 const OpenSubtitles = require("opensubtitles-api")
 const OS = new OpenSubtitles({
   useragent: "TemporaryUserAgent",
@@ -81,6 +83,29 @@ router.get('/subtitles', async (req, res) => {
     }
 });
 
+const convert = function (file, thread) {
+    console.log('IN CONVERT')
+    if (!thread)
+      thread = 8
+    console.log('Start converting file...')
+    return new ffmpeg(file.createReadStream())
+      .videoCodec('libvpx')
+      .audioCodec('libvorbis')
+      .format('webm')
+      .audioBitrate(128)
+      .videoBitrate(1024)
+      .outputOptions([
+        '-threads ' + thread,
+        '-deadline realtime',
+        '-error-resilient 1'
+      ])
+      .on('end', function () {
+        console.log('File is now webm !')
+      })
+      .on('error', function (err) {
+      })
+}
+
 /*
     If the movie is already downloaded, send it by chunks
     Else download it and in the same time pipe it to the frontend
@@ -100,6 +125,7 @@ router.get('/movie_player', async (req, res) => {
                     engine.files.forEach((file) => {
                         if (path.extname(file.name) === ".mp4" || path.extname(file.name) === ".mkv" || path.extname(file.name) === ".avi" ) {
                             if (fs.existsSync(`./views/public/torrents/${file.path}`)) {
+                                console.log('PAS DANS LE ELSE')
                                 fs.stat(`./views/public/torrents/${file.path}`, function(err, stats) {
                                     if (err) {
                                         if (err.code === 'ENOENT') {
@@ -113,6 +139,7 @@ router.get('/movie_player', async (req, res) => {
                                             // 416 Wrong range
                                             return res.sendStatus(416);
                                         } else {
+                                            console.log('LA')
                                             const positions = range.replace(/bytes=/, "").split("-");
                                             let start = parseInt(positions[0], 10);
                                             const total = stats.size;
@@ -126,12 +153,36 @@ router.get('/movie_player', async (req, res) => {
                                                 "Content-Length": chunksize,
                                                 "Content-Type": "video/mp4"
                                             })
-                                            var stream = fs.createReadStream(`./views/public/torrents/${file.path}`, { start, end })
-                                            .on("open", function() {
-                                                stream.pipe(res);
-                                            }).on("error", function(err) {
-                                                res.end(err);
-                                            })
+                                            let extension1 = file.path.split('.');
+                                            let extension2 = extension1[extension1.length - 1];
+                                            console.log(extension2)
+                                            let stream = {}
+                                            if (extension2 == 'mp4' || extension2 == 'webm') {
+                                                stream = fs.createReadStream(`./views/public/torrents/${file.path}`, { start, end })
+                                                .on("open", function() {
+                                                    console.log('dans open')
+                                                    // ffmpeg(`./views/public/torrents/${file.path}`, { start, end }).format('mp4')
+                                                    // You may pass a pipe() options object when using a stream
+                                                    //   .output(stream, { end:true });
+                                                    stream.pipe(res);
+                                                }).on("error", function(err) {
+                                                    res.end(err);
+                                                })
+                                                console.log('mp4 = ' + extension2)
+                                            }
+                                            else {
+                                                stream = convert(`./views/public/torrents/${file.path}`, { start, end })
+                                                // var stream = (extension2 == 'mp4' || extension2 == 'webm') ? fs.createReadStream(`./views/public/torrents/${file.path}`, { start, end }) : convert(`./views/public/torrents/${file.path}`, { start, end })
+                                                .on("open", function() {
+                                                    console.log('dans open')
+                                                    // ffmpeg(`./views/public/torrents/${file.path}`, { start, end }).format('mp4')
+                                                    // You may pass a pipe() options object when using a stream
+                                                    //   .output(stream, { end:true });
+                                                    stream.pipe(res);
+                                                }).on("error", function(err) {
+                                                    res.end(err);
+                                                })
+                                            }
                                         }
                                     }
                                 })
@@ -147,6 +198,9 @@ router.get('/movie_player', async (req, res) => {
                         }
                     })
                 })
+            } else {
+                console.log('PAS DE TORRENT');
+                res.sendStatus(404)
             }
         }
     }

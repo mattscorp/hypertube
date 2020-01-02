@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
 
 CREATE TABLE IF NOT EXISTS `views` (
     `view_ID` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `moviedb_ID` int(11) DEFAULT NULL,
+    `moviedb_ID` VARCHAR(10),
     `user_ID` text,
     `viewed` int(1) DEFAULT 0,
     `time_viewed` FLOAT,
