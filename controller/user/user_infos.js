@@ -109,4 +109,11 @@ router.post('/user_public_profile', with_auth, async(req, res) => {
 
 })
 
+// **** UPDATE LANGUAGE **** //
+router.post('/update_language', with_auth, async(req, res) => {
+    if (req && req.body && req.uuid != '' && (req.body.language == 'fr' || req.body.language == 'en')) {
+        user_infos.language_update(req.uuid, req.body.language);
+    }
+})
+
 module.exports = router;

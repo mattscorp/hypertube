@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import NoPhoto from '../resources/no_image.jpeg'
 import axios from "axios";
+import translations from '../translations.js';
+import {fetch_post} from '../fetch.js';
 
 class Account extends Component {
 
@@ -15,6 +17,7 @@ class Account extends Component {
         this.passwordConfirmEl = React.createRef();
         this.passwordNewEl = React.createRef();
         this.profilePictureEl = React.createRef();
+        this.language = React.createRef();
         this.state ={
             file: null
         };
@@ -167,18 +170,32 @@ class Account extends Component {
         })
     }
 
+    change_language = (event) => {
+        event.preventDefault();
+        let body = {};
+        if (this.language.current.value === "en") {
+            this.props.setEnglish();
+            body = {'language': "en"}
+        }
+        else {
+            this.props.setFrench();
+            body = {'language': "fr"}
+        }
+        fetch_post('/update_language', body)
+    }
+
     render() {
         return (
             <div className="row">
                 {this.props.userConnectState.uuid ? <div className="nav-item overflow-auto col-xs-12" onClick={this.logout}><button className="btn-logout btn-success-logout btn-style-logout">Logout</button></div> : null}
                 {/* Title */}
                 <div className="form-group col-xs-12">
-                    <h1 className="">Your account</h1>
+                    <h1 className="">{translations[this.props.translationState].account.header}</h1>
                 </div>
                 {/* Dark mode toggle */}
                 <div className="form-group col-xs-12 account_input">
                     <div className="col-xs-6 mt-0">
-                        <label className="col-form-label text-md-right" htmlFor="darkMode">Dark mode</label>
+                        <label className="col-form-label text-md-right" htmlFor="darkMode">{translations[this.props.translationState].account.dark_mode}</label>
                     </div>
                     <div className="col-xs-6 pt-3">
                         <label className="switch">
@@ -187,10 +204,17 @@ class Account extends Component {
                         </label>
                     </div>
                 </div>
+                {/* Change language */}
+                <div className="col-xs-6 mt-0">
+                    <select onChange={this.change_language} className="select-css" ref={this.language}>
+                        <option selected={this.props.translationState === "en" ? "selected" : null } value="en">🇬🇧&emsp;{translations[this.props.translationState].main_navigation.english}</option>
+                        <option selected={this.props.translationState === "fr" ? "selected" : null } value="fr">🇫🇷&emsp;{translations[this.props.translationState].main_navigation.french}</option>
+                    </select>
+                </div>
                 {/* Profile picture */}
                 <div className="form-group profile_picture_row col-xs-12 account_input">
                     <div className="col-xs-6 col-form-label text-md-right">
-                         <label  htmlFor="darkMode">Profile picture</label>
+                         <label  htmlFor="darkMode">{translations[this.props.translationState].account.profile_picture}</label>
                     </div>
                     <div className="profile_picture_div col-xs-6">
                         {!this.props.userConnectState.photo_URL ? <img className="profile_picture" src={NoPhoto}/> : <img className="profile_picture" src={this.props.userConnectState.photo_URL.replace('views/public', '.')}/>}
@@ -201,7 +225,7 @@ class Account extends Component {
                             <input onChange={this.onChangePicture} required type="file" accept="image/png, image/jpeg, image/jpg" title="Update picture" ref={this.profilePictureEl}/>
                         </div>
                         <div className="">
-                            <button className="btn btn-dark" type="submit">Update your profile picture</button>
+                            <button className="btn btn-dark" type="submit">{translations[this.props.translationState].account.update_profile_picture}</button>
                         </div>
                     </form>
                 </div>
@@ -209,32 +233,32 @@ class Account extends Component {
                 {/* Accout form (always available) */}
                 <form className="row" onSubmit={this.submitAccountForm}>
                     <div className="form-group col-xs-6 account_input">
-                        <label className="col-xs-12 col-form-label text-md-right" htmlFor="firstName">First name</label>
+                        <label className="col-xs-12 col-form-label text-md-right" htmlFor="firstName">{translations[this.props.translationState].account.first_name}</label>
                         <div className="col-xs-12">
                             <input required className="form-control" title="Only letters and '-', minimum 3" type="text" pattern="(?=^.{3,}$)[A-Za-z-]+" id="firstName" ref={this.firstNameEl} defaultValue={this.props.userConnectState.first_name}/>
                         </div>
                     </div>
                     <div className="form-group col-xs-6 account_input">
-                        <label className="col-xs-12 col-form-label text-md-right" htmlFor="lastName">Last name</label>
+                        <label className="col-xs-12 col-form-label text-md-right" htmlFor="lastName">{translations[this.props.translationState].account.last_name}</label>
                         <div className="col-xs-12">
                             <input required className="form-control" title="Only letters and '-', minimum 3" type="text" pattern="(?=^.{3,}$)[A-Za-z-]+" id="lastName" ref={this.lastNameEl} defaultValue={this.props.userConnectState.last_name}/>
                         </div>
                     </div>
                     <div className="form-group col-xs-6 account_input">
-                        <label className="col-xs-12 col-form-label text-md-right" htmlFor="Login">Login</label>
+                        <label className="col-xs-12 col-form-label text-md-right" htmlFor="Login">{translations[this.props.translationState].account.login}</label>
                         <div className="col-xs-12">
                             <input required className="form-control" title="Only letters and numbres, minimum 4" type="text" pattern="(?=^.{4,}$)[A-Za-z0-9]+" id="login" ref={this.loginEl} defaultValue={this.props.userConnectState.login}/>
                         </div>
                     </div>
                     <div className="form-group col-xs-6 account_input">
-                        <label className="col-xs-12 col-form-label text-md-right" htmlFor="email">Email</label>
+                        <label className="col-xs-12 col-form-label text-md-right" htmlFor="email">{translations[this.props.translationState].account.email}</label>
                         <div className="col-xs-12">
                             <input required className="form-control" title="Valid email" type="email" id="email" ref={this.emailEl} defaultValue={this.props.userConnectState.email}/>
                         </div>
                     </div>
                     <div className="form-actions col-xs-12">
                         <div className="">
-                            <button className="btn btn-dark" type="submit">Update your information</button>
+                            <button className="btn btn-dark" type="submit">{translations[this.props.translationState].account.update_your_information}</button>
                         </div>
                     </div>
                 </form>
@@ -242,26 +266,26 @@ class Account extends Component {
                 {(this.props.userConnectState.insta === "" && this.props.userConnectState.google === "" && this.props.userConnectState.facebook === "" && this.props.userConnectState.github === "" && this.props.userConnectState.ft === "") ?
                 <form className="row" onSubmit={this.submitPasswordForm}>
                     <div className="form-group col-xs-12">
-                        <label className="col-xs-6 col-form-label text-md-right" htmlFor="password_confirm">New password</label>
+                        <label className="col-xs-6 col-form-label text-md-right" htmlFor="password_confirm">{translations[this.props.translationState].account.new_password}</label>
                         <div className="col-xs-6">
                             <input title="Must containe 8 characters, small and capital letters, numbers and special characters." required className="form-control" type="password" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" id="password_new" ref={this.passwordNewEl}/>
                         </div>
                     </div>
                     <div className="form-group col-xs-12">
-                        <label className="col-xs-6 col-form-label text-md-right" htmlFor="password_confirm">Confirm password</label>
+                        <label className="col-xs-6 col-form-label text-md-right" htmlFor="password_confirm">{translations[this.props.translationState].account.confirm_password}</label>
                         <div className="col-xs-6">
                             <input title="Must containe 8 characters, small and capital letters, numbers and special characters." required className="form-control" type="password" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" id="password_confirm" ref={this.passwordConfirmEl}/>
                         </div>
                     </div>
                     <div className="form-group col-xs-12">
-                        <label className="col-xs-6 col-form-label text-md-right" htmlFor="password_confirm">Old password</label>
+                        <label className="col-xs-6 col-form-label text-md-right" htmlFor="password_confirm">{translations[this.props.translationState].account.old_password}</label>
                         <div className="col-xs-6">
                             <input title="Must containe 8 characters, small and capital letters, numbers and special characters." required className="form-control" type="password" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" id="password_old" ref={this.passwordOldEl}/>
                         </div>
                     </div>
                     <div className="form-actions col-xs-12">
                         <div className="">
-                            <button className="btn btn-dark" type="submit">Change your password</button>
+                            <button className="btn btn-dark" type="submit">{translations[this.props.translationState].account.change_password}</button>
                         </div>
                     </div>
                 </form> : null}

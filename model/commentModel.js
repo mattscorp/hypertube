@@ -11,7 +11,6 @@ let con = db_connect.con;
 
 
 const add_comment = async (moviedb_ID, comment, uuid) => {
-
     return new Promise( async (resolve, reject) => {
         let first_name = JSON.parse(await user_infos.get_users(uuid));
         let sql = "INSERT INTO `comments` (`film_ID`, `uuid`, `comment`, `first_name`) VALUES (?)";
@@ -86,8 +85,6 @@ module.exports.get_comment_after_new = get_comment_after_new;
 // DELETE COMMENT 
 
 const delete_comment = async (comment, comment_ID, uuid) => {
-console.log(comment_ID);
-console.log(uuid);
     return new Promise( async (resolve, reject) => {
         let sql = "DELETE FROM `comments` WHERE `comment` = ? AND `uuid` = ? AND `comment_ID` = ?";
         con.query(sql, [comment, uuid, comment_ID], (err, result) => {

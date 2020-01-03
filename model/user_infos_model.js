@@ -86,6 +86,18 @@ const dark_mode_update = (dark_mode, uuid) => {
 }
 module.exports.dark_mode_update = dark_mode_update;
 
+// Update the language
+const language_update = (uuid, language) => {
+    let full_language = language == 'en' ? 'English' : 'French';
+    let sql = "UPDATE `users` SET `language` = ? WHERE `uuid` = ?";
+    let values = [full_language, uuid];
+    con.query(sql, values, (err, result) => {
+        if (err)
+            throw err;
+    });
+}
+module.exports.language_update = language_update;
+
 // Get user public profile
 const get_public_profile = uuid => {
     return new Promise((resolve, reject) => {

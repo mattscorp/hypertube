@@ -9,6 +9,7 @@ import { modif_advanced_search, reset_advanced_search } from './actions/advanced
 import { set_dark_mode, stop_dark_mode } from './actions/dark_mode_action.js'
 import { film_infos, cast_infos, similar_movies, movie_in_db } from './actions/film_infos_action.js'
 import { set_subtitles, remove_subtitles } from './actions/subtitles_action.js'
+import { set_english, set_french } from './actions/translation_action.js'
 import "../node_modules/video-react/dist/video-react.css"; // import css
 
 // BOOTSTRAP
@@ -29,7 +30,8 @@ import OAuth_Google from './components/connection/Oauth_Google.js';
 import OAuth_Facebook from './components/connection/Oauth_Facebook.js';
 // Error 404
 import NotFound from './pages/NotFound.js';
-// import Error_404 from '.pages/Error404.js'
+// Translation
+import translations from './translations.js';
 
 class App extends Component {
 
@@ -54,6 +56,9 @@ class App extends Component {
             setDarkMode={() => {this.props.setDarkMode()}}
             stopDarkMode={() => {this.props.stopDarkMode()}}
             darkModeState = {this.props.darkModeState.dark_mode}
+            translationState = {this.props.translationState.language}
+            setFrench={() => {this.props.setFrench()}}
+            setEnglish={() => {this.props.setEnglish()}}
           />
           <main className={this.props.darkModeState.dark_mode ? " bg-secondary main-all " : "main-all"}>
             <Switch>
@@ -80,6 +85,7 @@ class App extends Component {
                     subtitles={this.props.subtitlesState}
                     setSubtitles={(subtitles) => this.props.setSubtitles(subtitles)}
                     removeSubtitles={() => this.props.removeSubtitles()}
+                    translationState = {this.props.translationState.language}
                     />
               }/>
               <Route path="/home" render={
@@ -98,13 +104,14 @@ class App extends Component {
                     loadMore={(prevState) => {this.props.loadMore(prevState)}}
                     advancedSearchState={this.props.advancedSearch}
                     darkModeState = {this.props.darkModeState.dark_mode}
+                    translationState = {this.props.translationState.language}
                     />
                 }/>
                 <Route path="*" component={NotFound} />
             </Switch>
           </main>
           <div className='footer'>
-                <p>Created by mascorpi and pvictor as part of school 42's curriculum, 2019</p>
+            <p>{translations[this.props.translationState.language].footer}</p>
           </div>
         </React.Fragment>
       </BrowserRouter>
@@ -119,6 +126,7 @@ const mapStateToProps  = (state) => {
     userConnect: state.userConnect,
     advancedSearch: state.advancedSearch,
     darkModeState: state.darkMode,
+    translationState: state.translation,
     filmInfosState: state.filmInfo,
     subtitlesState: state.subtitles
   };
@@ -182,6 +190,12 @@ const mapDispatchToProps  = (dispatch) => {
     },
     removeSubtitles: () => {
       dispatch(remove_subtitles());
+    },
+    setEnglish: () => {
+      dispatch(set_english());
+    },
+    setFrench: () => {
+      dispatch(set_french());
     }
   };
 }

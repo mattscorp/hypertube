@@ -192,7 +192,22 @@ router.get('/movie_player', async (req, res) => {
                                 const year = movie_infos_api.release_date.split('-')[0];
                                 movie_model.add_torrent(movie_infos_api.id, file.path, extension, file.name, year, torrents[0].magnet);
                                 console.log("DANS LE ELSE");
-                                const fileStream = file.createReadStream()
+                                const fileStream = new ffmpeg(file.createReadStream()).videoCodec('libvpx')
+                                    .audioCodec('libvorbis')
+                                    .format('webm')
+                                    .audioBitrate(128)
+                                    .videoBitrate(1024)
+                                    .outputOptions([
+                                    '-threads ' + 8,
+                                    '-deadline realtime',
+                                    '-error-resilient 1'
+                                    ])
+                                    .on('end', function () {
+                                        console.log('File is now webm !')
+                                    })
+                                    .on('error', function (err) {
+                                        console.log(err);
+                                    })
                                 fileStream.pipe(res)
                             }
                         }

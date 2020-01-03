@@ -4,7 +4,8 @@ import 'react-sharingbuttons/dist/main.css';
 import UserProfile from './UserProfile.js';
 import {fetch_post} from '../fetch.js';
 import {fetch_get} from '../fetch.js';
-import unavailable from '../resources/unavailable.gif'
+import translations from '../translations.js';
+// import unavailable from '../resources/unavailable.gif';
 
 class Play extends Component {
 
@@ -365,12 +366,12 @@ class Play extends Component {
                                     </div>
                                     {/* Twitter share */}
                                     <div className="col-md-12 text-center rating_section">
-                                        <Twitter url={this.props.location} text={'Share on Twiter'} shareText={'I\'m watching ' + this.props.filmInfosState.film_infos.title + ' with Hypertube! Watch movies with Hypertube: http://localhost:3000'  + this.props.location.search} />
+                                        <Twitter url={this.props.location} text={translations["en"].movie_page.share_on_twitter} shareText={'I\'m watching ' + this.props.filmInfosState.film_infos.title + ' with Hypertube! Watch movies with Hypertube: http://localhost:3000'  + this.props.location.search} />
                                     </div>
                                     {/* Ratings */}
                                     <div className="rate_and_comment container-fluid row">
                                         <div className="col-md-12 text-center rating_section">
-                                            <h4>Average rating : {this.state.average_rating ? this.state.average_rating : "Not rated yet"} </h4>
+                                            <h4>{translations["en"].movie_page.average_rating} {this.state.average_rating ? this.state.average_rating : "Not rated yet"} </h4>
                                             <div className="col-md-5 offset-4">
                                                 <form className="rating" onChange={this.rate_movie} > 
                                                     <input type="radio" id="star10" name="rating" value="10" ref={this.rating} checked={this.state.user_rating > 9.5 && this.state.user_rating <= 10}/><label className="full" htmlFor="star10" title="10 stars" ></label>

@@ -3,9 +3,7 @@ import { NavLink } from 'react-router-dom';
 import Account from '../Account.js';
 import './MainNavigation.css';
 import AdvancedSearch from '../AdvancedSearch.js';
-// import GOOGLE_TRANSLATE from '../../config_views';
-// import { googleTranslate } from "../../utils/googleTranslate";
-// const googleTranslate = require("google-translate")(GOOGLE_TRANSLATE);
+import translations from '../../translations.js';
 
 class MainNavigation extends Component {
 
@@ -19,6 +17,7 @@ class MainNavigation extends Component {
         this.rating = React.createRef();
         this.duration = React.createRef();
         this.decade = React.createRef();
+        this.language = React.createRef();
     }
 
     // SETS THE ADVANCED SEARCH
@@ -53,7 +52,7 @@ class MainNavigation extends Component {
     state = {
         isAccount: 0,
         isAdvanced: 0,
-        seen: 0
+        seen: 0,
     }
 
     // SWITCH ON/OFF FOR ACCOUNT DIV
@@ -72,6 +71,11 @@ class MainNavigation extends Component {
 
     componentDidMount = async () => {
         
+        if (this.props.userConnectState.language === "English")
+            this.props.setEnglish();
+        else
+            this.props.setFrench();
+
         let URL = 'http://localhost:8000/user_infos';
         fetch(URL, {
             method: 'POST',
@@ -199,8 +203,14 @@ class MainNavigation extends Component {
         });
         document.getElementById("searchInput").value = "";
     }
+
     submitQuery = (event) => {
         event.preventDefault();
+    }
+
+    change_language = event => {
+        event.preventDefault();
+        this.props.translationState === "en" ? this.props.setFrench() : this.props.setEnglish();
 
     }
 
@@ -218,20 +228,14 @@ class MainNavigation extends Component {
                             </div>
                             <li className="col-xs-4 col-md-12 ">
                                 {this.props.userConnectState.uuid ? <div className="float-right" onClick={this.accountModeHandler}>
-                                {(this.props.userConnectState.photo_URL === undefined || this.props.userConnectState.photo_URL === '') ? <button>Account</button> : <button><img title="Account" className="navlink_picture rounded-circle" src={this.props.userConnectState.photo_URL.replace('views/public', '.')}/></button>}
+                                {(this.props.userConnectState.photo_URL === undefined || this.props.userConnectState.photo_URL === '') ? <button>{translations[this.props.translationState].main_navigation.account}</button> : <button><img title="Account" className="navlink_picture rounded-circle" src={this.props.userConnectState.photo_URL.replace('views/public', '.')}/></button>}
                                 </div> : null}
                             </li>
                             {this.props.userConnectState.uuid ? null :
                             <li className="col-xs-12 col-md-2 col-md-offset-10">
-                                <select className="select-css">
-                                    <option value="en">🇬🇧&emsp;English</option>
-                                    <option value="fr">🇫🇷&emsp;French</option>
-                                    <option value="es">🇪🇸&emsp;Español</option>
-                                    <option value="ru">🇷🇺&emsp;русский</option>
-                                    <option value="de">🇩🇪&emsp;Deutsch</option>
-                                    <option value="nl">🇳🇱&emsp;Nederlands</option>
-                                    <option value="jp">🇯🇵&emsp;日本語</option>
-                                    <option value="cn">🇨🇳&emsp;中文</option>
+                                <select onChange={this.change_language} className="select-css" ref={this.language}>
+                                    <option selected={this.props.translationState === "en" ? "selected" : null } value="en">🇬🇧&emsp;{translations[this.props.translationState].main_navigation.english}</option>
+                                    <option selected={this.props.translationState === "fr" ? "selected" : null } value="fr">🇫🇷&emsp;{translations[this.props.translationState].main_navigation.french}</option>
                                 </select>  
                             </li>
                             }
@@ -240,34 +244,31 @@ class MainNavigation extends Component {
                                 <li className="col-xs-6 col-md-7 col-md-offset-2">
                                     <form id="myForm" onSubmit={this.submitQuery}>
                                         <input onChange={this.setSearch} 
-                                            className="form-control text-center " type="text" placeholder="Search" 
+                                            className="form-control text-center " type="text" placeholder={translations[this.props.translationState].main_navigation.search_placeholder}
                                             name="search_query"
                                             id="searchInput"
                                         />  
-                                    </form>
-                                  
+                                    </form>  
                                 </li>
                                 <li className="col-sm-1">
-                                {(this.props.homeSearch === "Trending movies") ? null :
-                                                
-                                                <button className="btn btn-success" type="submit" onClick={this.clearSearch}>
-                                                     Clear
-                                                </button>
-                                            
-                                        }  
+                                    {(this.props.homeSearch === "Trending movies") ? null :
+                                        <button className="btn btn-success" type="submit" onClick={this.clearSearch}>
+                                            {translations[this.props.translationState].main_navigation.clear_button}
+                                        </button>
+                                    }  
                                 </li>
                               
                                 <li className="col-xs-6 col-md-2">
                                     <button className="btn btn-success btn-style " type="submit" onClick={this.advancedSearch}>
-                                        Advanced search
+                                        {translations[this.props.translationState].main_navigation.advanced_search_button}
                                     </button>
                                 </li>
                                 
                             </div>
                                  : null   }
                         </ul>
-    </nav>
-</header>
+                    </nav>
+                </header>
 
                 {/* ACCOUNT SIDEBAR (Onclick on the profile picture - or if not the account <li>) */}
                 {(this.state.isAccount === 1 || this.state.isAccount === 2) ? 
@@ -280,6 +281,9 @@ class MainNavigation extends Component {
                             stopDarkMode={() => {this.props.stopDarkMode()}}
                             setUserConnect={(resData) => {this.props.setUserConnect(resData)}}
                             setUserDisconnect={(resData) => {this.props.setUserDisconnect(resData)}}
+                            translationState = {this.props.translationState}
+                            setFrench={() => {this.props.setFrench()}}
+                            setEnglish={() => {this.props.setEnglish()}}
                         />
                     </div>
                     : null
@@ -288,6 +292,7 @@ class MainNavigation extends Component {
                 {(this.state.isAdvanced === 1 || this.state.isAdvanced === 2) ?
                     <div className={this.state.isAdvanced === 1 ? (this.props.darkModeState ? "bg-dark AdvancedSearchDiv " : "bg-white AdvancedSearchDiv ") : (this.props.darkModeState ? "bg-dark DisappearSearchDiv col-md-2" : "bg-white DisappearSearchDiv col-md-2")}>
                         <AdvancedSearch
+                            translationState = {this.props.translationState}
                             advanceSearchFunction={this.advanceSearchFunction}
                             seen={this.seen}
                             watching={this.watching}
@@ -297,6 +302,7 @@ class MainNavigation extends Component {
                             duration={this.duration}
                             decade={this.decade}
                             darkModeState = {this.props.darkModeState}
+                            translationState = {this.props.translationState}
                             clearAdvancedSearch={this.clearAdvancedSearch}
                         />
                     </div>
