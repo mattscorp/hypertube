@@ -223,7 +223,8 @@ body {
 .AccountDiv {
     text-align: center;
     color:  #9e9e9ec2 !important;
-    /* position: fixed; */
+    position: fixed;
+    right: 0;
     height: 100%;
     /* overflow: scroll; */
     z-index: 1;
@@ -700,6 +701,7 @@ body{
 
 @media (min-width: 300px) {
     .list-films-all, .under, .AccountDiv{
+        position: static;
         margin-top : 55vw;
     }
     .under{
@@ -723,6 +725,7 @@ body{
 
  @media (min-width: 360px) {
     .list-films-all, .under, .AccountDiv{
+        position: static;        
         margin-top : 50vw;
     }
     .under{
@@ -751,6 +754,7 @@ body{
 
 @media (min-width: 576px) {
         .list-films-all, .under , .AccountDiv{
+            position: static;        
             margin-top : 50%;
         }
         .under{
@@ -789,6 +793,7 @@ body{
             right: 0 !important;
         }
         .list-films-all, .under, .AccountDiv{
+            position: static;
             margin-top : 14%;
         }
         .under{
@@ -807,7 +812,9 @@ body{
         }
         .AdvancedSearchDiv {
             /* position: fixed; */
-            width: 25%;
+            width: 100%;
+            text-align: center;
+            height: 27%;
          }
         
       }
@@ -815,6 +822,7 @@ body{
 /*// Large devices (desktops, 992px and up)*/
 @media (min-width: 992px) { 
         .list-films-all, .under{
+            position: static;
             margin-top : 7%;
         }
         .under{
@@ -852,6 +860,7 @@ body{
 
 @media (min-width: 1200px) { 
         .list-films-all {
+            position: static;
             margin-top : 4%;
         }
         .AccountDiv{
@@ -881,9 +890,15 @@ body{
      
 
 @media (min-width: 2560px) { 
-.list-films-all , .AccountDiv{
+.list-films-all {
+    position: static;
     margin-top : 0;
 }
+.AccountDiv{
+    position: fixed;
+    margin-top : 0;
+}
+
 .under{
     margin-top : 0;
     background-color: #f8f9faf0;
@@ -901,6 +916,8 @@ body{
 .AdvancedSearchDiv {
     /* position: fixed; */
     width: 19%;
+    height: 32%;
+    padding-top: 1%;
  }
 
 }
