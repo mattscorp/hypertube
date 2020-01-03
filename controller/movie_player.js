@@ -25,7 +25,7 @@ OS.login()
     console.log('\x1b[36m%s\x1b[0m', '-> OpenSubtitles connection established');
 })
 .catch((error) => {
-    console.log('\x1b[31m%s\x1b[0m', '-> OpenSubtitles connection error');
+    console.log('\x1b[31m%s\x1b[0m', '-> OpenSubtitles connection error', error);
 });
 
 /*

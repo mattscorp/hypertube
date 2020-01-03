@@ -88,7 +88,7 @@ const languages = {
             comment_by: "Comment by: ",
             overview: "Overview",
             cast: "Cast",
-            as: "as",
+            as: " as ",
             director: "Director",
             movie_trailer: "Movie trailer",
             original_release_date: "Original release date: ",
@@ -96,7 +96,10 @@ const languages = {
             production_countries: "Production countries: ",
             vote_average: "IMDB vote average: ",
             revenue: "Revenue in USD: ",
-            similar_movies: "Simiar movies"
+            similar_movies: "Simiar movies",
+            your_video_will_be_played: "Your video will be played in ",
+            seconds: " seconds.",
+            load_more: "Load more comments"
         },
         footer: "Created by mascorpi and pvictor as part of school 42's curriculum, 2019"
     },
@@ -157,10 +160,10 @@ const languages = {
             public: "Public",
             family_friendly: "Tous publics",
             minimum_rating: "Note minimale",
-            maximum_duration: "Note maximale",
+            maximum_duration: "Durée maximale",
             less_than_1_hour: "Moins d'une heure",
             less_than_2_hour: "Moins de 2 heure",
-            less_than_3_hour: "Moins de 2 heure",
+            less_than_3_hour: "Moins de 3 heure",
             decade: "Décennie",
             clear_search: "Annuler la recherche"
         },
@@ -187,17 +190,20 @@ const languages = {
             ok: "OK",
             posted_on: "Le  ",
             comment_by: "Par  ",
-            overview: "Description :",
+            overview: "Description",
             cast: "Casting",
-            as: "dans le rôle de ",
+            as: " dans le rôle de ",
             director: "Réalisateur",
             movie_trailer: "Bande annonce",
             original_release_date: "Date de sortie : ",
-            runtime: "Durée en minutes: ",
-            production_countries: "Pays de production: ",
-            vote_average: "Note moyenne sur IMDB: ",
-            revenue: "Revenus en USD: ",
-            similar_movies: "Films similaires"
+            runtime: "Durée en minutes : ",
+            production_countries: "Pays de production : ",
+            vote_average: "Note moyenne sur IMDB : ",
+            revenue: "Revenus en USD : ",
+            similar_movies: "Films similaires",
+            your_video_will_be_played: "Votre vidéo débutera dans ",
+            seconds: " secondes.",
+            load_more: "Voir plus de commentaires"
         },
         footer: "Projet de l'école 42 créé par mascorpi et pvictor, 2019"
     }

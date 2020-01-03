@@ -70,12 +70,6 @@ class MainNavigation extends Component {
     }
 
     componentDidMount = async () => {
-        
-        if (this.props.userConnectState.language === "English")
-            this.props.setEnglish();
-        else
-            this.props.setFrench();
-
         let URL = 'http://localhost:8000/user_infos';
         fetch(URL, {
             method: 'POST',
@@ -95,6 +89,12 @@ class MainNavigation extends Component {
                 if (resData[0].dark_mode === 1)
                     this.props.setDarkMode();
             }
+        })
+        .then(() => {
+            if (this.props.userConnectState.language === "English")
+                this.props.setEnglish();
+            else
+                this.props.setFrench();
         })
         // googleTranslate.detectLanguage('Gracias', function(err, detection) {
         //     console.log(detection.language);

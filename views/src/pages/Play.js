@@ -366,12 +366,12 @@ class Play extends Component {
                                     </div>
                                     {/* Twitter share */}
                                     <div className="col-md-12 text-center rating_section">
-                                        <Twitter url={this.props.location} text={translations["en"].movie_page.share_on_twitter} shareText={'I\'m watching ' + this.props.filmInfosState.film_infos.title + ' with Hypertube! Watch movies with Hypertube: http://localhost:3000'  + this.props.location.search} />
+                                        <Twitter url={this.props.location} text={translations[this.props.translationState].movie_page.share_on_twitter} shareText={'I\'m watching ' + this.props.filmInfosState.film_infos.title + ' with Hypertube! Watch movies with Hypertube: http://localhost:3000'  + this.props.location.search} />
                                     </div>
                                     {/* Ratings */}
                                     <div className="rate_and_comment container-fluid row">
                                         <div className="col-md-12 text-center rating_section">
-                                            <h4>{translations["en"].movie_page.average_rating} {this.state.average_rating ? this.state.average_rating : "Not rated yet"} </h4>
+                                            <h4>{translations[this.props.translationState].movie_page.average_rating} {this.state.average_rating ? this.state.average_rating : "Not rated yet"} </h4>
                                             <div className="col-md-5 offset-4">
                                                 <form className="rating" onChange={this.rate_movie} > 
                                                     <input type="radio" id="star10" name="rating" value="10" ref={this.rating} checked={this.state.user_rating > 9.5 && this.state.user_rating <= 10}/><label className="full" htmlFor="star10" title="10 stars" ></label>
@@ -407,14 +407,8 @@ class Play extends Component {
                                                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
                                                     allowFullScreen>
                                                 </iframe>
-                                                <p>Your video will be played in {this.state.fake_add} seconds.</p>
-                                            </div> 
-                                            // : !this.props.filmInfosState.movie_in_db[0] ?
-                                            // <div className="mx-auto">
-                                            //     <img className="mx-auto d-block" src={unavailable} alt="Movie unavailable"/>
-                                            //     <h3>This movie is not available yet ='(</h3>
-                                            //     <button>Add to my list!</button>
-                                            // </div> 
+                                                <p>{translations[this.props.translationState].movie_page.your_video_will_be_played}{this.state.fake_add}{translations[this.props.translationState].movie_page.seconds}</p>
+                                            </div>  
                                             : null
                                         }
                                         {/* Film */}
@@ -444,9 +438,9 @@ class Play extends Component {
                                                     {
                                                         this.state.comment.map((elem, index) => (
                                                             <li className="col-md-12 text-center">
-                                                                Posted on: {elem.date.slice(0, 19).replace('T', ' ')}
+                                                                {translations[this.props.translationState].movie_page.posted_on}{elem.date.slice(0, 19).replace('T', ' ')}
                                                                 <br></br>
-                                                                Comment BY <b className="user_popup" onClick={() => this.show_user(elem)}>{elem.first_name || elem.name}</b> :
+                                                                {translations[this.props.translationState].movie_page.comment_by}<b className="user_popup" onClick={() => this.show_user(elem)}>{elem.first_name || elem.name}</b> :
                                                                 <div className="comment"> {elem.comment} </div>
                                                                 {elem.uuid === this.props.userConnectState.uuid ?
                                                                     <button onClick={() => this.delete_com(elem)}>X</button> : null
@@ -467,39 +461,39 @@ class Play extends Component {
                                             </div>
                                             {this.state.loadMoreButton === 0 ? 
                                             <button value="Load more comments" onClick={this.loadMoreComment}>
-                                                LoadMore
+                                                {translations[this.props.translationState].movie_page.load_more}
                                             </button>
                                             : null 
                                             }
                                             <h1 className="text-center">
-                                                Make a comment
+                                                {translations[this.props.translationState].movie_page.make_a_comment}
                                             </h1>
                                             <form onSubmit={this.make_comm}>
                                                 <input ref={this.com}>
                                                 </input>
-                                                <input type="submit" value="ok"></input>
+                                                <input type="submit" value={translations[this.props.translationState].movie_page.ok}></input>
                                             </form>
                                         </div>
                                     </div>
                                 {this.props.filmInfosState.film_infos.overview ?
                                     <div className = 'col-md-12 text-center'>
-                                        <h3>Overview : </h3>
+                                        <h3>{translations[this.props.translationState].movie_page.overview}</h3>
                                         <p>{this.props.filmInfosState.film_infos.overview}</p>
                                     </div> 
                                 : null}
                                 {/* Movie cast and director */}
                                 {this.props.filmInfosState.cast_infos.cast ?
                                 <div className = 'col-md-12 text-center'>
-                                    <h3>Cast:</h3>
+                                    <h3>{translations[this.props.translationState].movie_page.cast}</h3>
                                     {this.props.filmInfosState.cast_infos.cast.slice(0, 5).map((elem, index) => 
-                                        <p key={index} >{elem.name} as {elem.character}</p>
+                                        <p key={index} >{elem.name}{translations[this.props.translationState].movie_page.as}{elem.character}</p>
                                     )}
                                 </div>
                                 : null
                                 }
                                 {this.props.filmInfosState.cast_infos.crew ?
                                 <div className = 'col-md-12 text-center'>
-                                    <h3>Director:</h3>
+                                    <h3>{translations[this.props.translationState].movie_page.director}</h3>
                                     {this.props.filmInfosState.cast_infos.crew.map((elem, index) => 
                                     elem.job === "Director" ? (
                                         <p key={index} >{elem.name}</p>
@@ -511,7 +505,7 @@ class Play extends Component {
                                 {this.props.filmInfosState.film_infos.videos.results[0] ?
                                     <div className = 'col-md-10 col-xl-12 text-center trailer-div'>
                                         <br></br>
-                                        <h3>Movie Trailer</h3>
+                                        <h3>{translations[this.props.translationState].movie_page.movie_trailer}</h3>
                                         <iframe
                                             width="80%"
                                             height="80%"
@@ -531,7 +525,7 @@ class Play extends Component {
                                         <li>
                                             {this.props.filmInfosState.film_infos.release_date ?
                                             <div className = 'col-md-6'>
-                                                <h3>Original release date : </h3>
+                                                <h3>{translations[this.props.translationState].movie_page.original_release_date}</h3>
                                                 <p>{this.props.filmInfosState.film_infos.release_date}</p>
                                             </div> 
                                             : null}
@@ -539,7 +533,7 @@ class Play extends Component {
                                         <li>
                                             {this.props.filmInfosState.film_infos.vote_average ?
                                             <div className = 'col-md-6'>
-                                                <h3>Vote Average : </h3> 
+                                                <h3>{translations[this.props.translationState].movie_page.vote_average}</h3> 
                                                 <p>{this.props.filmInfosState.film_infos.vote_average}</p>
                                             </div> 
                                             : null}
@@ -547,7 +541,7 @@ class Play extends Component {
                                         <li>
                                             {this.props.filmInfosState.film_infos.runtime ?
                                             <div className = 'col-md-6'>
-                                                <h3>Runtime in minutes: </h3> 
+                                                <h3>{translations[this.props.translationState].movie_page.runtime}</h3> 
                                                 <p>{this.props.filmInfosState.film_infos.runtime} min</p>
                                             </div> 
                                            : null}
@@ -555,7 +549,7 @@ class Play extends Component {
                                         <li>
                                             {this.props.filmInfosState.film_infos.revenue ?
                                             <div className = 'col-md-6'>
-                                                <h3>Revenue in Dollars: </h3> 
+                                                <h3>{translations[this.props.translationState].movie_page.revenue}</h3> 
                                                 <p>{this.props.filmInfosState.film_infos.revenue} $</p>
                                             </div> 
                                             : null}
@@ -563,16 +557,8 @@ class Play extends Component {
                                         <li>
                                             {this.props.filmInfosState.film_infos.production_countries && this.props.filmInfosState.film_infos.production_countries[0] ?
                                             <div className = 'col-md-6'>
-                                                <h3>Production Countries: </h3> 
+                                                <h3>{translations[this.props.translationState].movie_page.production_countries}</h3> 
                                                 <p>{this.props.filmInfosState.film_infos.production_countries[0].name}</p>
-                                            </div> 
-                                            : null}
-                                        </li>
-                                        <li>
-                                            {this.props.filmInfosState.film_infos.imdb_id ?
-                                            <div className = 'col-md-6'>
-                                                <h3>IMDB ID: </h3> 
-                                                <p>{this.props.filmInfosState.film_infos.imdb_id}</p>
                                             </div> 
                                             : null}
                                         </li>
@@ -581,7 +567,7 @@ class Play extends Component {
                                 {this.props.filmInfosState.similar_movies !== "" && this.props.filmInfosState.similar_movies[0] && this.props.filmInfosState.similar_movies[0] !== undefined ?
                                 <div className="container mt-3 similar_movies">
                                     <div className="col-md-12 text-center">
-                                        <h3>Similar movies</h3>
+                                        <h3>{translations[this.props.translationState].movie_page.similar_movies}</h3>
                                     </div>
                                         <div id="myCarousel" className="carousel slide" data-ride="carousel">
                                             <div className="carousel-inner">

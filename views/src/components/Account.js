@@ -177,7 +177,7 @@ class Account extends Component {
             this.props.setEnglish();
             body = {'language': "en"}
         }
-        else {
+        else if (this.language.current.value === "fr") {
             this.props.setFrench();
             body = {'language': "fr"}
         }
