@@ -839,13 +839,23 @@ body{
             transform: translate(-99%, 0%);
             display: inline-block;
         }
+        .AccountDiv{
+            position: fixed;
+            margin-top : 5%;
+            right: 0;
+        }
+        .list-films-all{
+            padding-top: 31%;
+        }
         .AdvancedSearchDiv {
             left: 0;
             text-align: left;
             color: #9e9e9ec2 !important;
             padding-top: 7%;
             position: fixed;
-            width: 50%;
+            width: 70%;
+            padding-bottom: 266px;
+            text-align: center;
             z-index: 1;
             -webkit-animation-name: AdvancedSearchDiv;
             -webkit-animation-duration: 1s;
@@ -859,13 +869,20 @@ body{
 
 
 @media (min-width: 1200px) { 
-        .list-films-all {
-            position: static;
-            margin-top : 4%;
-        }
-        .AccountDiv{
-            margin-top : 50px;
-        }
+    .list-films-all {
+        position: static;
+        /* margin-top : 6%; */
+    }
+    .AccountDiv{
+        position: fixed;
+        margin-top : 0;
+    }
+    .AdvancedSearchDiv {
+        position: fixed;
+        width: 15%;
+        height: 100%; 
+        
+     }
         .under{
             margin-top : 8%;
             background-color: #f8f9faf0;
@@ -880,14 +897,12 @@ body{
             transform: translate(-99%, 0%);
             display: inline-block;
         }
-        .AdvancedSearchDiv {
-            /* position: fixed; */
-            width: 21%;
-         }
+        
        
       }
+      @media (min-width: 1560px) { 
 
-     
+      }
 
 @media (min-width: 2560px) { 
 .list-films-all {
@@ -898,6 +913,12 @@ body{
     position: fixed;
     margin-top : 0;
 }
+.AdvancedSearchDiv {
+   
+    width: 19%;
+    height: 32%;
+    padding-top: 1%;
+ }
 
 .under{
     margin-top : 0;
@@ -913,12 +934,7 @@ body{
     transform: translate(-99%, 0%);
     display: inline-block;
 }
-.AdvancedSearchDiv {
-    /* position: fixed; */
-    width: 19%;
-    height: 32%;
-    padding-top: 1%;
- }
+
 
 }
 
