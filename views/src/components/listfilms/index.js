@@ -54,7 +54,7 @@ class FilmsList extends Component{
         // Utilisation de parseResearch pour definir si la recherche se fait via un titre ou via une recherche affinnee
         // si parseResearch[0] === "Categories" => action en fonction
         if (research === "Trending movies") {
-            URL = `http://localhost:8000/moviedb?action=popular&page=${this.props.page}${decade}${genderSearch}${public_category}${rating}${duration}`;
+            URL = `http://localhost:8000/moviedb?action=popular&page=${this.props.page}${decade}${genderSearch}${public_category}${rating}${duration}&language=${this.props.translationState}`;
             fetch(URL, {
                 method: 'GET',
                 credentials: 'include',

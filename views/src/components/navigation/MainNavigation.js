@@ -96,10 +96,6 @@ class MainNavigation extends Component {
             else
                 this.props.setFrench();
         })
-        // googleTranslate.detectLanguage('Gracias', function(err, detection) {
-        //     console.log(detection.language);
-        //     // =>  es
-        //   });
     }
 
     setSearch = (event) => {
@@ -134,7 +130,7 @@ class MainNavigation extends Component {
             // this.props.resetFilmsBeforeSearch();
             this.setState(this.props.resetFilmsBeforeSearch());
             let search_query = (document.forms[0].querySelector('input[name="search_query"]').value);
-            let URL = `http://localhost:8000/moviedb?action=search&page=${this.props.reloadSearch.page}&movie_name=${search_query}${decade}${genderSearch}${public_category}${rating}${duration}`;
+            let URL = `http://localhost:8000/moviedb?action=search&page=${this.props.reloadSearch.page}&movie_name=${search_query}${decade}${genderSearch}${public_category}${rating}${duration}&language=${this.props.translationState}`;
             fetch(URL, {
                 method: 'GET',
                 credentials: 'include',
@@ -157,7 +153,7 @@ class MainNavigation extends Component {
             this.props.changeHomeDiscover();
             // this.setState(this.props.resetFilmsBeforeSearch());
             this.props.resetFilmsBeforeSearch();
-            let URL = `http://localhost:8000/moviedb?action=popular&page=1${genderSearch}${public_category}${rating}${duration}${decade}`;
+            let URL = `http://localhost:8000/moviedb?action=popular&page=1${genderSearch}${public_category}${rating}${duration}${decade}&language=${this.props.translationState}`;
             fetch(URL, {
                 method: 'GET',
                 credentials: 'include',
@@ -183,7 +179,7 @@ class MainNavigation extends Component {
     clearSearch = () => {
         this.props.changeHomeDiscover();
         this.props.resetFilmsBeforeSearch();
-        let URL = `http://localhost:8000/moviedb?action=popular&page=${this.props.reloadSearch.page}`;
+        let URL = `http://localhost:8000/moviedb?action=popular&page=${this.props.reloadSearch.page}&language=${this.props.translationState}`;
         fetch(URL, {
             method: 'GET',
             credentials: 'include',

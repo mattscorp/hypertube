@@ -69,6 +69,7 @@ class HomePage extends Component {
           loadMore={(prevState) => {this.props.loadMore(prevState)}}
           advancedSearchState={this.props.advancedSearchState}
           darkModeState={this.props.darkModeState}
+          translationState={this.props.translationState}
           />
       </div>
     );

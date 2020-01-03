@@ -40,7 +40,7 @@ class Play extends Component {
         this.handle_video_advancement();
         this.fake_ad_countdown();
         // Call the API to get the movie details
-        let URL = `http://localhost:8000/movie_infos?movie_id=${this.props.location.search.split('movie=')[1]}`;
+        let URL = `http://localhost:8000/movie_infos?movie_id=${this.props.location.search.split('movie=')[1]}&language=${this.props.translationState}`;
         fetch(URL, {
             method: 'GET',
             credentials: 'include',
@@ -65,7 +65,6 @@ class Play extends Component {
             this.get_subtitles();
         })
         
-
         // Call the API to get the cast
         let URL2 = `http://localhost:8000/movie_cast?movie_id=${this.props.location.search.split('movie=')[1]}`;
         fetch(URL2, {
@@ -85,7 +84,7 @@ class Play extends Component {
             this.props.setCastInfos(resData2);
         })
         // GET similar movies
-        let URL3 = `http://localhost:8000/moviedb?action=similar&movie_id=${this.props.location.search.split('movie=')[1]}`;
+        let URL3 = `http://localhost:8000/moviedb?action=similar&movie_id=${this.props.location.search.split('movie=')[1]}&language=${this.props.translationState}`;
         fetch(URL3, {
             method: 'GET',
             credentials: 'include',
@@ -371,7 +370,7 @@ class Play extends Component {
                                     {/* Ratings */}
                                     <div className="rate_and_comment container-fluid row">
                                         <div className="col-md-12 text-center rating_section">
-                                            <h4>{translations[this.props.translationState].movie_page.average_rating} {this.state.average_rating ? this.state.average_rating : "Not rated yet"} </h4>
+                                            <h4>{translations[this.props.translationState].movie_page.average_rating} {this.state.average_rating ? this.state.average_rating : translations[this.props.translationState].movie_page.not_rated_yet} </h4>
                                             <div className="col-md-5 offset-4">
                                                 <form className="rating" onChange={this.rate_movie} > 
                                                     <input type="radio" id="star10" name="rating" value="10" ref={this.rating} checked={this.state.user_rating > 9.5 && this.state.user_rating <= 10}/><label className="full" htmlFor="star10" title="10 stars" ></label>

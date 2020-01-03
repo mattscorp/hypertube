@@ -26,7 +26,7 @@ router.get('/moviedb', with_auth, async (req, res) => {
         if (req.query.action.toLowerCase() == "popular") {
             if (req.query.page)
                 page = req.query.page;
-            let popular_movies = await films.popular_movies(page, public_category, category, rating, duration, decade);
+            let popular_movies = await films.popular_movies(page, public_category, category, rating, duration, decade, req.query.language);
             if (popular_movies == '')
                 res.status(204);
             else
@@ -37,7 +37,7 @@ router.get('/moviedb', with_auth, async (req, res) => {
         else if (req.query.action.toLowerCase() == "search") {
             let name = req.query.movie_name;
             page = req.query.page;
-            let search_movies = await films.search_movies(page, public_category, category, name, rating, duration, decade);
+            let search_movies = await films.search_movies(page, public_category, category, name, rating, duration, decade, req.query.language);
             if (search_movies == '')
                 res.status(204);
             else
@@ -45,8 +45,8 @@ router.get('/moviedb', with_auth, async (req, res) => {
             res.send(search_movies.results);
         }
         // ** SIMILAR ** --> get movies that are similar to the parameter "movie_ID"
-        else if (req.query.action.toLowerCase() == "similar") {
-            let similar_movies = await films.similar_movies(req.query.movie_id);
+        else if (req.query.action.toLowerCase() == "similar" && req.query.language != '') {
+            let similar_movies = await films.similar_movies(req.query.movie_id, req.query.language);
             if (similar_movies == '' || similar_movies.status_code == 34)
                 res.status(204);
             else
@@ -58,8 +58,8 @@ router.get('/moviedb', with_auth, async (req, res) => {
 });
 
 router.get('/movie_infos', with_auth, async (req, res) => {
-    if (req.query.movie_id && req.query.movie !== "") {
-        let movie_infos = await films.movie_infos(req.query.movie_id);
+    if (req.query.movie_id && req.query.movie !== ""&& req.query.language && req.query.language != '') {
+        let movie_infos = await films.movie_infos(req.query.movie_id, req.query.language);
         if (movie_infos == '' || movie_infos.status_code == 34)
             res.status(204);
         else {
