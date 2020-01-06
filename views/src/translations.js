@@ -24,7 +24,8 @@ const languages = {
         },
         home: {
             trending_movies: "Trending movies",
-            research: "Research: "
+            research: "Research: ",
+            seen: "Seen: "
         },
         advanced_search: {
             header: "Advanced Search",
@@ -128,7 +129,8 @@ const languages = {
         },
         home: {
             trending_movies: "Films populaires",
-            research: "Recherche : "
+            research: "Recherche : ",
+            seen: "Vu : "
         },
         advanced_search: {
             header: "Recherche Avancée",

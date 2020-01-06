@@ -1,17 +1,30 @@
 import  React from 'react';
 import { NavLink } from 'react-router-dom';
+import translations from '../../translations.js';
 
 const url_img = 'https://image.tmdb.org/t/p/w185_and_h278_bestv2';
 const Films = (props) => (
     <div id={props.id} >
         <div className="image">
             <img src= {props.poster_path ? url_img + props.poster_path : "https://upload.wikimedia.org/wikipedia/commons/f/fc/No_picture_available.png"} alt={"Poster of " + props.title} />
+            <div className="topleft">
+                <p>
+                    { props.viewedFilmsState.viewed.map(elem => (
+                        (
+                            elem.moviedb_ID.toString() === props.id.toString()) ? 
+                            <span className="text-white">{translations[props.translationState].home.seen}{Math.round((elem.time_viewed/elem.duration)*100)}%</span> 
+                            : null )
+                        )
+                    }
+                </p> 
+            </div>
             <div className="overlay">
                 <div className="topright">
                     <p>
                     <span className="glyphicon glyphicon-star">{props.vote_average}</span>
                     </p> 
                 </div>
+                
                 <div>
                     {
                         props.overview.split(' ').map((elem , index)=> 
@@ -33,7 +46,7 @@ const Films = (props) => (
                 </div>
             </div>
         </div>
-        <h5 className={props.darkModeState ? "text-white" : "text-dark"}>{props.title} salut</h5>
+        <h5 className={props.darkModeState ? "text-white" : "text-dark"}>{props.title}</h5>
     </div>
  )
 

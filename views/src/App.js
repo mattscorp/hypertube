@@ -10,6 +10,7 @@ import { set_dark_mode, stop_dark_mode } from './actions/dark_mode_action.js'
 import { film_infos, cast_infos, similar_movies, movie_in_db } from './actions/film_infos_action.js'
 import { set_subtitles, remove_subtitles } from './actions/subtitles_action.js'
 import { set_english, set_french } from './actions/translation_action.js'
+import { set_viewed_films } from './actions/viewed_films_action.js'
 import "../node_modules/video-react/dist/video-react.css"; // import css
 
 // BOOTSTRAP
@@ -105,6 +106,8 @@ class App extends Component {
                     advancedSearchState={this.props.advancedSearch}
                     darkModeState = {this.props.darkModeState.dark_mode}
                     translationState = {this.props.translationState.language}
+                    viewedFilmsState = {this.props.viewedFilmsState}
+                    setViewedFilms = {(resData) => this.props.setViewedFilms(resData)}
                     />
                 }/>
                 <Route path="*" component={NotFound} />
@@ -128,7 +131,8 @@ const mapStateToProps  = (state) => {
     darkModeState: state.darkMode,
     translationState: state.translation,
     filmInfosState: state.filmInfo,
-    subtitlesState: state.subtitles
+    subtitlesState: state.subtitles,
+    viewedFilmsState: state.viewedFilms
   };
 }
 
@@ -196,6 +200,9 @@ const mapDispatchToProps  = (dispatch) => {
     },
     setFrench: () => {
       dispatch(set_french());
+    },
+    setViewedFilms: (viewedFilms) => {
+      dispatch(set_viewed_films(viewedFilms));
     }
   };
 }

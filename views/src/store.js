@@ -8,6 +8,7 @@ import darkModeReducer from './reducers/dark_mode_reducer.js';
 import filmInfosReducer from './reducers/film_infos_reducer.js';
 import subtitlesReducer from './reducers/subtitles_reducer.js';
 import translationReducer from './reducers/translation_reducer.js';
+import viewedFilmsReducer from './reducers/viewed_films_reducer.js';
 
 export default createStore(
     combineReducers({
@@ -18,6 +19,7 @@ export default createStore(
         darkMode: darkModeReducer,
         filmInfo: filmInfosReducer,
         subtitles: subtitlesReducer,
+        viewedFilms: viewedFilmsReducer,
         translation: translationReducer
     }),
     {},

@@ -68,7 +68,9 @@ class FilmsList extends Component{
                 return res.json();
             })
             // CASE LOAD_FILMS
-            .then((resData => {this.props.loadFilms(resData)}))
+            .then(resData => {
+                this.props.loadFilms(resData)
+            })
             .catch(err => {
                 console.log(err);
             });
@@ -140,6 +142,8 @@ class FilmsList extends Component{
                                 <Films 
                                     {...film}
                                     darkModeState={this.props.darkModeState}
+                                    viewedFilmsState={this.props.viewedFilmsState}
+                                    translationState={this.props.translationState}
                                 />
                             </div>)
                     }

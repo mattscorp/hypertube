@@ -205,3 +205,17 @@ const update_time_viewed = (uuid, imdb_id, duration, current_time) => {
     }
 }
 module.exports.update_time_viewed = update_time_viewed;
+
+const movie_seen = async (uuid) => {
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT * FROM `views` WHERE `user_ID` = ?";
+        con.query(sql, [uuid], (err, result) => {
+            if (err)
+                throw err;
+            else {
+                resolve(result);
+            }
+        })
+    });
+}
+module.exports.movie_seen = movie_seen;

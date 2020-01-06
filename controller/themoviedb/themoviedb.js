@@ -8,6 +8,15 @@ const router = express.Router();
 const films = require('../../model/films.js');
 const torrents = require('../torrent/torrent.js');
 
+// To get all the movies viewed by the user
+router.post('/movies_seen', with_auth, async (req, res) =>{
+    let movies_seen = await films.movie_seen(req.uuid);
+    if (movies_seen === false)
+        res.sendStatus(404);
+    else
+        res.send(movies_seen).status(200);
+})
+
 router.get('/moviedb', with_auth, async (req, res) => {
     if (!req.query.action || (req.query.action != "popular" && req.query.action != "search" && req.query.action != "similar")) {
         res.status(400);

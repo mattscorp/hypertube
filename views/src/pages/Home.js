@@ -1,12 +1,23 @@
 import React, { Component } from 'react';
 import FilmsList from '../components/listfilms/index.js'; 
 import translations from '../translations.js';
+import {fetch_post} from '../fetch.js';
 
 class HomePage extends Component {
 
   componentDidMount = async () => {
     this.props.resetFilmsBeforeSearch();
+    this.viewed_films();
   }
+
+  // ADDS THE MOVIES WHICH HAVE ALREADY BEEN SEEN BY THE USER TO THE LIST
+  viewed_films = async () => {
+    let movies_seen = await fetch_post('/movies_seen', {});
+    if (movies_seen && movies_seen !== undefined && movies_seen[0] && movies_seen[0] !== undefined) {
+      this.props.setViewedFilms(movies_seen);
+    }
+  }
+
   setSearch = (event) => {
     this.props.resetFilmsBeforeSearch();
   }
@@ -70,6 +81,7 @@ class HomePage extends Component {
           advancedSearchState={this.props.advancedSearchState}
           darkModeState={this.props.darkModeState}
           translationState={this.props.translationState}
+          viewedFilmsState={this.props.viewedFilmsState}
           />
       </div>
     );
