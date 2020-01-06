@@ -83,28 +83,28 @@ router.get('/subtitles', async (req, res) => {
     }
 });
 
-const convert = function (file, thread) {
-    console.log('IN CONVERT')
-    if (!thread)
-      thread = 8
-    console.log('Start converting file...')
-    return new ffmpeg(file.createReadStream())
-      .videoCodec('libvpx')
-      .audioCodec('libvorbis')
-      .format('webm')
-      .audioBitrate(128)
-      .videoBitrate(1024)
-      .outputOptions([
-        '-threads ' + thread,
-        '-deadline realtime',
-        '-error-resilient 1'
-      ])
-      .on('end', function () {
-        console.log('File is now webm !')
-      })
-      .on('error', function (err) {
-      })
-}
+// const convert = function (file, thread) {
+//     console.log('IN CONVERT')
+//     if (!thread)
+//       thread = 8
+//     console.log('Start converting file...')
+//     return new ffmpeg(file.createReadStream())
+//       .videoCodec('libvpx')
+//       .audioCodec('libvorbis')
+//       .format('webm')
+//       .audioBitrate(128)
+//       .videoBitrate(1024)
+//       .outputOptions([
+//         '-threads ' + thread,
+//         '-deadline realtime',
+//         '-error-resilient 1'
+//       ])
+//       .on('end', function () {
+//         console.log('File is now webm !')
+//       })
+//       .on('error', function (err) {
+//       })
+// }
 
 /*
     If the movie is already downloaded, send it by chunks
@@ -113,14 +113,22 @@ const convert = function (file, thread) {
 router.get('/movie_player', async (req, res) => {
     if (req.query && req.query.moviedb_id && req.query.moviedb_id != '') {
         let movie_infos_api = await movie_model.movie_infos(req.query.moviedb_id);
+        console.log(movie_infos_api)
         if (movie_infos_api.status_code == 34) {
             console.log('The movie could not be found');
             res.sendStatus(404);
         } else if (movie_infos_api && movie_infos_api.id == req.query.moviedb_id) {
-            const providers = await torrent.enable_providers(['Rarbg', 'Torrentz2', 'ThePirateBay', 'KickassTorrents', 'TorrentProject']);
+            // const providers = await torrent.enable_providers(['Rarbg', 'Torrentz2', 'ThePirateBay', 'KickassTorrents', 'TorrentProject']);
             const torrents = await torrent.get_magnet(movie_infos_api);
-            if (torrents && torrents[0] && torrents[0].magnet && torrents[0] !== undefined) {
-                const engine = torrentStream(torrents[0].magnet, { path: "./views/public/torrents" })
+            console.log(torrents)
+            if (torrents && torrents.success && torrents.success === false) {
+                console.log('PAS DE MAGNET');
+                res.sendStatus(404);
+            } else if (torrents && torrents[0] && torrents[0] !== undefined && torrents[0].url) {
+                console.log(torrents[0].url)
+                let torrent_magnet = `magnet:?xt=urn:btih:${torrents[0].hash}&dn=${encodeURI(movie_infos_api.original_title)}&tr=http://track.one:1234/announce&tr=udp://track.two:80`;
+                console.log(torrent_magnet)
+                const engine = torrentStream(torrent_magnet, { path: "./views/public/torrents" })
                 engine.on("ready", () => {
                     engine.files.forEach((file) => {
                         if (path.extname(file.name) === ".mp4" || path.extname(file.name) === ".mkv" || path.extname(file.name) === ".avi" ) {
@@ -157,7 +165,7 @@ router.get('/movie_player', async (req, res) => {
                                             let extension2 = extension1[extension1.length - 1];
                                             console.log(extension2)
                                             let stream = {}
-                                            if (extension2 == 'mp4' || extension2 == 'webm') {
+                                            // if (extension2 == 'mp4' || extension2 == 'webm') {
                                                 stream = fs.createReadStream(`./views/public/torrents/${file.path}`, { start, end })
                                                 .on("open", function() {
                                                     console.log('dans open')
@@ -169,20 +177,20 @@ router.get('/movie_player', async (req, res) => {
                                                     res.end(err);
                                                 })
                                                 console.log('mp4 = ' + extension2)
-                                            }
-                                            else {
-                                                stream = convert(`./views/public/torrents/${file.path}`, { start, end })
-                                                // var stream = (extension2 == 'mp4' || extension2 == 'webm') ? fs.createReadStream(`./views/public/torrents/${file.path}`, { start, end }) : convert(`./views/public/torrents/${file.path}`, { start, end })
-                                                .on("open", function() {
-                                                    console.log('dans open')
-                                                    // ffmpeg(`./views/public/torrents/${file.path}`, { start, end }).format('mp4')
-                                                    // You may pass a pipe() options object when using a stream
-                                                    //   .output(stream, { end:true });
-                                                    stream.pipe(res);
-                                                }).on("error", function(err) {
-                                                    res.end(err);
-                                                })
-                                            }
+                                            // }
+                                            // else {
+                                            //     stream = fs.createReadStream(`./views/public/torrents/${file.path}`, { start, end })
+                                            //     // var stream = (extension2 == 'mp4' || extension2 == 'webm') ? fs.createReadStream(`./views/public/torrents/${file.path}`, { start, end }) : convert(`./views/public/torrents/${file.path}`, { start, end })
+                                            //     .on("open", function() {
+                                            //         console.log('dans open')
+                                            //         // ffmpeg(`./views/public/torrents/${file.path}`, { start, end }).format('mp4')
+                                            //         // You may pass a pipe() options object when using a stream
+                                            //         //   .output(stream, { end:true });
+                                            //         stream.pipe(res);
+                                            //     }).on("error", function(err) {
+                                            //         res.end(err);
+                                            //     })
+                                            // }
                                         }
                                     }
                                 })
@@ -190,24 +198,10 @@ router.get('/movie_player', async (req, res) => {
                                 const extension_split = file.name.split('.');
                                 const extension = extension_split[extension_split.length - 1]
                                 const year = movie_infos_api.release_date.split('-')[0];
-                                movie_model.add_torrent(movie_infos_api.id, file.path, extension, file.name, year, torrents[0].magnet);
+                                movie_model.add_torrent(movie_infos_api.id, file.path, extension, file.name, year, torrents[0].url);
                                 console.log("DANS LE ELSE");
-                                const fileStream = new ffmpeg(file.createReadStream()).videoCodec('libvpx')
-                                    .audioCodec('libvorbis')
-                                    .format('webm')
-                                    .audioBitrate(128)
-                                    .videoBitrate(1024)
-                                    .outputOptions([
-                                    '-threads ' + 8,
-                                    '-deadline realtime',
-                                    '-error-resilient 1'
-                                    ])
-                                    .on('end', function () {
-                                        console.log('File is now webm !')
-                                    })
-                                    .on('error', function (err) {
-                                        console.log(err);
-                                    })
+                                const fileStream = file.createReadStream()
+                                    
                                 fileStream.pipe(res)
                             }
                         }

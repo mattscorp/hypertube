@@ -33,7 +33,7 @@ const Films = (props) => (
                 </div>
             </div>
         </div>
-        <h5 className={props.darkModeState ? "text-white" : "text-dark"}>{props.title}</h5>
+        <h5 className={props.darkModeState ? "text-white" : "text-dark"}>{props.title} salut</h5>
     </div>
  )
 

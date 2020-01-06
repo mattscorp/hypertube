@@ -337,7 +337,7 @@ class Play extends Component {
             {
                 console.log(this.video_player.current.duration);
                 console.log(this.video_player.current.currentTime);
-                fetch_post('/movie_advancement', {'imdb_ID': this.props.filmInfosState.film_infos.imdb_id, 'duration': this.video_player.current.duration, 'current_time': this.video_player.current.currentTime});
+                fetch_post('/movie_advancement', {'imdb_ID': this.props.filmInfosState.film_infos.id, 'duration': this.video_player.current.duration, 'current_time': this.video_player.current.currentTime});
             }
         }, 5000)
     }

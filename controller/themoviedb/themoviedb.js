@@ -93,7 +93,7 @@ router.get('/movie_in_db', with_auth, async (req, res) => {
         if (movie_infos_db == 'vide') {
             let movie_infos_api = await films.movie_infos(req.query.movie_id);
             // On prend les providers
-            let torrent_infos = await torrents.ft_torrent(movie_infos_api, ['Rarbg', 'Torrentz2', 'ThePirateBay', 'KickassTorrents', 'TorrentProject']);
+            let torrent_infos = await torrents.ft_torrent(movie_infos_api/*, ['Rarbg', 'Torrentz2', 'ThePirateBay', 'KickassTorrents', 'TorrentProject']*/);
             res.status(201).send(torrent_infos);
         }
         else {
