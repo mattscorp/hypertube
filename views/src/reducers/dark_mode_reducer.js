@@ -12,6 +12,7 @@ const darkModeReducer = (state = {
                 dark_mode: false
             }
             break;
+        default:
     }
     return state;
 };

@@ -32,6 +32,7 @@ const advancedSearchReducer = (state = {
                 decade: '',
             }
             break;
+        default:
     }
     return state;
 }

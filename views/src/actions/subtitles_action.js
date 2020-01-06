@@ -1,5 +1,3 @@
-import { fileURLToPath } from "url";
-
 export function set_subtitles(subtitles) {
     return {
         type: "SET_SUBTITLES",

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Facebook, Twitter } from 'react-sharingbuttons';
+import { Twitter } from 'react-sharingbuttons';
 import 'react-sharingbuttons/dist/main.css';
 import UserProfile from './UserProfile.js';
 import {fetch_post} from '../fetch.js';
@@ -34,9 +34,9 @@ class Play extends Component {
 
     componentDidMount () {
         // Starts a countdown to play the fake add before playing the movie
-        this.setState(prevState =>(
-           this.state.url_movie = parseInt(this.props.location.search.split('movie=')[1].trim())
-        ));
+        this.setState({
+            url_movie: parseInt(this.props.location.search.split('movie=')[1].trim())
+        });
         this.handle_video_advancement();
         this.fake_ad_countdown();
         // Call the API to get the movie details
@@ -138,9 +138,9 @@ class Play extends Component {
             }
             else
             {
-                this.setState(prevState => (
-                    this.state.loadMoreButton = 1
-                ))
+                this.setState({
+                    loadMoreButton: 1
+                })
             }
         })
     }
@@ -264,7 +264,7 @@ class Play extends Component {
         })
         .then((resData) => {
             if (resData !== undefined) {
-                this.setState(prevState => (this.state.average_rating = resData[0].average_rating))
+                this.setState({average_rating: resData[0].average_rating})
             }
         })
     }
@@ -305,7 +305,7 @@ class Play extends Component {
         })
         .then((resData) => {
             if (resData[0].rating !== undefined) {
-                this.setState(prevState => (this.state.user_rating = resData[0].rating))
+                this.setState({user_rating: resData[0].rating})
             }
         })
         .catch((err) => { console.log(err); });
@@ -314,18 +314,18 @@ class Play extends Component {
     show_user = async (elem) => {
         let user_infos = await fetch_post('/user_public_profile', {uuid: elem.uuid});
         if (user_infos !== undefined && user_infos !== '' && user_infos !== '403') {
-            this.setState(prevState => (
-                this.state.show_user = elem.uuid,
-                this.state.user_infos = user_infos
-            ))
+            this.setState({
+                show_user: elem.uuid,
+                user_infos: user_infos
+            })
         }
     }
     
     fake_ad_countdown = () => {
         setInterval(() => {
-            this.setState(prevState => (
-                this.state.fake_add += -1
-            ));
+            this.setState({
+                fake_add: this.state.fake_add - 1
+            });
             if (this.video_player && this.video_player.current && this.state.fake_add && this.state.fake_add === -1)
                 this.video_player.current.play();
         }, 1000)
@@ -335,18 +335,16 @@ class Play extends Component {
         setInterval(() => {
             if (this.video_player && this.video_player !== undefined && this.props.filmInfosState.film_infos.imdb_id && this.video_player.current && this.video_player.current.duration && this.video_player.current.duration !== undefined && this.video_player.current.currentTime && this.video_player.current.currentTime !== undefined)
             {
-                console.log(this.video_player.current.duration);
-                console.log(this.video_player.current.currentTime);
                 fetch_post('/movie_advancement', {'imdb_ID': this.props.filmInfosState.film_infos.id, 'duration': this.video_player.current.duration, 'current_time': this.video_player.current.currentTime});
             }
         }, 5000)
     }
 
     hide_user = () => {
-        this.setState(prevState => (
-            this.state.show_user = "",
-            this.state.user_infos = ""
-        ))
+        this.setState({
+            show_user: "",
+            user_infos: ""
+        })
     }
 
     render () {
@@ -396,10 +394,11 @@ class Play extends Component {
                                                 </form>
                                             </div>
                                         </div>
-                                        
+                                        {/* Fake add */}
                                         {this.state.fake_add >= 0 ?
                                             <div className = 'col-md-10 col-xl-12 text-center trailer-div'>
-                                                <iframe title="trailer"
+                                                <iframe
+                                                    title="fake_add"
                                                     width="100%" height="100%"
                                                     src="https://www.youtube.com/embed/sODZLSHJm6Q?autoplay=1"
                                                     frameborder="0"
@@ -415,7 +414,7 @@ class Play extends Component {
                                                 <video width="100%" height="auto"
                                                     ref={this.video_player}
                                                     controls
-                                                    crossorigin="anonymous"
+                                                    crossOrigin="anonymous"
                                                     htmlFor='video_player'
                                                     preload="auto" controlsList="nodownload">
                                                     <source src={'http://localhost:8000/movie_player?moviedb_id=' + this.props.location.search.split('movie=')[1]}></source>
@@ -506,6 +505,7 @@ class Play extends Component {
                                         <br></br>
                                         <h3>{translations[this.props.translationState].movie_page.movie_trailer}</h3>
                                         <iframe
+                                            title="trailer"
                                             width="80%"
                                             height="80%"
                                             src={"https://www.youtube.com/embed/" + this.props.filmInfosState.film_infos.videos.results[0].key}

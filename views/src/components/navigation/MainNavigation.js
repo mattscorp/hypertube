@@ -224,14 +224,14 @@ class MainNavigation extends Component {
                             </div>
                             <li className="col-xs-4 col-md-12 ">
                                 {this.props.userConnectState.uuid ? <div className="float-right" onClick={this.accountModeHandler}>
-                                {(this.props.userConnectState.photo_URL === undefined || this.props.userConnectState.photo_URL === '') ? <button>{translations[this.props.translationState].main_navigation.account}</button> : <button><img title="Account" className="navlink_picture rounded-circle" src={this.props.userConnectState.photo_URL.replace('views/public', '.')}/></button>}
+                                {(this.props.userConnectState.photo_URL === undefined || this.props.userConnectState.photo_URL === '') ? <button>{translations[this.props.translationState].main_navigation.account}</button> : <button><img title="Account" alt="account" className="navlink_picture rounded-circle" src={this.props.userConnectState.photo_URL.replace('views/public', '.')}/></button>}
                                 </div> : null}
                             </li>
                             {this.props.userConnectState.uuid ? null :
                             <li className="col-xs-12 col-md-2 col-md-offset-10">
-                                <select onChange={this.change_language} className="select-css" ref={this.language}>
-                                    <option selected={this.props.translationState === "en" ? "selected" : null } value="en">🇬🇧&emsp;{translations[this.props.translationState].main_navigation.english}</option>
-                                    <option selected={this.props.translationState === "fr" ? "selected" : null } value="fr">🇫🇷&emsp;{translations[this.props.translationState].main_navigation.french}</option>
+                                <select defaultValue={this.props.translationState} onChange={this.change_language} className="select-css" ref={this.language}>
+                                    <option value="en">{translations[this.props.translationState].main_navigation.english}</option>
+                                    <option value="fr">{translations[this.props.translationState].main_navigation.french}</option>
                                 </select>  
                             </li>
                             }
@@ -288,7 +288,6 @@ class MainNavigation extends Component {
                 {(this.state.isAdvanced === 1 || this.state.isAdvanced === 2) ?
                     <div className={this.state.isAdvanced === 1 ? (this.props.darkModeState ? "bg-dark AdvancedSearchDiv " : "bg-white AdvancedSearchDiv ") : (this.props.darkModeState ? "bg-dark DisappearSearchDiv col-md-2" : "bg-white DisappearSearchDiv col-md-2")}>
                         <AdvancedSearch
-                            translationState = {this.props.translationState}
                             advanceSearchFunction={this.advanceSearchFunction}
                             seen={this.seen}
                             watching={this.watching}

@@ -60,7 +60,6 @@ const get_magnet = async (movie_infos) => {
                 const parseBody = JSON.parse(body.replace(/^\ufeff/g,""));
                 if (parseBody && parseBody.data && parseBody.data.movies && parseBody.data.movies[0]) {
                     // let searchResults = await setMoviesInfo(parseBody)
-                    console.log(parseBody.data.movies[0].torrents)
                     resolve(parseBody.data.movies[0].torrents)
                 } else resolve({ success: false })
             } else {

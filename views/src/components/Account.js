@@ -206,9 +206,9 @@ class Account extends Component {
                 </div>
                 {/* Change language */}
                 <div className="col-xs-6 mt-0">
-                    <select onChange={this.change_language} className="select-css" ref={this.language}>
-                        <option selected={this.props.translationState === "en" ? "selected" : null } value="en">🇬🇧&emsp;{translations[this.props.translationState].main_navigation.english}</option>
-                        <option selected={this.props.translationState === "fr" ? "selected" : null } value="fr">🇫🇷&emsp;{translations[this.props.translationState].main_navigation.french}</option>
+                    <select defaultValue={this.props.translationState} onChange={this.change_language} className="select-css" ref={this.language}>
+                        <option value="en">{translations[this.props.translationState].main_navigation.english}</option>
+                        <option value="fr">{translations[this.props.translationState].main_navigation.french}</option>
                     </select>
                 </div>
                 {/* Profile picture */}
@@ -217,7 +217,7 @@ class Account extends Component {
                          <label  htmlFor="darkMode">{translations[this.props.translationState].account.profile_picture}</label>
                     </div>
                     <div className="profile_picture_div col-xs-6">
-                        {!this.props.userConnectState.photo_URL ? <img className="profile_picture" src={NoPhoto}/> : <img className="profile_picture" src={this.props.userConnectState.photo_URL.replace('views/public', '.')}/>}
+                        {!this.props.userConnectState.photo_URL ? <img alt="" className="profile_picture" src={NoPhoto}/> : <img alt="" className="profile_picture" src={this.props.userConnectState.photo_URL.replace('views/public', '.')}/>}
                     </div>
                     {/* Update profile picture */}
                     <form onSubmit={this.profilePictureForm}>

@@ -8,6 +8,7 @@ const viewedFilmsReducer = (state = {
                 viewed: action.payload
             }
             break;
+        default:
     }
     return state;
 }

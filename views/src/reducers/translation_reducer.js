@@ -14,6 +14,7 @@ const translationReducer = (state = {
                 language: "fr"
             }
             break;
+        default:
     }
     return state;
 }

@@ -47,6 +47,7 @@ const reloadSearchReducer = (state = {
                 scrolling: true
             }
             break;
+        default:
     }
     return state;
 };

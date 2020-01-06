@@ -16,6 +16,7 @@ const homeSearchReducer = (state = {
                 name: action.payload
             };
             break;
+        default:
     }
     return state;
 };

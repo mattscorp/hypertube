@@ -14,6 +14,7 @@ const subtitlesReducer = (state = {
                 subtitles: []
             }
             break;
+        default:
     }
     return state;
 }

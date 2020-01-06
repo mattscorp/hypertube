@@ -57,6 +57,7 @@ const userConnectReducer = (state = {
                 nb_comments: ""
             }
             break;
+        default:
     }
     return state;
 };

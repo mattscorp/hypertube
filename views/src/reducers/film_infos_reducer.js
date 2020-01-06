@@ -29,6 +29,7 @@ const filmInfosReducer = (state = {
                 movie_in_db: action.payload
             }
             break;
+        default:
     }
     return state;
 }
