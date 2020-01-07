@@ -225,7 +225,7 @@ class MainNavigation extends Component {
                             {this.props.userConnectState.email_confirmation === "" ?
                             <li className="col-xs-4 col-md-12 ">
                                 {this.props.userConnectState.uuid ? <div className="float-right" onClick={this.accountModeHandler}>
-                                {(this.props.userConnectState.photo_URL === undefined || this.props.userConnectState.photo_URL === '') ? <button>{translations[this.props.translationState].main_navigation.account}</button> : <button><img title="Account" alt="account" className="navlink_picture rounded-circle" src={this.props.userConnectState.photo_URL.replace('views/public', '.')}/></button>}
+                                {(this.props.userConnectState.photo_URL === undefined || this.props.userConnectState.photo_URL === '') ? <button>{translations[this.props.translationState].main_navigation.account}</button> : <button><img title="Account" alt="Account" className="navlink_picture rounded-circle" src={this.props.userConnectState.photo_URL.replace('views/public', '.')}/></button>}
                                 </div> : null}
                             </li>
                             : null }
