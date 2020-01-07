@@ -222,11 +222,13 @@ class MainNavigation extends Component {
                         <ul className="ul-perso col-xs-12">
                             <div className="visible-xs hidden-sm col-xs-8" >
                             </div>
+                            {this.props.userConnectState.email_confirmation === "" ?
                             <li className="col-xs-4 col-md-12 ">
                                 {this.props.userConnectState.uuid ? <div className="float-right" onClick={this.accountModeHandler}>
                                 {(this.props.userConnectState.photo_URL === undefined || this.props.userConnectState.photo_URL === '') ? <button>{translations[this.props.translationState].main_navigation.account}</button> : <button><img title="Account" alt="account" className="navlink_picture rounded-circle" src={this.props.userConnectState.photo_URL.replace('views/public', '.')}/></button>}
                                 </div> : null}
                             </li>
+                            : null }
                             {this.props.userConnectState.uuid ? null :
                             <li className="col-xs-12 col-md-2 col-md-offset-10">
                                 <select defaultValue={this.props.translationState} onChange={this.change_language} className="select-css" ref={this.language}>
