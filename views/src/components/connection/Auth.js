@@ -230,7 +230,7 @@ class AuthPage extends Component {
                                 <div className="form-group row">
                                     <label className="col-md-4 col-form-label text-md-right" htmlFor="password">Password</label>
                                     <div className="col-md-6">
-                                        <input title="Must containe 8 characters, small and capital letters, numbers and special characters." required className="form-control" type="password" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" id="password" ref={this.passwordEl}/>
+                                        <input title="Must containe 8 characters, small and capital letters, numbers and special characters." required className="form-control" type="password" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[!@#$%^*(),.?])(?=.*[A-Z])(?=.*[a-z]).*$" id="password" ref={this.passwordEl}/>
                                     </div>
                                 </div>
                                 {/* Confirm password */}
@@ -238,7 +238,7 @@ class AuthPage extends Component {
                                 <div className="form-group row">
                                     <label className="col-md-4 col-form-label text-md-right" htmlFor="password_confirm">Confirm your password</label>
                                     <div className="col-md-6">
-                                        <input title="Must containe 8 characters, small and capital letters, numbers and special characters." required className="form-control" type="password" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" id="password_confirm" ref={this.passwordConfirmEl}/>
+                                        <input title="Must containe 8 characters, small and capital letters, numbers and special characters." required className="form-control" type="password" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[!@#$%^*(),.?])(?=.*[A-Z])(?=.*[a-z]).*$" id="password_confirm" ref={this.passwordConfirmEl}/>
                                     </div>
                                 </div>
                                 )}
