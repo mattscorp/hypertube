@@ -729,7 +729,7 @@ body{
 
 /* QUITE SMALL SCREENS */
 @media (min-width: 300px) {
-    .list-films-all, .under, .AccountDiv{
+    .list-films-all, .under, .under_dark, .AccountDiv{
         position: static;
         margin-top : 55vw;
     }
@@ -753,7 +753,7 @@ body{
 
 /* BIG PHONES */
  @media (min-width: 360px) {
-    .list-films-all, .under, .AccountDiv{
+    .list-films-all, .under, .under_dark, .AccountDiv{
         position: static;        
         margin-top : 40vw;
     }
@@ -779,7 +779,7 @@ body{
 
 /* MEDIUM SCREENS*/
 @media (min-width: 576px) {
-        .list-films-all, .under , .AccountDiv{
+        .list-films-all, .under, .under_dark, .AccountDiv{
             position: static;        
             margin-top : 25vw;
         }
@@ -818,7 +818,7 @@ body{
             width: 100% !important;
             right: 0 !important;
         }
-        .list-films-all, .under, .AccountDiv{
+        .list-films-all, .under, .under_dark, .AccountDiv{
             position: static;
             margin-top : 14%;
         }
@@ -847,11 +847,11 @@ body{
 
 /*// Large devices (desktops, 992px and up)*/
 @media (min-width: 992px) { 
-        .list-films-all, .under{
+        .list-films-all, .under .under_dark {
             position: static;
             margin-top : 10vw;
         }
-        .under{
+        .under {
             background-color: #f8f9faf0;
         }
         .image:hover .overlay_car {

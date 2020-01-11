@@ -358,8 +358,8 @@ class Play extends Component {
     render () {
         return (
             <React.Fragment>
-                <div className="film-container" style={{background:this.state.background}} onClick={this.state.show_user !== "" ? this.hide_user : null}>
-                    <div className="container under">
+                <div className={this.props.darkModeState ? "bg-dark text-white film-container" : "bg-white film-container"} style={{background:this.state.background}} onClick={this.state.show_user !== "" ? this.hide_user : null}>
+                    <div className={this.props.darkModeState ? "bg-dark text-white container under_dark" : "under container"}>
                         {this.props.filmInfosState.film_infos.id !== this.state.url_movie ? null :
                             <div>
                                 <div className = "row">
