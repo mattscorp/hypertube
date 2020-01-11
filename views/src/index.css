@@ -58,49 +58,46 @@
     user-select: none;
     cursor: pointer;
     border: none;
-  }
-  .menu-item-wrapper.active {
+}
+
+.menu-item-wrapper.active {
     border: 1px blue solid;
-  }
-  .menu-item.active {
+}
+
+.menu-item.active {
     border: 1px green solid;
-  }
-   
-  .scroll-menu-arrow {
+}
+
+.scroll-menu-arrow {
     padding: 20px;
     cursor: pointer;
-  }
+}
 
-
-
-/*** TEST ***/ 
-
-
+/*** BODY ***/ 
 
 body {
     background-color: #e2e2e2 !important;
-
 }
 
 /*** NAV ***/
 
-.ul-perso{
+.ul-perso {
     list-style: none;
 }
 
-.navbar-perso
-{
+.navbar-perso {
     margin-top : -1px;
     margin-bottom: 0;
     display: inline;
 }
+
 .right-element {
     display: inline;
     margin-right: 10px ;
     text-decoration: none;
 }
 
-.center-element{
+.center-element {
     text-align: center;
     padding-right: 25vw;
     padding-left: 28vw;
@@ -706,10 +703,11 @@ body{
 
 /***** QUERIES ******/
 
-@media (min-width: 300px) {
+/* VERY SMALL SCREENS */
+@media (max-width: 300px) {
     .list-films-all, .under, .AccountDiv{
         position: static;
-        margin-top : 55vw;
+        margin-top : 60vw;
     }
     .under{
         background-color: #f8f9faf0;
@@ -720,7 +718,30 @@ body{
         background: rgba(0,0,0,.75);
         color: #e2e2e2;
         position: absolute;
+        transform: translate(-99%, 0%);
+        display: inline-block;
+    }
+    .AdvancedSearchDiv {
+        position: fixed;
+        width: 50%;
+    }
+}
 
+/* QUITE SMALL SCREENS */
+@media (min-width: 300px) {
+    .list-films-all, .under, .AccountDiv{
+        position: static;
+        margin-top : 55vw;
+    }
+    .under {
+        background-color: #f8f9faf0;
+    }
+    .image:hover .overlay_car {
+        width: 46%;
+        height: 41%;
+        background: rgba(0,0,0,.75);
+        color: #e2e2e2;
+        position: absolute;
         transform: translate(-99%, 0%);
         display: inline-block;
     }
@@ -730,10 +751,11 @@ body{
      }
 }
 
+/* BIG PHONES */
  @media (min-width: 360px) {
     .list-films-all, .under, .AccountDiv{
         position: static;        
-        margin-top : 50vw;
+        margin-top : 40vw;
     }
     .under{
         background-color: #f8f9faf0;
@@ -755,14 +777,11 @@ body{
     
  }
 
- 
-
- 
-
+/* MEDIUM SCREENS*/
 @media (min-width: 576px) {
         .list-films-all, .under , .AccountDiv{
             position: static;        
-            margin-top : 50%;
+            margin-top : 25vw;
         }
         .under{
             background-color: #f8f9faf0;
@@ -830,7 +849,7 @@ body{
 @media (min-width: 992px) { 
         .list-films-all, .under{
             position: static;
-            margin-top : 7%;
+            margin-top : 10vw;
         }
         .under{
             background-color: #f8f9faf0;
@@ -852,7 +871,7 @@ body{
             right: 0;
         }
         .list-films-all{
-            padding-top: 31%;
+            /* padding-top: 31%; */
         }
         .AdvancedSearchDiv {
             left: 0;
@@ -878,7 +897,7 @@ body{
 @media (min-width: 1200px) { 
     .list-films-all {
         position: static;
-        /* margin-top : 6%; */
+        margin-top : 10vw;
     }
     .AccountDiv{
         position: fixed;
@@ -890,65 +909,59 @@ body{
         height: 100%; 
         
      }
-        .under{
-            margin-top : 8%;
-            background-color: #f8f9faf0;
-        }
-        .image:hover .overlay_car {
-            width: 31%;
-            height: 96%;
-            padding: 5%;
-            background: rgba(0,0,0,.75);
-            color: #e2e2e2;
-            position: absolute;
-            transform: translate(-99%, 0%);
-            display: inline-block;
-        }
-        
-       
-      }
-      @media (min-width: 1560px) { 
+    .under{
+        margin-top : 8%;
+        background-color: #f8f9faf0;
+    }
+    .image:hover .overlay_car {
+        width: 31%;
+        height: 96%;
+        padding: 5%;
+        background: rgba(0,0,0,.75);
+        color: #e2e2e2;
+        position: absolute;
+        transform: translate(-99%, 0%);
+        display: inline-block;
+    }
+}
 
-      }
+@media (min-width: 1560px) { 
+    .list-films-all {
+        position: static;
+        margin-top : 5vw;
+    }
+}
 
 @media (min-width: 2560px) { 
-.list-films-all {
-    position: static;
-    margin-top : 0;
+    .list-films-all {
+        position: static;
+        margin-top : 0vw;
+    }
+    .AccountDiv{
+        position: fixed;
+        margin-top : 0;
+    }
+    .AdvancedSearchDiv {
+    
+        width: 19%;
+        height: 32%;
+        padding-top: 1%;
+    }
+    .under{
+        margin-top : 0;
+        background-color: #f8f9faf0;
+    }
+    .image:hover .overlay_car {
+        width: 31%;
+        height: 98%;
+        background: rgba(0,0,0,.75);
+        color: #e2e2e2;
+        position: absolute;
+        padding: 3%;
+        transform: translate(-99%, 0%);
+        display: inline-block;
+    }
 }
-.AccountDiv{
-    position: fixed;
-    margin-top : 0;
-}
-.AdvancedSearchDiv {
-   
-    width: 19%;
-    height: 32%;
-    padding-top: 1%;
- }
-
-.under{
-    margin-top : 0;
-    background-color: #f8f9faf0;
-}
-.image:hover .overlay_car {
-    width: 31%;
-    height: 98%;
-    background: rgba(0,0,0,.75);
-    color: #e2e2e2;
-    position: absolute;
-    padding: 3%;
-    transform: translate(-99%, 0%);
-    display: inline-block;
-}
-
-
-}
-
-
-
-
-
 
 /* ||||||||||||||| PLAY PAGE ||||||||||||||||| */
 
