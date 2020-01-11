@@ -974,3 +974,7 @@ body{
     height: auto;
     background-size: cover;
 }
+
+.movie_not_found {
+    text-align: center;
+}

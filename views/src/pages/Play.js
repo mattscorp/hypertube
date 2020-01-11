@@ -5,7 +5,7 @@ import UserProfile from './UserProfile.js';
 import {fetch_post} from '../fetch.js';
 import {fetch_get} from '../fetch.js';
 import translations from '../translations.js';
-// import unavailable from '../resources/unavailable.gif';
+import unavailable from '../resources/unavailable.gif';
 
 class Play extends Component {
 
@@ -20,7 +20,8 @@ class Play extends Component {
         show_user: "",
         user_infos: "",
         fake_add: 3,
-        url_movie: ''
+        url_movie: '',
+        movie_not_found: false
     }
 
     constructor(props) {
@@ -337,6 +338,13 @@ class Play extends Component {
             {
                 fetch_post('/movie_advancement', {'imdb_ID': this.props.filmInfosState.film_infos.id, 'duration': this.video_player.current.duration, 'current_time': this.video_player.current.currentTime});
             }
+            // CHECK IF THE VIDEO EXISTS OR NOT
+            else if (this.video_player && this.video_player.current && this.video_player.current.onclick === null) {
+                console.log('This video is not available');
+                this.setState({
+                    movie_not_found: true
+                })
+            }
         }, 5000)
     }
 
@@ -410,6 +418,7 @@ class Play extends Component {
                                             : null
                                         }
                                         {/* Film */}
+                                        {this.state.movie_not_found === false ?
                                             <div className = 'videoPlayer col-md-10 col-xl-12' style={this.state.fake_add > -1 ? {display:'none'} : null}>
                                                 <video width="100%" height="auto"
                                                     ref={this.video_player}
@@ -429,6 +438,11 @@ class Play extends Component {
                                                     :null }
                                                 </video>
                                             </div>
+                                            : <div className="movie_not_found col-md-10 col-xl-12">
+                                                <h3>{translations[this.props.translationState].movie_page.unavailable}</h3>
+                                                <img src={unavailable} title="movie not found" alt="movie not found"/>
+                                            </div>
+                                        }
                                         {/* Commentaires */}
                                         <div className="comment_section col-md-12 text-center">
                                             <div className="all_comment">

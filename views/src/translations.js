@@ -100,7 +100,8 @@ const languages = {
             similar_movies: "Simiar movies",
             your_video_will_be_played: "Your video will be played in ",
             seconds: " seconds.",
-            load_more: "Load more comments"
+            load_more: "Load more comments",
+            unavailable: "This movie is not available =("
         },
         footer: "Created by mascorpi and pvictor as part of school 42's curriculum, 2019"
     },
@@ -205,7 +206,8 @@ const languages = {
             similar_movies: "Films similaires",
             your_video_will_be_played: "Votre vidéo débutera dans ",
             seconds: " secondes.",
-            load_more: "Voir plus de commentaires"
+            load_more: "Voir plus de commentaires",
+            unavailable: "Ce film n'est pas disponible =("
         },
         footer: "Projet de l'école 42 créé par mascorpi et pvictor, 2019"
     }
