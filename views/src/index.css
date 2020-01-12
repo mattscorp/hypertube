@@ -849,7 +849,7 @@ body{
 @media (min-width: 992px) { 
         .list-films-all, .under .under_dark {
             position: static;
-            margin-top : 10vw;
+            margin-top : 15vw;
         }
         .under {
             background-color: #f8f9faf0;
@@ -897,7 +897,7 @@ body{
 @media (min-width: 1200px) { 
     .list-films-all {
         position: static;
-        margin-top : 10vw;
+        margin-top : 15vw;
     }
     .AccountDiv{
         position: fixed;
@@ -928,7 +928,7 @@ body{
 @media (min-width: 1560px) { 
     .list-films-all {
         position: static;
-        margin-top : 5vw;
+        margin-top : 7vw;
     }
 }
 
