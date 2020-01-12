@@ -207,7 +207,10 @@ class MainNavigation extends Component {
     change_language = event => {
         event.preventDefault();
         this.props.translationState === "en" ? this.props.setFrench() : this.props.setEnglish();
+    }
 
+    reset_search = () => {
+        this.props.resetFilmsBeforeSearch();
     }
 
     render() {
@@ -216,7 +219,7 @@ class MainNavigation extends Component {
                 {/* NAVBAR */}
                 <header className="navbar-perso fixed-top">
                     <nav className={this.props.darkModeState ? "navbar navbar-expand-sm bg-light navbar-light bg-dark row ": " row  navbar navbar-expand-sm bg-light navbar-light"}>
-                            <NavLink className="col-xs-12 col-md-1 text-center" to="/"> 
+                            <NavLink onClick={this.reset_search} className="col-xs-12 col-md-1 text-center" to="/"> 
                                 <h1 className= {this.props.darkModeState ? "col-xs-12 navbar-brand main-navigation-logo text-white" : "col-xs-12 navbar-brand main-navigation-logo"}>HYPERTUBE</h1>
                             </NavLink>
                         <ul className="ul-perso col-xs-12">
