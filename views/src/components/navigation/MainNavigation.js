@@ -197,7 +197,8 @@ class MainNavigation extends Component {
         .catch(err => {
             console.log(err);
         });
-        document.getElementById("searchInput").value = "";
+        if (document.getElementById("searchInput"))
+            document.getElementById("searchInput").value = "";
     }
 
     submitQuery = (event) => {
@@ -209,9 +210,10 @@ class MainNavigation extends Component {
         this.props.translationState === "en" ? this.props.setFrench() : this.props.setEnglish();
     }
 
-    reset_search = () => {
-        this.props.resetFilmsBeforeSearch();
-    }
+    // reset_search = () => {
+    //     this.props.resetFilmsBeforeSearch();
+
+    // }
 
     render() {
         return (
@@ -219,7 +221,7 @@ class MainNavigation extends Component {
                 {/* NAVBAR */}
                 <header className="navbar-perso fixed-top">
                     <nav className={this.props.darkModeState ? "navbar navbar-expand-sm bg-light navbar-light bg-dark row ": " row  navbar navbar-expand-sm bg-light navbar-light"}>
-                            <NavLink onClick={this.reset_search} className="col-xs-12 col-md-1 text-center" to="/"> 
+                            <NavLink onClick={this.clearSearch} className="col-xs-12 col-md-1 text-center" to="/"> 
                                 <h1 className= {this.props.darkModeState ? "col-xs-12 navbar-brand main-navigation-logo text-white" : "col-xs-12 navbar-brand main-navigation-logo"}>HYPERTUBE</h1>
                             </NavLink>
                         <ul className="ul-perso col-xs-12">
@@ -290,7 +292,7 @@ class MainNavigation extends Component {
                     : null
                 }
                 {/* ADVANCE SEARCH OPTIONS */}
-                {(this.state.isAdvanced === 1 || this.state.isAdvanced === 2) ?
+                {(this.state.isAdvanced === 1 || this.state.isAdvanced === 2) && window.location.href === "http://localhost:3000/home" ?
                     <div className={this.state.isAdvanced === 1 ? (this.props.darkModeState ? "bg-dark AdvancedSearchDiv " : "bg-white AdvancedSearchDiv ") : (this.props.darkModeState ? "bg-dark DisappearSearchDiv col-md-2" : "bg-white DisappearSearchDiv col-md-2")}>
                         <AdvancedSearch
                             advanceSearchFunction={this.advanceSearchFunction}

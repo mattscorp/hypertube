@@ -6,7 +6,7 @@ import {fetch_post} from '../fetch.js';
 class HomePage extends Component {
 
   componentDidMount = async () => {
-    this.props.resetFilmsBeforeSearch();
+    // this.props.resetFilmsBeforeSearch();
     this.viewed_films();
   }
 

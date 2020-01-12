@@ -3,6 +3,10 @@ import Films from './ListFilms.js';
 
 class FilmsList extends Component{
 
+    state = {
+        ready_to_load: true
+    }
+
     componentDidMount () {
         this.loadFilms();
         this.scrollListener = window.addEventListener('scroll', (e) => {
@@ -70,6 +74,9 @@ class FilmsList extends Component{
             // CASE LOAD_FILMS
             .then(resData => {
                 this.props.loadFilms(resData)
+                this.setState({
+                    ready_to_load: true
+                })
             })
             .catch(err => {
                 console.log(err);
@@ -96,6 +103,9 @@ class FilmsList extends Component{
                 // CASE FIRST_PAGE_SEARCH
                 .then(resData => {
                     this.props.nextPageSearch(resData)
+                    this.setState({
+                        ready_to_load: true
+                    })
                 })
                 .catch(err => {
                     console.log(err);
@@ -117,7 +127,12 @@ class FilmsList extends Component{
                     return res.json();
                 })
                 // CASE NEXT_PAGE_SEARCH
-                .then(resData => {this.props.nextPageSearch(resData)})
+                .then(resData => {
+                    this.props.nextPageSearch(resData)
+                    this.setState({
+                        ready_to_load: true
+                    })
+                })
                 .catch(err => {
                     console.log(err);
                 });
@@ -127,10 +142,15 @@ class FilmsList extends Component{
 
     loadMore = (props) => {
         // CASE LOAD_MORE
-        this.setState(prevState => (
-            this.props.loadMore(props)
-        ))
-        this.loadFilms();
+        if (this.state.ready_to_load === true) {
+            this.setState({
+                ready_to_load: false
+            })
+            this.setState(prevState => (
+                this.props.loadMore(props)
+            ))
+            this.loadFilms();
+        }
     }
 
     render (){

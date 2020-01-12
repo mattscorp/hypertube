@@ -116,14 +116,14 @@ router.get('/movie_player', async (req, res) => {
         console.log(movie_infos_api)
         if (movie_infos_api.status_code == 34) {
             console.log('The movie could not be found');
-            res.sendStatus(404);
+            res.status(201).send('No movie');
         } else if (movie_infos_api && movie_infos_api.id == req.query.moviedb_id) {
             // const providers = await torrent.enable_providers(['Rarbg', 'Torrentz2', 'ThePirateBay', 'KickassTorrents', 'TorrentProject']);
             const torrents = await torrent.get_magnet(movie_infos_api);
             console.log(torrents)
             if (torrents && torrents.success && torrents.success === false) {
                 console.log('PAS DE MAGNET');
-                res.sendStatus(404);
+                res.status(201).send('No movie');
             } else if (torrents && torrents[0] && torrents[0] !== undefined && torrents[0].url) {
                 console.log(torrents[0].url)
                 let torrent_magnet = `magnet:?xt=urn:btih:${torrents[0].hash}&dn=${encodeURI(movie_infos_api.original_title)}&tr=http://track.one:1234/announce&tr=udp://track.two:80`;
@@ -137,8 +137,8 @@ router.get('/movie_player', async (req, res) => {
                                 fs.stat(`./views/public/torrents/${file.path}`, function(err, stats) {
                                     if (err) {
                                         if (err.code === 'ENOENT') {
-                                          // 404 Error if file not found
-                                          return res.sendStatus(404);
+                                          // 201 Error if file not found
+                                          return res.status(201).send('No movie');
                                         }
                                         res.end(err);
                                     } else {
@@ -209,7 +209,7 @@ router.get('/movie_player', async (req, res) => {
                 })
             } else {
                 console.log('PAS DE TORRENT');
-                res.sendStatus(404)
+                res.status(201).send('No movie')
             }
         }
     }

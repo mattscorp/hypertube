@@ -19,7 +19,7 @@ class Play extends Component {
         user_rating: -1,
         show_user: "",
         user_infos: "",
-        fake_add: 3,
+        fake_add: 43,
         url_movie: '',
         movie_not_found: false
     }
@@ -34,6 +34,9 @@ class Play extends Component {
     }
 
     componentDidMount () {
+        // Calls the video URL to check whether the video exists
+        this.checks_movie_exists();
+
         // Starts a countdown to play the fake add before playing the movie
         this.setState({
             url_movie: parseInt(this.props.location.search.split('movie=')[1].trim())
@@ -65,7 +68,7 @@ class Play extends Component {
             // GET THE SUBTITLES FOR THE MOVIE
             this.get_subtitles();
         })
-        
+
         // Call the API to get the cast
         let URL2 = `http://localhost:8000/movie_cast?movie_id=${this.props.location.search.split('movie=')[1]}`;
         fetch(URL2, {
@@ -144,6 +147,17 @@ class Play extends Component {
                 })
             }
         })
+    }
+
+    // // Checks if the movie exists
+    checks_movie_exists = async () => {
+        setInterval(() => {
+            if (this.video_player && this.video_player.current && isNaN(this.video_player.current.duration)) {
+                this.setState({
+                    movie_not_found: true
+                })
+            }
+        }, 40000)
     }
 
     // GET THE SUBTITLES FOR THE MOVIE
@@ -338,13 +352,6 @@ class Play extends Component {
             {
                 fetch_post('/movie_advancement', {'imdb_ID': this.props.filmInfosState.film_infos.id, 'duration': this.video_player.current.duration, 'current_time': this.video_player.current.currentTime});
             }
-            // CHECK IF THE VIDEO EXISTS OR NOT
-            else if (this.video_player && this.video_player.current && this.video_player.current.onclick === null) {
-                console.log('This video is not available');
-                this.setState({
-                    movie_not_found: true
-                })
-            }
         }, 5000)
     }
 
@@ -402,21 +409,6 @@ class Play extends Component {
                                                 </form>
                                             </div>
                                         </div>
-                                        {/* Fake add */}
-                                        {this.state.fake_add >= 0 ?
-                                            <div className = 'col-md-10 col-xl-12 text-center trailer-div'>
-                                                <iframe
-                                                    title="fake_add"
-                                                    width="100%" height="100%"
-                                                    src="https://www.youtube.com/embed/sODZLSHJm6Q?autoplay=1"
-                                                    frameborder="0"
-                                                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-                                                    allowFullScreen>
-                                                </iframe>
-                                                <p>{translations[this.props.translationState].movie_page.your_video_will_be_played}{this.state.fake_add}{translations[this.props.translationState].movie_page.seconds}</p>
-                                            </div>  
-                                            : null
-                                        }
                                         {/* Film */}
                                         {this.state.movie_not_found === false ?
                                             <div className = 'videoPlayer col-md-10 col-xl-12' style={this.state.fake_add > -1 ? {display:'none'} : null}>
@@ -442,6 +434,21 @@ class Play extends Component {
                                                 <h3>{translations[this.props.translationState].movie_page.unavailable}</h3>
                                                 <img src={unavailable} title="movie not found" alt="movie not found"/>
                                             </div>
+                                        }
+                                        {/* Fake add */}
+                                        {this.state.fake_add >= 0 && this.state.movie_not_found === false ?
+                                            <div className = 'col-md-10 col-xl-12 text-center trailer-div'>
+                                                <iframe
+                                                    title="fake_add"
+                                                    width="100%" height="100%"
+                                                    src="https://www.youtube.com/embed/sODZLSHJm6Q?autoplay=1"
+                                                    frameborder="0"
+                                                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                                    allowFullScreen>
+                                                </iframe>
+                                                <p>{translations[this.props.translationState].movie_page.your_video_will_be_played}{this.state.fake_add}{translations[this.props.translationState].movie_page.seconds}</p>
+                                            </div>  
+                                            : null
                                         }
                                         {/* Commentaires */}
                                         <div className="comment_section col-md-12 text-center">
