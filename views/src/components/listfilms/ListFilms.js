@@ -12,7 +12,7 @@ const Films = (props) => (
                     { props.viewedFilmsState.viewed.map(elem => (
                         (
                             elem.moviedb_ID.toString() === props.id.toString()) ? 
-                            <span key={elem.moviedb_ID} className="text-white bg-dark rounded">{translations[props.translationState].home.seen}{Math.round((elem.time_viewed/elem.duration)*100)}%</span> 
+                            <span key={elem.moviedb_ID} className="text-white bg-dark rounded border p-1 border-light">{translations[props.translationState].home.seen}{Math.round((elem.time_viewed/elem.duration)*100)}%</span> 
                             : null )
                         )
                     }

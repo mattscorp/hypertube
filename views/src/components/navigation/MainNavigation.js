@@ -53,6 +53,7 @@ class MainNavigation extends Component {
         isAccount: 0,
         isAdvanced: 0,
         seen: 0,
+        ready_to_search: true
     }
 
     // SWITCH ON/OFF FOR ACCOUNT DIV
@@ -100,78 +101,93 @@ class MainNavigation extends Component {
 
     setSearch = (event) => {
         event.preventDefault();
-        let genderSearch = "";
-        let public_category = "";
-        let rating = "";
-        let duration = "";
-        let decade = "";
-        if (this.gender.current !== null) {
-            if (this.gender.current.value !== '0')
-                genderSearch = `&category=${this.gender.current.value}`;
-        }
-        if (this.public.current !== null) {
-            if(this.public.current.value !== 'All movies')
-                public_category = `&public=G`;
-        }
-        if (this.rating.current !== null) {
-            if(this.rating.current.value !== 'All movies')
-                rating = `&rating=${this.rating.current.value}`;
-        }
-        if (this.duration.current !== null) {
-            if(this.duration.current.value !== '')
-                duration = `&duration=${this.duration.current.value}`;
-        }
-        if (this.decade.current !== null) {
-            if(this.decade.current.value !== '')
-                decade = `&decade=${this.decade.current.value}`;
-        }
-        if (document.forms[0].querySelector('input[name="search_query"]').value.trim() !== '') {
-            this.props.changeHomeSearch(document.forms[0].querySelector('input[name="search_query"]').value.trim());
-            // this.props.resetFilmsBeforeSearch();
-            this.setState(this.props.resetFilmsBeforeSearch());
-            let search_query = (document.forms[0].querySelector('input[name="search_query"]').value);
-            let URL = `http://localhost:8000/moviedb?action=search&page=${this.props.reloadSearch.page}&movie_name=${search_query}${decade}${genderSearch}${public_category}${rating}${duration}&language=${this.props.translationState}`;
-            fetch(URL, {
-                method: 'GET',
-                credentials: 'include',
-                headers: {'Content-Type': 'application/json'}
+        if (this.state.ready_to_search === true) {
+            this.setState({
+                ready_to_search: false
             })
-            .then(res => {
-                if (res.status === 401)
-                    window.location.assign('/');
-                else if (res.status !== 200 && res.status !== 201)
-                    throw new Error('Failed');
-                return res.json();
-            })
-            // CASE FIRST_PAGE_SEARCH
-            .then(resData => {this.setState(this.props.firstPageSearch(resData))})
-            .catch(err => {
-                console.log(err);
-            });
-        }
-        else {
-            this.props.changeHomeDiscover();
-            // this.setState(this.props.resetFilmsBeforeSearch());
-            this.props.resetFilmsBeforeSearch();
-            let URL = `http://localhost:8000/moviedb?action=popular&page=1${genderSearch}${public_category}${rating}${duration}${decade}&language=${this.props.translationState}`;
-            fetch(URL, {
-                method: 'GET',
-                credentials: 'include',
-                headers: {'Content-Type': 'application/json'}
-            })
-            .then(res => {
-                if (res.status === 401)
-                    window.location.assign('/');
-                else if (res.status !== 200 && res.status !== 201)
-                    throw new Error('Failed');
-                return res.json();
-            })
-            // CASE LOAD_FILMS
-            .then((resData => {this.props.loadFilms(resData)}))
-            .catch(err => {
-                console.log(err);
-            });
-            document.getElementById("searchInput").value = "";
+            let genderSearch = "";
+            let public_category = "";
+            let rating = "";
+            let duration = "";
+            let decade = "";
+            if (this.gender.current !== null) {
+                if (this.gender.current.value !== '0')
+                    genderSearch = `&category=${this.gender.current.value}`;
+            }
+            if (this.public.current !== null) {
+                if(this.public.current.value !== 'All movies')
+                    public_category = `&public=G`;
+            }
+            if (this.rating.current !== null) {
+                if(this.rating.current.value !== 'All movies')
+                    rating = `&rating=${this.rating.current.value}`;
+            }
+            if (this.duration.current !== null) {
+                if(this.duration.current.value !== '')
+                    duration = `&duration=${this.duration.current.value}`;
+            }
+            if (this.decade.current !== null) {
+                if(this.decade.current.value !== '')
+                    decade = `&decade=${this.decade.current.value}`;
+            }
+            if (document.forms[0].querySelector('input[name="search_query"]').value.trim() !== '') {
+                this.props.changeHomeSearch(document.forms[0].querySelector('input[name="search_query"]').value.trim());
+                // this.props.resetFilmsBeforeSearch();
+                this.setState(this.props.resetFilmsBeforeSearch());
+                let search_query = (document.forms[0].querySelector('input[name="search_query"]').value);
+                let URL = `http://localhost:8000/moviedb?action=search&page=${this.props.reloadSearch.page}&movie_name=${search_query}${decade}${genderSearch}${public_category}${rating}${duration}&language=${this.props.translationState}`;
+                fetch(URL, {
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: {'Content-Type': 'application/json'}
+                })
+                .then(res => {
+                    if (res.status === 401)
+                        window.location.assign('/');
+                    else if (res.status !== 200 && res.status !== 201)
+                        throw new Error('Failed');
+                    return res.json();
+                })
+                // CASE FIRST_PAGE_SEARCH
+                .then(resData => {
+                    this.setState(this.props.firstPageSearch(resData))
+                    this.setState({
+                        ready_to_search: true
+                    })
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+            }
+            else {
+                this.props.changeHomeDiscover();
+                // this.setState(this.props.resetFilmsBeforeSearch());
+                this.props.resetFilmsBeforeSearch();
+                let URL = `http://localhost:8000/moviedb?action=popular&page=1${genderSearch}${public_category}${rating}${duration}${decade}&language=${this.props.translationState}`;
+                fetch(URL, {
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: {'Content-Type': 'application/json'}
+                })
+                .then(res => {
+                    if (res.status === 401)
+                        window.location.assign('/');
+                    else if (res.status !== 200 && res.status !== 201)
+                        throw new Error('Failed');
+                    return res.json();
+                })
+                // CASE LOAD_FILMS
+                .then((resData => {
+                    this.props.loadFilms(resData)
+                    this.setState({
+                        ready_to_search: true
+                    })
+                }))
+                .catch(err => {
+                    console.log(err);
+                });
+                document.getElementById("searchInput").value = "";
+            }
         }
     }
 
