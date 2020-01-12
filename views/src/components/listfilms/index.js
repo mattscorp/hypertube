@@ -158,14 +158,35 @@ class FilmsList extends Component{
             <div className="container">
                 <div id="result_list" ref="result_list" className="row">
                     {   
-                        this.props.films.map((film, index) => <div onLoad={this.increment_id} key={index} id={index} className="col-sm-3 key" >
+                        this.props.films.map((film, index) => 
+                            // If we see all movies
+                            (this.props.advancedSearchState.seen === "Tous les films" || this.props.advancedSearchState.seen === "All movies") ?
+                            (<div onLoad={this.increment_id} key={index} id={index} className="col-sm-3 key" >
                                 <Films 
                                     {...film}
                                     darkModeState={this.props.darkModeState}
                                     viewedFilmsState={this.props.viewedFilmsState}
                                     translationState={this.props.translationState}
                                 />
-                            </div>)
+                            </div> )
+                            :
+                            // else
+                            // if we see only seen movies
+                            this.props.advancedSearchState.seen === "Seen" || this.props.advancedSearchState.seen === "Vu" ?
+                                this.props.viewedFilmsState.viewed.map(elem => (
+                                    parseInt(film.id) === parseInt(elem.moviedb_ID) ? 
+                                    (<div onLoad={this.increment_id} key={index} id={index} className="col-sm-3 key" >
+                                        <Films 
+                                            {...film}
+                                            darkModeState={this.props.darkModeState}
+                                            viewedFilmsState={this.props.viewedFilmsState}
+                                            translationState={this.props.translationState}
+                                        />
+                                    </div> )
+                                    : null
+                                )) 
+                            : null
+                        )
                     }
                 </div>
             </div>

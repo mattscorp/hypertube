@@ -13,16 +13,16 @@ class AdvancedSearch extends Component {
                         <select onChange={this.props.advanceSearchFunction} ref={this.props.seen} name="seen">
                             <option defaultValue>{translations[this.props.translationState].advanced_search.all_movies}</option>
                             <option>{translations[this.props.translationState].advanced_search.seen}</option>
-                            <option>{translations[this.props.translationState].advanced_search.not_seen_yet}</option>
+                            {/* <option>{translations[this.props.translationState].advanced_search.not_seen_yet}</option> */}
                         </select>
                     </div>
-                    <div>
+                    {/* <div>
                         <label>{translations[this.props.translationState].advanced_search.watching}</label>
                         <select onChange={this.props.advanceSearchFunction} type="checkbox" name="watching" ref={this.props.watching}>
                             <option defaultValue>{translations[this.props.translationState].advanced_search.all_movies}</option>
                             <option>{translations[this.props.translationState].advanced_search.watching}</option>
                         </select>
-                    </div>
+                    </div> */}
                     <div>
                         <label>{translations[this.props.translationState].advanced_search.gender}</label>
                         <select onChange={this.props.advanceSearchFunction} ref={this.props.gender}>

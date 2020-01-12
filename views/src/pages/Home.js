@@ -36,11 +36,6 @@ class HomePage extends Component {
             <h4 className={this.props.darkModeState ? "text-white" : "text-dark"}>{translations[this.props.translationState].advanced_search.seen} : {this.props.advancedSearchState.seen}</h4>
           </div> : null
         }
-        {this.props.advancedSearchState.watching !== 'All movies' ? 
-          <div className="row advanced p-2">
-            <h4 className={this.props.darkModeState ? "text-white" : "text-dark"}>{translations[this.props.translationState].advanced_search.watching} : {this.props.advancedSearchState.watching}</h4>
-          </div> : null
-        }
         {this.props.advancedSearchState.gender !== 'All' ? 
           <div className="row advanced p-2">
             <h4 className={this.props.darkModeState ? "text-white" : "text-dark"}>{translations[this.props.translationState].advanced_search.gender} : {this.props.advancedSearchState.gender}</h4>

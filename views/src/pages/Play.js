@@ -462,7 +462,7 @@ class Play extends Component {
                                                                 {translations[this.props.translationState].movie_page.comment_by}<b className="user_popup" onClick={() => this.show_user(elem)}>{elem.first_name || elem.name}</b> :
                                                                 <div className="comment"> {elem.comment} </div>
                                                                 {elem.uuid === this.props.userConnectState.uuid ?
-                                                                    <button onClick={() => this.delete_com(elem)}>X</button> : null
+                                                                    <button className="btn-success btn-style " onClick={() => this.delete_com(elem)}>X</button> : null
                                                                 }
                                                                 {this.state.show_user === elem.uuid ?
                                                                     <UserProfile
@@ -488,7 +488,7 @@ class Play extends Component {
                                                 {translations[this.props.translationState].movie_page.make_a_comment}
                                             </h1>
                                             <form onSubmit={this.make_comm}>
-                                                <input ref={this.com}>
+                                                <input className="text-dark" ref={this.com}>
                                                 </input>
                                                 <input type="submit" value={translations[this.props.translationState].movie_page.ok}></input>
                                             </form>

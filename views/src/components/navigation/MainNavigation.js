@@ -10,7 +10,7 @@ class MainNavigation extends Component {
     // Elements from the advance search
     constructor(props) {
         super(props);
-        this.watching = React.createRef();
+        // this.watching = React.createRef();
         this.seen = React.createRef();
         this.gender = React.createRef();
         this.public = React.createRef();
@@ -23,8 +23,8 @@ class MainNavigation extends Component {
     // SETS THE ADVANCED SEARCH
     advanceSearchFunction = (event) => {
         this.props.modifAdvancedSearch({
-            seen: this.watching.current.value,
-            watching: this.seen.current.value,
+            seen: this.seen.current.value,
+            // watching: this.watching.current.value,
             gender: this.gender.current.value,
             public: this.public.current.value,
             rating: this.rating.current.value,
@@ -41,7 +41,7 @@ class MainNavigation extends Component {
         this.props.resetAdvancedSearch();
         this.seen.current.value = 'All movies';
         this.gender.current.value = 'All';
-        this.watching.current.value = 'All movies';
+        // this.watching.current.value = 'All movies';
         this.public.current.value = 'All movies';
         this.rating.current.value = '1';
         this.duration.current.value = '';
@@ -297,7 +297,7 @@ class MainNavigation extends Component {
                         <AdvancedSearch
                             advanceSearchFunction={this.advanceSearchFunction}
                             seen={this.seen}
-                            watching={this.watching}
+                            // watching={this.watching}
                             gender={this.gender}
                             public={this.public}
                             rating={this.rating}

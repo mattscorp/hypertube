@@ -5,7 +5,7 @@ import NoPhoto from '../resources/no_image.jpeg'
 class UserProfile extends Component {
     render () {
         return (
-            <div className="user_popup_div">
+            <div className="border border-light user_popup_div">
                 <h3>{this.props.elem.login ? this.props.elem.login : this.props.elem.first_name}</h3>
                 <h4>Number of films views: {this.props.user_infos.nb_views && this.props.user_infos.nb_views >= 0 ? this.props.user_infos.nb_views : 0}</h4>
                 <h4>Number comments: {this.props.user_infos.nb_comments && this.props.user_infos.nb_comments >= 0 ? this.props.user_infos.nb_comments : 0}</h4>
