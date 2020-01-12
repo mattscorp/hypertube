@@ -66,5 +66,6 @@ CREATE TABLE IF NOT EXISTS `views` (
     `viewed` int(1) DEFAULT 0,
     `time_viewed` FLOAT,
     `duration` FLOAT,
+    `date_modified` datetime,
     `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

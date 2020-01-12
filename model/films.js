@@ -174,6 +174,7 @@ module.exports.torrent_done = torrent_done;
 const update_time_viewed = (uuid, imdb_id, duration, current_time) => {
     if (uuid != '' && imdb_id != '' && duration != '' && current_time != '') {
         const sql = "SELECT * FROM `views` WHERE `user_ID` = ? AND `moviedb_ID` = ?"
+        const date = new Date;
         con.query(sql, [uuid, imdb_id], (err, result) => {
             if (err)
                 throw err;
@@ -186,15 +187,15 @@ const update_time_viewed = (uuid, imdb_id, duration, current_time) => {
                     } else if (result[0].viewed == 1) {
                         viewed = 1;
                     }
-                    const sql1 = "UPDATE `views` SET `viewed` = ?, `time_viewed` = ? WHERE `user_ID` = ? AND `moviedb_ID` = ?";
-                    const values1 = [viewed, current_time, uuid, imdb_id];
+                    const sql1 = "UPDATE `views` SET `viewed` = ?, `time_viewed` = ?, `date_modified` = ? WHERE `user_ID` = ? AND `moviedb_ID` = ?";
+                    const values1 = [viewed, current_time, date, uuid, imdb_id];
                     con.query(sql1, values1, (err, result) => {
                         if (err) 
                             throw err;
                     });
                 } else {
-                    const sql2 = "INSERT INTO `views` (`user_ID`, `moviedb_ID`, `viewed`, `time_viewed`, `duration`) VALUES (?, ?, ?, ?, ?)";
-                    const values2 = [uuid, imdb_id, 0, current_time, duration];
+                    const sql2 = "INSERT INTO `views` (`user_ID`, `moviedb_ID`, `viewed`, `time_viewed`, `date_modified`, `duration`) VALUES (?, ?, ?, ?, ?, ?)";
+                    const values2 = [uuid, imdb_id, 0, current_time, date, duration];
                     con.query(sql2, values2, (err, result) => {
                         if (err) 
                             throw err;

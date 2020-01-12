@@ -3,6 +3,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const config = require('./config');
+const delete_old_movies = require('./delete_old_movies.js');
 // create express app
 const app = express();
 // parse requests of content-type - application/x-www-form-urlencoded
@@ -15,6 +16,9 @@ app.options("http://localhost:3000", cors());
 app.use(cors({origin: "http://localhost:3000", credentials: true}));
 // disables 'x-powered-by', this makes it more difficult for users to see that we are using Express.
 app.disable('x-powered-by');
+
+/**** CHECKS WHEN THE MOVIES HAVE BEEN SEEN LAST AND DELETES THEM IF MORE THEN A MONTH ****/
+delete_old_movies.cron();
 
 /**** CONNECTION ****/
 // Connection / account creation
