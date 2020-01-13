@@ -10,7 +10,7 @@ const last_seen = async (path) => {
                 throw err;
             else {
                 let value = result[0].moviedb_ID
-                let sql2 = "SELECT `date_modified` FROM `views` WHERE `moviedb_ID` = ? ORDER BY `date_modified` ASC LIMIT 1";
+                let sql2 = "SELECT `date_modified` FROM `views` WHERE `moviedb_ID` = ? ORDER BY `date_modified` DESC LIMIT 1";
                 con.query(sql2, [value], (err, result) => {
                     if (err)
                         throw err;
