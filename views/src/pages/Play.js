@@ -133,18 +133,37 @@ class Play extends Component {
         .then(resData => {
             if (resData !== undefined){
                 resData.map((elem , index) => {
-                    this.setState(prevState => (
-                        index === 4 ? this.state.loadMoreButton = 0 : this.state.loadMoreButton = 1,
-                        this.state.offset += 1,
-                        this.state.comment.push(elem)
-                    ))
+                    // this.setState(prevState => (
+                    //     index === 4 ? this.state.loadMoreButton = 0 : this.state.loadMoreButton = 1,
+                    //     this.state.offset += 1,
+                    //     this.state.comment.push(elem)
+                        
+                    // ))
+                    let offset_temp = this.state.offset;
+                    let comment_temp = this.state.comment;
+                    if (index === 4) {
+                        this.setState({
+                            loadMoreButton: 0,
+                            offset: offset_temp + 1,
+                            comment: comment_temp.push(elem)
+                        })
+                    } else {
+                        this.setState({
+                            loadMoreButton: 1,
+                            offset: offset_temp + 1,
+                            comment: comment_temp.push(elem)
+                        })
+                    }
+                    return(0); // ajout pour enlever erreur
                 })
+                
             }
             else
             {
                 this.setState({
                     loadMoreButton: 1
                 })
+                return(1);
             }
         })
     }
@@ -247,6 +266,7 @@ class Play extends Component {
                         if(elem.comment === e.comment && ((elem.first_name || elem.name) === (e.first_name || e.name)) && elem.date.slice(0, 19).replace('T', ' ') === e.date.slice(0, 19).replace('T', ' ')){
                             i = index;
                         }
+                        return(0);  // ajout pour enlever erreur
                    })
                     this.setState(prevState => (
                         this.state.comment.splice(i, 1) 
@@ -362,6 +382,10 @@ class Play extends Component {
         })
     }
 
+    test = () => {
+        
+    }
+
     render () {
         return (
             <React.Fragment>
@@ -386,26 +410,26 @@ class Play extends Component {
                                             <h4>{translations[this.props.translationState].movie_page.average_rating} {this.state.average_rating ? this.state.average_rating : translations[this.props.translationState].movie_page.not_rated_yet} </h4>
                                             <div className="col-md-5 offset-4">
                                                 <form className="rating" onChange={this.rate_movie} > 
-                                                    <input type="radio" id="star10" name="rating" value="10" ref={this.rating} checked={this.state.user_rating > 9.5 && this.state.user_rating <= 10}/><label className="full" htmlFor="star10" title="10 stars" ></label>
-                                                    <input type="radio" id="star9half" name="rating" value="9.5" ref={this.rating} checked={this.state.user_rating > 9 && this.state.user_rating <= 9.5} /><label className="half" htmlFor="star9half" title="9.5 stars" ></label>
-                                                    <input type="radio" id="star9" name="rating" value="9" ref={this.rating} checked={this.state.user_rating > 8.5 && this.state.user_rating <= 9} /><label className="full" htmlFor="star9" title="9 stars" ></label>
-                                                    <input type="radio" id="star8half" name="rating" value="8.5" ref={this.rating} checked={this.state.user_rating > 8 && this.state.user_rating <= 8.5} /><label className="half" htmlFor="star8half" title="8.5 stars" ></label>
-                                                    <input type="radio" id="star8" name="rating" value="8" ref={this.rating} checked={this.state.user_rating > 7.5 && this.state.user_rating <= 8} /><label className="full" htmlFor="star8" title="8 stars" ></label>
-                                                    <input type="radio" id="star7half" name="rating" value="7.5" ref={this.rating} checked={this.state.user_rating > 7 && this.state.user_rating <= 7.5} /><label className="half" htmlFor="star7half" title="7.5 stars" ></label>
-                                                    <input type="radio" id="star7" name="rating" value="7" ref={this.rating} checked={this.state.user_rating > 6.5 && this.state.user_rating <= 7} /><label className="full" htmlFor="star7" title="7 stars" ></label>
-                                                    <input type="radio" id="star6half" name="rating" value="6.5" ref={this.rating} checked={this.state.user_rating > 6 && this.state.user_rating <= 6.5} /><label className="half" htmlFor="star6half" title="6.5 stars" ></label>
-                                                    <input type="radio" id="star6" name="rating" value="6" ref={this.rating} checked={this.state.user_rating > 5.5 && this.state.user_rating <= 6} /><label className="full" htmlFor="star6" title="6 stars" ></label>
-                                                    <input type="radio" id="star5half" name="rating" value="5.5" ref={this.rating} checked={this.state.user_rating > 5 && this.state.user_rating <= 5.5} /><label className="half" htmlFor="star5half" title="Pretty good - 5.5 stars" ></label>
-                                                    <input type="radio" id="star5" name="rating" value="5" ref={this.rating} checked={this.state.user_rating > 4.5 && this.state.user_rating <= 5} /><label className="full" htmlFor="star5" title="Awesome - 5 stars" ></label>
-                                                    <input type="radio" id="star4half" name="rating" value="4.5" ref={this.rating} checked={this.state.user_rating > 4 && this.state.user_rating <= 4.5} /><label className="half" htmlFor="star4half" title="Pretty good - 4.5 stars" ></label>
-                                                    <input type="radio" id="star4" name="rating" value="4" ref={this.rating} checked={this.state.user_rating > 3.5 && this.state.user_rating <= 4} /><label className="full" htmlFor="star4" title="Pretty good - 4 stars" ></label>
-                                                    <input type="radio" id="star3half" name="rating" value="3.5" ref={this.rating} checked={this.state.user_rating > 3 && this.state.user_rating <= 3.5} /><label className="half" htmlFor="star3half" title="Meh - 3.5 stars" ></label>
-                                                    <input type="radio" id="star3" name="rating" value="3" ref={this.rating} checked={this.state.user_rating > 2.5 && this.state.user_rating <= 3} /><label className="full" htmlFor="star3" title="Meh - 3 stars" ></label>
-                                                    <input type="radio" id="star2half" name="rating" value="2.5" ref={this.rating} checked={this.state.user_rating > 2 && this.state.user_rating <= 2.5} /><label className="half" htmlFor="star2half" title="Kinda bad - 2.5 stars" ></label>
-                                                    <input type="radio" id="star2" name="rating" value="2" ref={this.rating} checked={this.state.user_rating > 1.5 && this.state.user_rating <= 2} /><label className="full" htmlFor="star2" title="Kinda bad - 2 stars" ></label>
-                                                    <input type="radio" id="star1half" name="rating" value="1.5" ref={this.rating} checked={this.state.user_rating > 1 && this.state.user_rating <= 1.5} /><label className="half" htmlFor="star1half" title="Meh - 1.5 stars" ></label>
-                                                    <input type="radio" id="star1" name="rating" value="1" ref={this.rating} checked={this.state.user_rating > 0.5 && this.state.user_rating <= 1} /><label className="full" htmlFor="star1" title="Sucks big time - 1 star" ></label>
-                                                    <input type="radio" id="starhalf" name="rating" value="0.5" ref={this.rating} checked={this.state.user_rating > 0 && this.state.user_rating <= 0.5} /><label className="half" htmlFor="starhalf" title="Sucks big time - 0.5 stars" ></label>
+                                                    <input type="radio" onChange={this.test} id="star10" name="rating" value="10" ref={this.rating} checked={this.state.user_rating > 9.5 && this.state.user_rating <= 10}/><label className="full" htmlFor="star10" title="10 stars" ></label>
+                                                    <input type="radio" onChange={this.test} id="star9half" name="rating" value="9.5" ref={this.rating} checked={this.state.user_rating > 9 && this.state.user_rating <= 9.5} /><label className="half" htmlFor="star9half" title="9.5 stars" ></label>
+                                                    <input type="radio" onChange={this.test} id="star9" name="rating" value="9" ref={this.rating} checked={this.state.user_rating > 8.5 && this.state.user_rating <= 9} /><label className="full" htmlFor="star9" title="9 stars" ></label>
+                                                    <input type="radio" onChange={this.test} id="star8half" name="rating" value="8.5" ref={this.rating} checked={this.state.user_rating > 8 && this.state.user_rating <= 8.5} /><label className="half" htmlFor="star8half" title="8.5 stars" ></label>
+                                                    <input type="radio" onChange={this.test} id="star8" name="rating" value="8" ref={this.rating} checked={this.state.user_rating > 7.5 && this.state.user_rating <= 8} /><label className="full" htmlFor="star8" title="8 stars" ></label>
+                                                    <input type="radio" onChange={this.test} id="star7half" name="rating" value="7.5" ref={this.rating} checked={this.state.user_rating > 7 && this.state.user_rating <= 7.5} /><label className="half" htmlFor="star7half" title="7.5 stars" ></label>
+                                                    <input type="radio" onChange={this.test} id="star7" name="rating" value="7" ref={this.rating} checked={this.state.user_rating > 6.5 && this.state.user_rating <= 7} /><label className="full" htmlFor="star7" title="7 stars" ></label>
+                                                    <input type="radio" onChange={this.test} id="star6half" name="rating" value="6.5" ref={this.rating} checked={this.state.user_rating > 6 && this.state.user_rating <= 6.5} /><label className="half" htmlFor="star6half" title="6.5 stars" ></label>
+                                                    <input type="radio" onChange={this.test} id="star6" name="rating" value="6" ref={this.rating} checked={this.state.user_rating > 5.5 && this.state.user_rating <= 6} /><label className="full" htmlFor="star6" title="6 stars" ></label>
+                                                    <input type="radio" onChange={this.test} id="star5half" name="rating" value="5.5" ref={this.rating} checked={this.state.user_rating > 5 && this.state.user_rating <= 5.5} /><label className="half" htmlFor="star5half" title="Pretty good - 5.5 stars" ></label>
+                                                    <input type="radio" onChange={this.test} id="star5" name="rating" value="5" ref={this.rating} checked={this.state.user_rating > 4.5 && this.state.user_rating <= 5} /><label className="full" htmlFor="star5" title="Awesome - 5 stars" ></label>
+                                                    <input type="radio" onChange={this.test} id="star4half" name="rating" value="4.5" ref={this.rating} checked={this.state.user_rating > 4 && this.state.user_rating <= 4.5} /><label className="half" htmlFor="star4half" title="Pretty good - 4.5 stars" ></label>
+                                                    <input type="radio" onChange={this.test} id="star4" name="rating" value="4" ref={this.rating} checked={this.state.user_rating > 3.5 && this.state.user_rating <= 4} /><label className="full" htmlFor="star4" title="Pretty good - 4 stars" ></label>
+                                                    <input type="radio" onChange={this.test} id="star3half" name="rating" value="3.5" ref={this.rating} checked={this.state.user_rating > 3 && this.state.user_rating <= 3.5} /><label className="half" htmlFor="star3half" title="Meh - 3.5 stars" ></label>
+                                                    <input type="radio" onChange={this.test} id="star3" name="rating" value="3" ref={this.rating} checked={this.state.user_rating > 2.5 && this.state.user_rating <= 3} /><label className="full" htmlFor="star3" title="Meh - 3 stars" ></label>
+                                                    <input type="radio" onChange={this.test} id="star2half" name="rating" value="2.5" ref={this.rating} checked={this.state.user_rating > 2 && this.state.user_rating <= 2.5} /><label className="half" htmlFor="star2half" title="Kinda bad - 2.5 stars" ></label>
+                                                    <input type="radio" onChange={this.test} id="star2" name="rating" value="2" ref={this.rating} checked={this.state.user_rating > 1.5 && this.state.user_rating <= 2} /><label className="full" htmlFor="star2" title="Kinda bad - 2 stars" ></label>
+                                                    <input type="radio" onChange={this.test} id="star1half" name="rating" value="1.5" ref={this.rating} checked={this.state.user_rating > 1 && this.state.user_rating <= 1.5} /><label className="half" htmlFor="star1half" title="Meh - 1.5 stars" ></label>
+                                                    <input type="radio" onChange={this.test} id="star1" name="rating" value="1" ref={this.rating} checked={this.state.user_rating > 0.5 && this.state.user_rating <= 1} /><label className="full" htmlFor="star1" title="Sucks big time - 1 star" ></label>
+                                                    <input type="radio" onChange={this.test} id="starhalf" name="rating" value="0.5" ref={this.rating} checked={this.state.user_rating > 0 && this.state.user_rating <= 0.5} /><label className="half" htmlFor="starhalf" title="Sucks big time - 0.5 stars" ></label>
                                                 </form>
                                             </div>
                                         </div>

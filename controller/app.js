@@ -1,6 +1,7 @@
 'use strict'
 
 const express = require('express');
+const mkdirp = require('mkdirp');
 const bodyParser = require('body-parser');
 const config = require('./config');
 const delete_old_movies = require('./delete_old_movies.js');
@@ -19,6 +20,11 @@ app.disable('x-powered-by');
 
 /**** CHECKS WHEN THE MOVIES HAVE BEEN SEEN LAST AND DELETES THEM IF MORE THEN A MONTH ****/
 delete_old_movies.cron();
+
+/**** CREATES THE DIRECTORY ./subtitles ****/
+mkdirp('./views/public/subtitles', function(err) { 
+  // path exists unless there was an error
+});
 
 /**** CONNECTION ****/
 // Connection / account creation

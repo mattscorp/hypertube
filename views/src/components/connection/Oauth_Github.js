@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import spinner from '../../resources/spinner.svg';
 
 class AccountPage extends Component {
-    componentWillMount() {
+    componentDidMount() {
         if (!window.location.href.split('=')[1]) {
             window.location.assign('http://localhost:3000');
         } else {

@@ -37,19 +37,30 @@ const getSubtitles = async(imdbid, langs) => {
         return Promise.all(
             Object.entries(response).map(async(entry) => {
                 const langCode = entry[0]
-                return new Promise ((resolve, reject) => {
+                return new Promise (async (resolve, reject) => {
                     let req = http.get(entry[1].vtt)
-                    req.on("response", (res) => {
+                    req.on("response", async (res) => {
                         const file = fs.createWriteStream(`./views/public/subtitles/${imdbid}_${langCode}`)
-                        const stream = res.pipe(file)
-                        stream.on('finish', () => {
-                            fs.readFile(`./views/public/subtitles/${imdbid}_${langCode}`, "utf8", (err, content) => {
-                                if (!err) {
-                                    const buffer = Buffer.from(content);
-                                    resolve({ key: langCode, value: buffer.toString("base64") })
-                                }
-                            })
-                        })
+                        if (file) {
+                            const stream = res.pipe(file)
+                            if (stream) {
+                                stream.on('finish', () => {
+                                    try {
+                                        if (fs.existsSync(`./views/public/subtitles/${imdbid}_${langCode}`)) {
+                                            fs.readFile(`./views/public/subtitles/${imdbid}_${langCode}`, "utf8", (err, content) => {
+                                                if (!err) {
+                                                    const buffer = Buffer.from(content);
+                                                    resolve({ key: langCode, value: buffer.toString("base64") })
+                                                }
+                                            })
+                                        }
+                                    } catch(err) {
+                                        throw err;
+                                    }
+                                    
+                                })
+                            }
+                        }
                     })
                     req.on("error", error => {
                         reject(error)
@@ -163,34 +174,20 @@ router.get('/movie_player', async (req, res) => {
                                             })
                                             let extension1 = file.path.split('.');
                                             let extension2 = extension1[extension1.length - 1];
-                                            console.log(extension2)
                                             let stream = {}
-                                            // if (extension2 == 'mp4' || extension2 == 'webm') {
-                                                stream = fs.createReadStream(`./views/public/torrents/${file.path}`, { start, end })
-                                                .on("open", function() {
-                                                    console.log('dans open')
-                                                    // ffmpeg(`./views/public/torrents/${file.path}`, { start, end }).format('mp4')
-                                                    // You may pass a pipe() options object when using a stream
-                                                    //   .output(stream, { end:true });
-                                                    stream.pipe(res);
-                                                }).on("error", function(err) {
-                                                    res.end(err);
-                                                })
-                                                console.log('mp4 = ' + extension2)
-                                            // }
-                                            // else {
-                                            //     stream = fs.createReadStream(`./views/public/torrents/${file.path}`, { start, end })
-                                            //     // var stream = (extension2 == 'mp4' || extension2 == 'webm') ? fs.createReadStream(`./views/public/torrents/${file.path}`, { start, end }) : convert(`./views/public/torrents/${file.path}`, { start, end })
-                                            //     .on("open", function() {
-                                            //         console.log('dans open')
-                                            //         // ffmpeg(`./views/public/torrents/${file.path}`, { start, end }).format('mp4')
-                                            //         // You may pass a pipe() options object when using a stream
-                                            //         //   .output(stream, { end:true });
-                                            //         stream.pipe(res);
-                                            //     }).on("error", function(err) {
-                                            //         res.end(err);
-                                            //     })
-                                            // }
+                                            try {
+                                                if (fs.existsSync(`./views/public/torrents/${file.path}`)) {
+                                                    stream = fs.createReadStream(`./views/public/torrents/${file.path}`, { start, end })
+                                                    .on("open", function() {
+                                                        console.log('dans open')
+                                                        stream.pipe(res);
+                                                    }).on("error", function(err) {
+                                                        res.end(err);
+                                                    })
+                                                }
+                                            } catch(err) {
+                                                throw err;
+                                            }
                                         }
                                     }
                                 })
@@ -201,7 +198,6 @@ router.get('/movie_player', async (req, res) => {
                                 movie_model.add_torrent(movie_infos_api.id, file.path, extension, file.name, year, torrents[0].url);
                                 console.log("DANS LE ELSE");
                                 const fileStream = file.createReadStream()
-                                    
                                 fileStream.pipe(res)
                             }
                         }

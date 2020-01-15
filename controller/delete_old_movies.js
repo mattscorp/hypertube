@@ -15,7 +15,6 @@ const delete_movie = to_delete => {
 
 const cron = async () => {
     let date = new Date
-    let getFileUpdatedDate = '';
     let last_seen_res = '';
     let date_diff = 0
     setInterval(async () => {

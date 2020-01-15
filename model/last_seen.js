@@ -21,7 +21,6 @@ const last_seen = async (path) => {
                             resolve('vide');
                     }
                 })
-                // resolve(result);
             }
         })
     })
