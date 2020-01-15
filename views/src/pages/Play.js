@@ -133,25 +133,25 @@ class Play extends Component {
         .then(resData => {
             if (resData !== undefined){
                 resData.map((elem , index) => {
-                    // this.setState(prevState => (
+                    this.setState(prevState => (
                     //     index === 4 ? this.state.loadMoreButton = 0 : this.state.loadMoreButton = 1,
                     //     this.state.offset += 1,
-                    //     this.state.comment.push(elem)
+                        this.state.comment.push(elem)
                         
-                    // ))
+                    ))
                     let offset_temp = this.state.offset;
-                    let comment_temp = this.state.comment;
+                    // let comment_temp = this.state.comment.push(elem);
                     if (index === 4) {
                         this.setState({
                             loadMoreButton: 0,
                             offset: offset_temp + 1,
-                            comment: comment_temp.push(elem)
+                            // comment: comment_temp
                         })
                     } else {
                         this.setState({
                             loadMoreButton: 1,
                             offset: offset_temp + 1,
-                            comment: comment_temp.push(elem)
+                            // comment: comment_temp
                         })
                     }
                     return(0); // ajout pour enlever erreur
