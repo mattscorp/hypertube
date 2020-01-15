@@ -24,6 +24,11 @@
     color: white;
 }
 
+/***** check_email *****/
+
+.check_email{
+    margin-top: 100px;
+}
 /*** PUBLIC PROFILE ***/
 
 .user_popup {
@@ -494,6 +499,9 @@ padding: 5%;
     padding: 10%;
 }
 
+.overlay {
+    font-size: 1vw;
+}
 .overlay {
    display:none;
 }

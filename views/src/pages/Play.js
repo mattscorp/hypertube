@@ -442,7 +442,7 @@ class Play extends Component {
                                                     title="fake_add"
                                                     width="100%" height="100%"
                                                     src="https://www.youtube.com/embed/sODZLSHJm6Q?autoplay=1"
-                                                    frameborder="0"
+                                                    frameBorder="0"
                                                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
                                                     allowFullScreen>
                                                 </iframe>
@@ -456,7 +456,7 @@ class Play extends Component {
                                                 <ul>
                                                     {
                                                         this.state.comment.map((elem, index) => (
-                                                            <li className="col-md-12 text-center">
+                                                            <li key={index} className="col-md-12 text-center">
                                                                 {translations[this.props.translationState].movie_page.posted_on}{elem.date.slice(0, 19).replace('T', ' ')}
                                                                 <br></br>
                                                                 {translations[this.props.translationState].movie_page.comment_by}<b className="user_popup" onClick={() => this.show_user(elem)}>{elem.first_name || elem.name}</b> :

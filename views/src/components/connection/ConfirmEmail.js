@@ -20,7 +20,7 @@ class ResetPassword extends Component {
     render() {
         return (
             <React.Fragment>
-                <div className="container mx-auto">
+                <div className="container mx-auto check_email">
                     <h3>Please check your email to confirm your account</h3>
                 </div>
             </React.Fragment>
