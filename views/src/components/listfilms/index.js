@@ -3,15 +3,26 @@ import Films from './ListFilms.js';
 
 class FilmsList extends Component{
 
+    _isMounted = false;
+
     state = {
         ready_to_load: true
     }
 
     componentDidMount () {
-        this.loadFilms();
+        this._isMounted = true;
+        if (this._isMounted) {
+            this.loadFilms();
+        }
         this.scrollListener = window.addEventListener('scroll', (e) => {
-            this.handleScroll(e)
+            if (this._isMounted) {
+                this.handleScroll(e)
+            }
         })
+    }
+
+    componentWillUnmount () {
+        this._isMounted = false;
     }
 
     handleScroll = (e) => {
