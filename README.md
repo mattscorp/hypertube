@@ -8,6 +8,12 @@ https://blog.octo.com/designer-une-api-rest/
 key : 208ecb5c1ee27eb7b9bc731dc8656bd2
 https://api.themoviedb.org/3/movie/76341?api_key=208ecb5c1ee27eb7b9bc731dc8656bd2
 
+## To do :
+
+- Search / View user profiles
+- Filters / Sort options for movie research
+- Test everything with Firefox and Chrome
+
 Steps :
 1. Create a temprorary request token : 
     https://api.themoviedb.org/3/authentication/token/new?api_key=208ecb5c1ee27eb7b9bc731dc8656bd2
