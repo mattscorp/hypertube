@@ -130,9 +130,10 @@ module.exports.post_users = post_users;
 // Create a user (with OAuth)
 const post_users_oauth = async (login, email, profile_picture, oauth) => {
     return new Promise((resolve, reject) => {
+        let log = login.split('@')[0];
         let sql = "INSERT INTO `users` (`uuid`, `language`, `login`, `email`, `profile_picture`, `" + oauth + "`) VALUES (?)";
         let uuid = uuidv4();
-        let sql_values = [uuid, 'English', login, email, profile_picture, login];
+        let sql_values = [uuid, 'English', log, email, profile_picture, login];
         con.query(sql, [sql_values], (err, result) => {
             if (err)
                 throw err;
