@@ -75,12 +75,12 @@ class Play extends Component {
                 this.setState(()  => {
                     return {background: 'url(https://image.tmdb.org/t/p/w185_and_h278_bestv2' + this.props.filmInfosState.film_infos.poster_path + ')'};
                 })
+                this.get_subtitles();
             }
         })
-        .then(() => {
-            // GET THE SUBTITLES FOR THE MOVIE
-            this.get_subtitles();
-        })
+        // .then(() => {
+        //     // GET THE SUBTITLES FOR THE MOVIE
+        // })
 
         // Call the API to get the cast
         let URL2 = `http://localhost:8000/movie_cast?movie_id=${this.props.location.search.split('movie=')[1]}`;
@@ -200,13 +200,39 @@ class Play extends Component {
 
     // GET THE SUBTITLES FOR THE MOVIE
     get_subtitles = async () => {
-        let subtitles = await fetch_get('/subtitles', `imdb_id=${this.props.filmInfosState.film_infos.imdb_id}`);
-        if (subtitles !== undefined && (subtitles.subtitles['en'] || subtitles.subtitles['fre'])) {
-            // Adding the subtitles to the props
-            this.props.setSubtitles(subtitles.subtitles);
-        } else {
-            console.log('No subtitles available');
-        }
+        
+        fetch(`http://localhost:8000/subtitles?imdb_id=${this.props.filmInfosState.film_infos.imdb_id}`, {
+            method: 'GET',
+            credentials: 'include',
+            headers: {'Content-Type': 'application/json'},
+        })
+        .then((res) => {
+            if (res.status === 401) {
+                alert("1111111");
+                window.location.assign('/');
+            } else if (res.status === 403) {
+                alert("2222222");
+                alert('403');
+                alert('No subtitles available');
+            } else {
+                alert("3333333");
+                this.props.setSubtitles(res.subtitles);
+            }
+        })
+        .catch((err) => { throw err });
+
+        // let subtitles = await fetch_get('/subtitles', `imdb_id=${this.props.filmInfosState.film_infos.imdb_id}`);
+        // console.log(subtitles)
+        // if (subtitles !== undefined && (subtitles.subtitles['en'] || subtitles.subtitles['fre']) && subtitles !== '403') {
+        //     // Adding the subtitles to the props
+        //     alert('111111')
+        // console.log('1111111')
+        //     this.props.setSubtitles(subtitles.subtitles);
+        // } else {
+        //     alert('2222222')
+        // console.log('22222221')
+        //     console.log('No subtitles available');
+        // }
     }
 
     get_comment_after_new = () => {
@@ -488,14 +514,14 @@ class Play extends Component {
                                                     preload="auto" controlsList="nodownload">
                                                     <source src={'http://localhost:8000/movie_player?moviedb_id=' + this.props.location.search.split('movie=')[1]}></source>
                                                     {/* Subtitles */}
-                                                    {this.props.subtitles.subtitles['en'] ? 
+                                                    {this.props.subtitles ? (
+                                                    this.props.subtitles.subtitles['en'] ? 
                                                         <track label='en' language='en' kind="subtitles" srcLang='en' default={true}
                                                         src={`data:text/vtt;base64, ${this.props.subtitles.subtitles['en']}`}/>
-                                                    :null } */}
-                                                    {this.props.subtitles.subtitles['fr'] ? 
+                                                    : (this.props.subtitles.subtitles['fr'] ? 
                                                         <track label='fr' language='fr' kind="subtitles" srcLang='fr'
                                                         src={`data:text/vtt;base64, ${this.props.subtitles.subtitles['fr']}`}/>
-                                                    :null }
+                                                    :null)) : null }
                                                 </video>
                                             </div>
                                             : <div className="movie_not_found col-md-10 col-xl-12">
