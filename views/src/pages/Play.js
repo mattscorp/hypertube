@@ -9,6 +9,8 @@ import unavailable from '../resources/unavailable.gif';
 
 class Play extends Component {
 
+    _isMounted = false;
+
     state = {
         background: "",
         repeat: "no-repeat",
@@ -33,15 +35,24 @@ class Play extends Component {
 
     }
 
+    componentWillUnmount () {
+        clearInterval(this.fake_ad_countdown);
+        clearInterval(this.checks_movie_exists);
+        this._isMounted = false;
+    }
+
     componentDidMount () {
+        this._isMounted = true;
         // Calls the video URL to check whether the video exists
         this.checks_movie_exists();
 
-        // Starts a countdown to play the fake add before playing the movie
-        this.setState({
-            url_movie: parseInt(this.props.location.search.split('movie=')[1].trim())
-        });
+        if (this._isMounted) {
+            this.setState({
+                url_movie: parseInt(this.props.location.search.split('movie=')[1].trim())
+            });
+        }
         this.handle_video_advancement();
+        // Starts a countdown to play the fake add before playing the movie
         this.fake_ad_countdown();
         // Call the API to get the movie details
         let URL = `http://localhost:8000/movie_infos?movie_id=${this.props.location.search.split('movie=')[1]}&language=${this.props.translationState}`;
@@ -60,14 +71,16 @@ class Play extends Component {
         })
         .then(resData => {
             this.props.setFilmInfos(resData);
-            this.setState(()  => {
-                return {background: 'url(https://image.tmdb.org/t/p/w185_and_h278_bestv2' + this.props.filmInfosState.film_infos.poster_path + ')'};
-            })
+            if (this._isMounted) {
+                this.setState(()  => {
+                    return {background: 'url(https://image.tmdb.org/t/p/w185_and_h278_bestv2' + this.props.filmInfosState.film_infos.poster_path + ')'};
+                })
+                this.get_subtitles();
+            }
         })
-        .then(() => {
-            // GET THE SUBTITLES FOR THE MOVIE
-            this.get_subtitles();
-        })
+        // .then(() => {
+        //     // GET THE SUBTITLES FOR THE MOVIE
+        // })
 
         // Call the API to get the cast
         let URL2 = `http://localhost:8000/movie_cast?movie_id=${this.props.location.search.split('movie=')[1]}`;
@@ -133,36 +146,40 @@ class Play extends Component {
         .then(resData => {
             if (resData !== undefined){
                 resData.map((elem , index) => {
-                    this.setState(prevState => (
-                    //     index === 4 ? this.state.loadMoreButton = 0 : this.state.loadMoreButton = 1,
-                    //     this.state.offset += 1,
-                        this.state.comment.push(elem)
-                        
-                    ))
-                    let offset_temp = this.state.offset;
-                    // let comment_temp = this.state.comment.push(elem);
-                    if (index === 4) {
+                    let comment_temp = this.state.comment;
+                    comment_temp.push(elem);
+                    if (this._isMounted) {
                         this.setState({
-                            loadMoreButton: 0,
-                            offset: offset_temp + 1,
-                            // comment: comment_temp
+                            comment: comment_temp
                         })
-                    } else {
-                        this.setState({
-                            loadMoreButton: 1,
-                            offset: offset_temp + 1,
-                            // comment: comment_temp
-                        })
+                            
+                        // this.setState(prevState => (
+                        //     this.state.comment.push(elem)
+                            
+                        // ))
+                        let offset_temp = this.state.offset;
+                        if (index === 4) {
+                            this.setState({
+                                loadMoreButton: 0,
+                                offset: offset_temp + 1
+                            })
+                        } else {
+                            this.setState({
+                                loadMoreButton: 1,
+                                offset: offset_temp + 1
+                            })
+                        }
                     }
                     return(0); // ajout pour enlever erreur
                 })
                 
             }
-            else
-            {
-                this.setState({
-                    loadMoreButton: 1
-                })
+            else {
+                if (this._isMounted) {
+                    this.setState({
+                        loadMoreButton: 1
+                    })
+                }
                 return(1);
             }
         })
@@ -172,22 +189,50 @@ class Play extends Component {
     checks_movie_exists = async () => {
         setInterval(() => {
             if (this.video_player && this.video_player.current && isNaN(this.video_player.current.duration)) {
-                this.setState({
-                    movie_not_found: true
-                })
+                if (this._isMounted) {
+                    this.setState({
+                        movie_not_found: true
+                    })
+                }
             }
         }, 40000)
     }
 
     // GET THE SUBTITLES FOR THE MOVIE
     get_subtitles = async () => {
-        let subtitles = await fetch_get('/subtitles', `imdb_id=${this.props.filmInfosState.film_infos.imdb_id}`);
-        if (subtitles !== undefined && (subtitles.subtitles['en'] || subtitles.subtitles['fre'])) {
-            // Adding the subtitles to the props
-            this.props.setSubtitles(subtitles.subtitles);
-        } else {
-            console.log('No subtitles available');
-        }
+        
+        fetch(`http://localhost:8000/subtitles?imdb_id=${this.props.filmInfosState.film_infos.imdb_id}`, {
+            method: 'GET',
+            credentials: 'include',
+            headers: {'Content-Type': 'application/json'},
+        })
+        .then((res) => {
+            if (res.status === 401) {
+                alert("1111111");
+                window.location.assign('/');
+            } else if (res.status === 403) {
+                alert("2222222");
+                alert('403');
+                alert('No subtitles available');
+            } else {
+                alert("3333333");
+                this.props.setSubtitles(res.subtitles);
+            }
+        })
+        .catch((err) => { throw err });
+
+        // let subtitles = await fetch_get('/subtitles', `imdb_id=${this.props.filmInfosState.film_infos.imdb_id}`);
+        // console.log(subtitles)
+        // if (subtitles !== undefined && (subtitles.subtitles['en'] || subtitles.subtitles['fre']) && subtitles !== '403') {
+        //     // Adding the subtitles to the props
+        //     alert('111111')
+        // console.log('1111111')
+        //     this.props.setSubtitles(subtitles.subtitles);
+        // } else {
+        //     alert('2222222')
+        // console.log('22222221')
+        //     console.log('No subtitles available');
+        // }
     }
 
     get_comment_after_new = () => {
@@ -206,11 +251,20 @@ class Play extends Component {
         })
         
         .then(resData => {
-            if (resData !== undefined){
-                    this.setState(prevState => (
-                        this.state.offset += 1,
-                        this.state.comment.unshift(resData[0])
-                    ))
+            if (resData !== undefined) {
+                let offset_temp = this.state.offset + 1;
+                let comment_temp = this.state.comment;
+                comment_temp.unshift(resData[0]);
+                if (this._isMounted) {
+                    this.setState({
+                        offset: offset_temp,
+                        comment: comment_temp
+                    })
+                }
+                // this.setState(prevState => (
+                //     this.state.offset += 1,
+                //     this.state.comment.unshift(resData[0])
+                // ))
             }
         })
     }
@@ -267,10 +321,12 @@ class Play extends Component {
                             i = index;
                         }
                         return(0);  // ajout pour enlever erreur
-                   })
-                    this.setState(prevState => (
-                        this.state.comment.splice(i, 1) 
-                    ))
+                    })
+                    if (this._isMounted) {
+                        this.setState(prevState => (
+                            this.state.comment.splice(i, 1) 
+                        ))
+                    }
                 }
              })
             .catch((err) => { console.log(err); });
@@ -298,8 +354,12 @@ class Play extends Component {
             }
         })
         .then((resData) => {
-            if (resData !== undefined) {
-                this.setState({average_rating: resData[0].average_rating})
+            if (this._isMounted) {
+                if (resData !== undefined) {
+                    this.setState({
+                        average_rating: resData[0].average_rating
+                    })
+                }
             }
         })
     }
@@ -340,7 +400,11 @@ class Play extends Component {
         })
         .then((resData) => {
             if (resData[0].rating !== undefined) {
-                this.setState({user_rating: resData[0].rating})
+                if (this._isMounted) {
+                    this.setState({
+                        user_rating: resData[0].rating
+                    })
+                }
             }
         })
         .catch((err) => { console.log(err); });
@@ -349,18 +413,22 @@ class Play extends Component {
     show_user = async (elem) => {
         let user_infos = await fetch_post('/user_public_profile', {uuid: elem.uuid});
         if (user_infos !== undefined && user_infos !== '' && user_infos !== '403') {
-            this.setState({
-                show_user: elem.uuid,
-                user_infos: user_infos
-            })
+            if (this._isMounted) {
+                this.setState({
+                    show_user: elem.uuid,
+                    user_infos: user_infos
+                })
+            }
         }
     }
     
     fake_ad_countdown = () => {
         setInterval(() => {
-            this.setState({
-                fake_add: this.state.fake_add - 1
-            });
+            if (this._isMounted) {
+                this.setState({
+                    fake_add: this.state.fake_add - 1
+                });
+            }
             if (this.video_player && this.video_player.current && this.state.fake_add && this.state.fake_add === -1)
                 this.video_player.current.play();
         }, 1000)
@@ -376,10 +444,12 @@ class Play extends Component {
     }
 
     hide_user = () => {
-        this.setState({
-            show_user: "",
-            user_infos: ""
-        })
+        if (this._isMounted) {
+            this.setState({
+                show_user: "",
+                user_infos: ""
+            })
+        }
     }
 
     test = () => {
@@ -402,7 +472,7 @@ class Play extends Component {
                                     </div>
                                     {/* Twitter share */}
                                     <div className="col-md-12 text-center rating_section">
-                                        <Twitter url={this.props.location} text={translations[this.props.translationState].movie_page.share_on_twitter} shareText={'I\'m watching ' + this.props.filmInfosState.film_infos.title + ' with Hypertube! Watch movies with Hypertube: http://localhost:3000'  + this.props.location.search} />
+                                        <Twitter url={`${this.props.location}`} text={translations[this.props.translationState].movie_page.share_on_twitter} shareText={'I\'m watching ' + this.props.filmInfosState.film_infos.title + ' with Hypertube! Watch movies with Hypertube: http://localhost:3000'  + this.props.location.search} />
                                     </div>
                                     {/* Ratings */}
                                     <div className="rate_and_comment container-fluid row">
@@ -444,14 +514,14 @@ class Play extends Component {
                                                     preload="auto" controlsList="nodownload">
                                                     <source src={'http://localhost:8000/movie_player?moviedb_id=' + this.props.location.search.split('movie=')[1]}></source>
                                                     {/* Subtitles */}
-                                                    {this.props.subtitles.subtitles['en'] ? 
-                                                        <track label='en' language='en' kind="subtitles" srcLang='en' default='true'
+                                                    {this.props.subtitles ? (
+                                                    this.props.subtitles.subtitles['en'] ? 
+                                                        <track label='en' language='en' kind="subtitles" srcLang='en' default={true}
                                                         src={`data:text/vtt;base64, ${this.props.subtitles.subtitles['en']}`}/>
-                                                    :null } */}
-                                                    {this.props.subtitles.subtitles['fr'] ? 
+                                                    : (this.props.subtitles.subtitles['fr'] ? 
                                                         <track label='fr' language='fr' kind="subtitles" srcLang='fr'
                                                         src={`data:text/vtt;base64, ${this.props.subtitles.subtitles['fr']}`}/>
-                                                    :null }
+                                                    :null)) : null }
                                                 </video>
                                             </div>
                                             : <div className="movie_not_found col-md-10 col-xl-12">
@@ -617,7 +687,7 @@ class Play extends Component {
                                             <div className="carousel-inner">
                                                 {
                                                     this.props.filmInfosState.similar_movies.map((elem, index) =>
-                                                    (<div id={elem.id}  className={index === 0 ? "active carousel-item text-center" : "carousel-item text-center"}>
+                                                    (<div id={elem.id} key={elem.id} className={index === 0 ? "active carousel-item text-center" : "carousel-item text-center"}>
                                                             <div className="image ">
                                                                 <img src= {elem.poster_path ? 'https://image.tmdb.org/t/p/w185_and_h278_bestv2' + elem.poster_path : "https://upload.wikimedia.org/wikipedia/commons/f/fc/No_picture_available.png"} alt={"Poster of " + elem.title} />
                                                                 <div className="overlay_car">

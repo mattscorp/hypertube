@@ -130,9 +130,10 @@ module.exports.post_users = post_users;
 // Create a user (with OAuth)
 const post_users_oauth = async (login, email, profile_picture, oauth) => {
     return new Promise((resolve, reject) => {
+        let log = login.split('@')[0];
         let sql = "INSERT INTO `users` (`uuid`, `language`, `login`, `email`, `profile_picture`, `" + oauth + "`) VALUES (?)";
         let uuid = uuidv4();
-        let sql_values = [uuid, 'English', login, email, profile_picture, login];
+        let sql_values = [uuid, 'English', log, email, profile_picture, log];
         con.query(sql, [sql_values], (err, result) => {
             if (err)
                 throw err;
@@ -146,9 +147,10 @@ module.exports.post_users_oauth = post_users_oauth;
 // Create a user ft
 const post_users_oauth_ft = async (last_name, first_name, login, email, language, profile_picture) => {
     return new Promise((resolve, reject) => {
+        let log = login.split('@')[0];
         let sql = "INSERT INTO `users` (`uuid`, `first_name`, `last_name`, `language`, `login`, `email`, `profile_picture`, `ft`) VALUES (?)";
         let uuid = uuidv4();
-        let sql_values = [uuid, first_name, last_name, language, login, email, profile_picture, login];
+        let sql_values = [uuid, first_name, last_name, language, log, email, profile_picture, log];
         con.query(sql, [sql_values], (err, result) => {
             if (err)
                 throw err;
@@ -162,9 +164,10 @@ module.exports.post_users_oauth_ft = post_users_oauth_ft;
 // Create a user Insta
 const post_users_oauth_insta = async (login, first_name, last_name, profile_picture) => {
     return new Promise((resolve, reject) => {
+        let log = login.split('@')[0];
         let sql = "INSERT INTO `users` (`uuid`, `language`, `login`, `first_name`, `last_name`, `profile_picture`, `insta`) VALUES (?)";
         let uuid = uuidv4();
-        let sql_values = [uuid, 'English', login, first_name, last_name, profile_picture, login];
+        let sql_values = [uuid, 'English', log, first_name, last_name, profile_picture, log];
         con.query(sql, [sql_values], (err, result) => {
             if (err)
                 throw err;

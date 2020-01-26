@@ -20,7 +20,7 @@ router.use(bodyParser.urlencoded({ extended: true }));
 
 // *** Connection with Google OAuth2 *** //
 router.post('/oauth_google', async (req, res) => {
-  let token = req.body.code;
+  let token = decodeURIComponent(req.body.code);
   let google_req_token = `https://oauth2.googleapis.com/token`;
   let redirect_uri = 'http://localhost:3000/oauth_google';
   let grant_type = "authorization_code";

@@ -5,9 +5,14 @@ import {fetch_post} from '../fetch.js';
 
 class HomePage extends Component {
 
+  _isMounted = false;
+
   componentDidMount = async () => {
+    this._isMounted = true;
     // this.props.resetFilmsBeforeSearch();
-    this.viewed_films();
+    if (this._isMounted) {
+      this.viewed_films();
+    }
   }
 
   // ADDS THE MOVIES WHICH HAVE ALREADY BEEN SEEN BY THE USER TO THE LIST
@@ -16,6 +21,10 @@ class HomePage extends Component {
     if (movies_seen && movies_seen !== undefined && movies_seen[0] && movies_seen[0] !== undefined) {
       this.props.setViewedFilms(movies_seen);
     }
+  }
+
+  componentWillUnmount () {
+    this._isMounted = false;
   }
 
   setSearch = (event) => {
