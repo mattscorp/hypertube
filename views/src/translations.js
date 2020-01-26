@@ -103,7 +103,7 @@ const languages = {
             load_more: "Load more comments",
             unavailable: "This movie is not available =("
         },
-        footer: "Created by mascorpi and pvictor as part of school 42's curriculum, 2019"
+        footer: "Created by xapadoan, jcammas, mascorpi and pvictor as part of school 42's curriculum, 2019"
     },
     "fr": {
         connection: {
@@ -209,7 +209,7 @@ const languages = {
             load_more: "Voir plus de commentaires",
             unavailable: "Ce film n'est pas disponible =("
         },
-        footer: "Projet de l'école 42 créé par mascorpi et pvictor, 2019"
+        footer: "Projet de l'école 42 créé par xapadoan, jcammas, mascorpi et pvictor, 2019"
     }
 }
 export default languages

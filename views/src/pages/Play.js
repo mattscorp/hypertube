@@ -201,38 +201,37 @@ class Play extends Component {
     // GET THE SUBTITLES FOR THE MOVIE
     get_subtitles = async () => {
         
-        fetch(`http://localhost:8000/subtitles?imdb_id=${this.props.filmInfosState.film_infos.imdb_id}`, {
-            method: 'GET',
-            credentials: 'include',
-            headers: {'Content-Type': 'application/json'},
-        })
-        .then((res) => {
-            if (res.status === 401) {
-                alert("1111111");
-                window.location.assign('/');
-            } else if (res.status === 403) {
-                alert("2222222");
-                alert('403');
-                alert('No subtitles available');
-            } else {
-                alert("3333333");
-                this.props.setSubtitles(res.subtitles);
-            }
-        })
-        .catch((err) => { throw err });
+        // fetch(`http://localhost:8000/subtitles?imdb_id=${this.props.filmInfosState.film_infos.imdb_id}`, {
+        //     method: 'GET',
+        //     credentials: 'include',
+        //     headers: {'Content-Type': 'application/json'},
+        // })
+        // .then((res) => {
+        //     if (res.status === 401) {
+        //         alert("1111111");
+        //         window.location.assign('/');
+        //     } else if (res.status === 403) {
+        //         alert("2222222");
+        //         alert('403');
+        //         alert('No subtitles available');
+        //     } else {
+        //         alert("3333333");
+        //         if (res.subtitles) {
+        //             if ((res.subtitles['en'] !== undefined && res.subtitles['en'] != '') || (res.subtitles['fr'] !== undefined && res.subtitles['fr'] != ''))
+        //                 this.props.setSubtitles(res.subtitles);
+        //         }
+        //     }
+        // })
+        // .catch((err) => { throw err });
 
-        // let subtitles = await fetch_get('/subtitles', `imdb_id=${this.props.filmInfosState.film_infos.imdb_id}`);
-        // console.log(subtitles)
-        // if (subtitles !== undefined && (subtitles.subtitles['en'] || subtitles.subtitles['fre']) && subtitles !== '403') {
-        //     // Adding the subtitles to the props
-        //     alert('111111')
-        // console.log('1111111')
-        //     this.props.setSubtitles(subtitles.subtitles);
-        // } else {
-        //     alert('2222222')
-        // console.log('22222221')
-        //     console.log('No subtitles available');
-        // }
+        let subtitles = await fetch_get('/subtitles', `imdb_id=${this.props.filmInfosState.film_infos.imdb_id}`);
+        console.log(subtitles)
+        if (subtitles !== undefined && (subtitles.subtitles['en'] || subtitles.subtitles['fre']) && subtitles !== '403') {
+            // Adding the subtitles to the props
+            this.props.setSubtitles(subtitles.subtitles);
+        } else {
+            console.log('No subtitles available');
+        }
     }
 
     get_comment_after_new = () => {
@@ -625,7 +624,7 @@ class Play extends Component {
                                             height="80%"
                                             src={"https://www.youtube.com/embed/" + this.props.filmInfosState.film_infos.videos.results[0].key}
                                             frameBorder="0"
-                                            allow="accelerometer; autoplay; full-screen; encrypted-media; gyroscope; picture-in-picture"
+                                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                                             mozallowfullscreen="mozallowfullscreen" 
                                             msallowfullscreen="msallowfullscreen" 
                                             oallowfullscreen="oallowfullscreen" 
