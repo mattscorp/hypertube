@@ -47,8 +47,14 @@ router.post('/update_account', with_auth, async (req, res) => {
     let email = req.body.body.split('email: "')[1].split('"')[0];
     let first_name = req.body.body.split('first_name: "')[1].split('"')[0];
     let last_name = req.body.body.split('last_name: "')[1].split('"')[0];
-    user_infos.update_user_infos(login, first_name, last_name, email, req.uuid);
-    res.status(201).send('User information updated');
+    let user_update = await user_infos.update_user_infos(login, first_name, last_name, email, req.uuid);
+    if (user_update == 1 ){
+        res.status(201).send('User information updated');
+    }
+    else {
+        res.status(204).send('You cannot use this email');
+    }
+    
 });
 
 // **** CHANGE PASSWORD **** //

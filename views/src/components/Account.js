@@ -75,6 +75,10 @@ class Account extends Component {
                     window.location.assign('/');
                 else if (res.status === 201)
                     alert('Information updated');
+                else if (res.status === 204)
+                {
+                    alert('You cannot use this email');
+                }
                 else
                     alert('An error has occured');
             })

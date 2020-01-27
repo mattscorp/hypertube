@@ -8,12 +8,36 @@ let con = db_connect.con;
 
 // Update the account information  (login, first_name, last_name, email)
 const update_user_infos = (login, first_name, last_name, email, uuid) => {
+    return new Promise((resolve, reject) => {
     let sql = "UPDATE `users` SET `login` = ?, `first_name` = ?, `last_name` = ?, `email` = ? WHERE `uuid` = ?";
+    let sql_mail = "SELECT `email` FROM `users` WHERE `email` = ?";
     let values = [login, first_name, last_name, email, uuid];
-    con.query(sql, values, (err, result) => {
-        if (err)
+    let values_email = [email];
+   
+    con.query(sql_mail, values_email, (err, result) => {
+        if (err){
+            resolve(0);
             throw err;
+        }
+        else{
+            if (result == ``){
+                con.query(sql, values, (err, result) => {
+                    if (err){
+                        resolve(0);
+                        throw err;
+                    }
+                });
+                resolve(1);
+            }
+            else
+            {
+                resolve(0);
+            }
+        }
+        
     });
+    })
+    
 }
 module.exports.update_user_infos = update_user_infos;
 
