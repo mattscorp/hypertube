@@ -6,13 +6,9 @@ const http = require("http")
 const fs = require("fs");
 const express = require('express');
 const router = express.Router();
-var ffmpeg = require('fluent-ffmpeg');
-var command = ffmpeg();
 const OpenSubtitles = require("opensubtitles-api")
 const OS = new OpenSubtitles({
   useragent: "TemporaryUserAgent",
-  username: 'hypertube_92',
-  password: 'hypertube',
   ssl: false,
 })
 
@@ -37,9 +33,9 @@ const getSubtitles = async(imdbid, langs) => {
         return Promise.all(
             Object.entries(response).map(async(entry) => {
                 const langCode = entry[0]
-                return new Promise (async (resolve, reject) => {
+                return new Promise ((resolve, reject) => {
                     let req = http.get(entry[1].vtt)
-                    req.on("response", async (res) => {
+                    req.on("response", (res) => {
                         const file = fs.createWriteStream(`./views/public/subtitles/${imdbid}_${langCode}`)
                         if (file) {
                             const stream = res.pipe(file)
@@ -47,12 +43,17 @@ const getSubtitles = async(imdbid, langs) => {
                                 stream.on('finish', () => {
                                     try {
                                         if (fs.existsSync(`./views/public/subtitles/${imdbid}_${langCode}`)) {
-                                            fs.readFile(`./views/public/subtitles/${imdbid}_${langCode}`, "utf8", (err, content) => {
-                                                if (!err) {
-                                                    const buffer = Buffer.from(content);
-                                                    resolve({ key: langCode, value: buffer.toString("base64") })
-                                                }
-                                            })
+                                            let size = fs.statSync(`./views/public/subtitles/${imdbid}_${langCode}`)
+                                            console.log('Taille des soustitres ' + langCode + ' : ' + size.size)
+                                            if (size.size > 0) {
+                                                fs.readFile(`./views/public/subtitles/${imdbid}_${langCode}`, "utf8", (err, content) => {
+                                                    if (!err) {
+                                                        const buffer = Buffer.from(content);
+                                                        console.log('on va resolve ' + langCode)
+                                                        resolve({ key: langCode, value: buffer.toString("base64") })
+                                                    }
+                                                })
+                                            }
                                         }
                                     } catch(err) {
                                         throw err;
@@ -63,6 +64,7 @@ const getSubtitles = async(imdbid, langs) => {
                         }
                     })
                     req.on("error", error => {
+                        console.log('Error in getSubtitles')
                         reject(error)
                     })
                 })
@@ -73,7 +75,7 @@ const getSubtitles = async(imdbid, langs) => {
     }
 }
 
-router.get('/subtitles', async (req, res) => {
+router.get('/subtitles', with_auth, async (req, res) => {
     if (req.query && req.query.imdb_id && req.query.imdb_id != '') {
         const langs = ["fre", "eng"];
         try {
@@ -86,8 +88,8 @@ router.get('/subtitles', async (req, res) => {
                         [subtitle.key]: subtitle.value,
                     }
                 })
+                res.json({ subtitles })
             }
-            res.json({ subtitles })
         } catch (error) {
             res.json({ error })
         }

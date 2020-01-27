@@ -23,13 +23,13 @@ const fetch_get = async (path, query) => {
     return new Promise((resolve, reject) => {
         fetch(`http://localhost:8000${path}?${query}`, {
             credentials: 'include',
-            method: 'get',
+            method: 'GET',
             headers: {'Content-Type': 'application/json'},
         })
         .then((res) => {
-            if (res.status === 401)
+            if (res.status && res.status === 401)
                 window.location.assign('/');
-            else if (res.status === 403)
+            else if (res.status && res.status === 403)
                 resolve('403');
             else
                 resolve(res.json());

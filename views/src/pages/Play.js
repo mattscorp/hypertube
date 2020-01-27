@@ -23,7 +23,8 @@ class Play extends Component {
         user_infos: "",
         fake_add: 43,
         url_movie: '',
-        movie_not_found: false
+        movie_not_found: false,
+        subtitles_OK: false
     }
 
     constructor(props) {
@@ -38,11 +39,18 @@ class Play extends Component {
     componentWillUnmount () {
         clearInterval(this.fake_ad_countdown);
         clearInterval(this.checks_movie_exists);
+        clearInterval(this.get_subtitles);
         this._isMounted = false;
     }
 
     componentDidMount () {
         this._isMounted = true;
+        this.props.removeSubtitles();
+        setTimeout(() => {
+            if (!this.state.subtitles_OK) {
+                this.get_subtitles();
+            }
+        }, 5000)
         // Calls the video URL to check whether the video exists
         this.checks_movie_exists();
 
@@ -75,7 +83,6 @@ class Play extends Component {
                 this.setState(()  => {
                     return {background: 'url(https://image.tmdb.org/t/p/w185_and_h278_bestv2' + this.props.filmInfosState.film_infos.poster_path + ')'};
                 })
-                this.get_subtitles();
             }
         })
         // .then(() => {
@@ -200,37 +207,49 @@ class Play extends Component {
 
     // GET THE SUBTITLES FOR THE MOVIE
     get_subtitles = async () => {
+        if (this._isMounted) {
         
-        // fetch(`http://localhost:8000/subtitles?imdb_id=${this.props.filmInfosState.film_infos.imdb_id}`, {
-        //     method: 'GET',
-        //     credentials: 'include',
-        //     headers: {'Content-Type': 'application/json'},
-        // })
-        // .then((res) => {
-        //     if (res.status === 401) {
-        //         alert("1111111");
-        //         window.location.assign('/');
-        //     } else if (res.status === 403) {
-        //         alert("2222222");
-        //         alert('403');
-        //         alert('No subtitles available');
-        //     } else {
-        //         alert("3333333");
-        //         if (res.subtitles) {
-        //             if ((res.subtitles['en'] !== undefined && res.subtitles['en'] != '') || (res.subtitles['fr'] !== undefined && res.subtitles['fr'] != ''))
-        //                 this.props.setSubtitles(res.subtitles);
-        //         }
-        //     }
-        // })
-        // .catch((err) => { throw err });
-
-        let subtitles = await fetch_get('/subtitles', `imdb_id=${this.props.filmInfosState.film_infos.imdb_id}`);
-        console.log(subtitles)
-        if (subtitles !== undefined && (subtitles.subtitles['en'] || subtitles.subtitles['fre']) && subtitles !== '403') {
-            // Adding the subtitles to the props
-            this.props.setSubtitles(subtitles.subtitles);
-        } else {
-            console.log('No subtitles available');
+            // fetch(`http://localhost:8000/subtitles?imdb_id=${this.props.filmInfosState.film_infos.imdb_id}`, {
+            //     method: 'GET',
+            //     credentials: 'include',
+            //     headers: {'Content-Type': 'application/json'},
+            // })
+            // .then((res) => {
+            //     if (res.status === 401) {
+            //         alert("1111111");
+            //         window.location.assign('/');
+            //     } else if (res.status === 403) {
+            //         alert("2222222");
+            //         alert('403');
+            //         alert('No subtitles available');
+            //     } else {
+            //         alert("3333333");
+            //         if (res.subtitles) {
+            //             if ((res.subtitles['en'] !== undefined && res.subtitles['en'] != '') || (res.subtitles['fre'] !== undefined && res.subtitles['fre'] != ''))
+            //                 this.props.setSubtitles(res.subtitles);
+            //         }
+            //     }
+            // })
+            // .catch((err) => { throw err });
+            // setTimeout(async () => {
+                
+                let subtitles = await fetch_get('/subtitles', `imdb_id=${this.props.filmInfosState.film_infos.imdb_id}`);
+                if (this._isMounted && subtitles && subtitles !== undefined && (subtitles.subtitles['en'] || subtitles.subtitles['fre']) && subtitles !== '403') {
+                    // Adding the subtitles to the props
+                    if (this._isMounted) {
+                        console.log(subtitles)
+                        if (!this.state.subtitles_OK) {
+                            this.props.setSubtitles(subtitles.subtitles);
+                            this.setState({
+                                subtitles_OK: true
+                            })
+                        }
+                    }
+                } else {
+                    this.props.removeSubtitles();
+                    console.log('No subtitles available');
+                }
+            // }, 10000)
         }
     }
 
@@ -513,13 +532,13 @@ class Play extends Component {
                                                     preload="auto" controlsList="nodownload">
                                                     <source src={'http://localhost:8000/movie_player?moviedb_id=' + this.props.location.search.split('movie=')[1]}></source>
                                                     {/* Subtitles */}
-                                                    {this.props.subtitles ? (
+                                                    {this._isMounted && this.props.subtitles ? (
                                                     this.props.subtitles.subtitles['en'] ? 
                                                         <track label='en' language='en' kind="subtitles" srcLang='en' default={true}
                                                         src={`data:text/vtt;base64, ${this.props.subtitles.subtitles['en']}`}/>
-                                                    : (this.props.subtitles.subtitles['fr'] ? 
-                                                        <track label='fr' language='fr' kind="subtitles" srcLang='fr'
-                                                        src={`data:text/vtt;base64, ${this.props.subtitles.subtitles['fr']}`}/>
+                                                    : (this.props.subtitles.subtitles['fre'] ? 
+                                                        <track label='fre' language='fre' kind="subtitles" srcLang='fre'
+                                                        src={`data:text/vtt;base64, ${this.props.subtitles.subtitles['fre']}`}/>
                                                     :null)) : null }
                                                 </video>
                                             </div>
