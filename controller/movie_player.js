@@ -27,7 +27,7 @@ OS.login()
 /*
     Get subtitles
 */
-const getSubtitles = async(imdbid, langs) => {
+const getSubtitles = async (imdbid, langs) => {
     try {
         const response = await OS.search({ imdbid, sublanguageid: langs.join(), limit: 'best' })
         return Promise.all(
@@ -75,23 +75,127 @@ const getSubtitles = async(imdbid, langs) => {
     }
 }
 
-router.get('/subtitles', with_auth, async (req, res) => {
-    if (req.query && req.query.imdb_id && req.query.imdb_id != '') {
-        const langs = ["fre", "eng"];
-        try {
-            const response = await getSubtitles(req.query.imdb_id, langs)
-            let subtitles = {}
-            if (response) {
-                response.forEach((subtitle) => {
-                    subtitles = {
-                        ...subtitles,
-                        [subtitle.key]: subtitle.value,
+const getSubtitlesFr = async (imdbid) => {
+    try {
+    const response = await OS.search({ imdbid, sublanguageid: "fre", limit: 'best' })
+    console.log(response);
+        return new Promise((resolve, reject) => {
+            const langCode = "fre";
+            let req = http.get(response.fr.vtt)
+            req.on("response", (res) => {
+                const file = fs.createWriteStream(`./views/public/subtitles/${imdbid}_${langCode}`)
+                if (file) {
+                    const stream = res.pipe(file)
+                    if (stream) {
+                        stream.on('finish', () => {
+                            try {
+                                if (fs.existsSync(`./views/public/subtitles/${imdbid}_${langCode}`)) {
+                                    let size = fs.statSync(`./views/public/subtitles/${imdbid}_${langCode}`)
+                                    console.log('Taille des soustitres ' + langCode + ' : ' + size.size)
+                                    if (size.size > 0) {
+                                        fs.readFile(`./views/public/subtitles/${imdbid}_${langCode}`, "utf8", (err, content) => {
+                                            if (!err) {
+                                                const buffer = Buffer.from(content);
+                                                console.log('on va resolve ' + langCode)
+                                                resolve({ key: langCode, value: buffer.toString("base64") })
+                                            }
+                                        })
+                                    }
+                                }
+                            } catch(err) {
+                                throw err;
+                            }
+                            
+                        })
                     }
-                })
-                res.json({ subtitles })
+                }
+            })
+            req.on("error", error => {
+                console.log('Error in getSubtitles')
+                reject(error)
+            })
+        })
+    } catch (err) {
+        throw err;
+    }
+}
+
+const getSubtitlesEn = async (imdbid) => {
+    try {
+        const response = await OS.search({ imdbid, sublanguageid: "en", limit: 'best' })
+        return new Promise((resolve, reject) => {
+            const langCode = "en";
+            let req = http.get(response.en.vtt)
+            console.log('req ; ' + req)
+            req.on("response", (res) => {
+                const file = fs.createWriteStream(`./views/public/subtitles/${imdbid}_${langCode}`)
+                console.log(file)
+                if (file) {
+                    const stream = res.pipe(file)
+                    if (stream) {
+                        stream.on('finish', () => {
+                            try {
+                                if (fs.existsSync(`./views/public/subtitles/${imdbid}_${langCode}`)) {
+                                    let size = fs.statSync(`./views/public/subtitles/${imdbid}_${langCode}`)
+                                    console.log('Taille des soustitres ' + langCode + ' : ' + size.size)
+                                    if (size.size > 0) {
+                                        fs.readFile(`./views/public/subtitles/${imdbid}_${langCode}`, "utf8", (err, content) => {
+                                            if (!err) {
+                                                const buffer = Buffer.from(content);
+                                                console.log('on va resolve ' + langCode)
+                                                resolve({ key: langCode, value: buffer.toString("base64") })
+                                            }
+                                        })
+                                    }
+                                }
+                            } catch(err) {
+                                throw err;
+                            }
+                            
+                        })
+                    }
+                }
+            })
+            req.on("error", error => {
+                console.log('Error in getSubtitles')
+                reject(error)
+            })
+        })
+    } catch (err) {
+        throw err;
+    }
+}
+
+router.get('/subtitles', with_auth, async (req, res) => {
+    console.log('ICICI')
+    if (req.query && req.query.imdb_id && req.query.imdb_id != '') {
+    const langs = ["fre", "eng"];
+        let imdb_real = await movie_model.movie_infos(req.query.imdb_id, "en")
+        try {
+            const response_fr = await getSubtitlesFr(imdb_real.imdb_id)
+            const response_en = await getSubtitlesEn(imdb_real.imdb_id)
+            console.log(response_en)
+            console.log(response_fr)
+            if (response_en) {
+                let subtitles = {...subtitles, 'en': response_en}
             }
+            if (response_fr) {
+                let subtitles = {...subtitles, 'fr': response_fr}
+            }
+            console.log(subtitles)
+            console.log('ICICICICIC')
+                setTimeout(() => {
+                    // response.forEach((subtitle) => {
+                    //     console.log(subtitle)
+                    //     subtitles = {
+                    //         ...subtitles,
+                    //         [subtitle.key]: subtitle.value,
+                    //     }
+                    // })
+                res.json({ subtitles })
+            }, 35000)
         } catch (error) {
-            res.json({ error })
+            res.send({ error })
         }
     }
 });
