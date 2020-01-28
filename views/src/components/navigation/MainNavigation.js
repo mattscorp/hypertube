@@ -271,14 +271,14 @@ class MainNavigation extends Component {
                                 </li>
                                 <li className="col-sm-1">
                                     {(this.props.homeSearch === "Trending movies") ? null :
-                                        <button className="btn btn-success" type="submit" onClick={this.clearSearch}>
+                                        <button className="btn btn-outline-danger btn-lg" onClick={this.clearSearch}>
                                             {translations[this.props.translationState].main_navigation.clear_button}
                                         </button>
                                     }  
                                 </li>
                               
                                 <li className="col-xs-6 col-md-2">
-                                    <button className="btn btn-success btn-style " type="submit" onClick={this.advancedSearch}>
+                                    <button className="btn btn-outline-success btn-lg" onClick={this.advancedSearch}>
                                         {translations[this.props.translationState].main_navigation.advanced_search_button}
                                     </button>
                                 </li>
