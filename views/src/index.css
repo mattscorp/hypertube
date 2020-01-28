@@ -996,3 +996,9 @@ body{
 .movie_not_found {
     text-align: center;
 }
+
+
+  
+  video::-webkit-media-controls-timeline {
+    display: none;
+}
