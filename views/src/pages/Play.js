@@ -574,7 +574,7 @@ class Play extends Component {
                                                                 {translations[this.props.translationState].movie_page.comment_by}<b className="user_popup" onClick={() => this.show_user(elem)}>{elem.first_name || elem.name}</b> :
                                                                 <div className="comment"> {elem.comment} </div>
                                                                 {elem.uuid === this.props.userConnectState.uuid ?
-                                                                    <button className="btn-success btn-style " onClick={() => this.delete_com(elem)}>X</button> : null
+                                                                    <button className="btn btn-outline-danger" onClick={() => this.delete_com(elem)}>X</button> : null
                                                                 }
                                                                 {this.state.show_user === elem.uuid ?
                                                                     <UserProfile
@@ -602,7 +602,7 @@ class Play extends Component {
                                             <form onSubmit={this.make_comm}>
                                                 <input className="text-dark" ref={this.com}>
                                                 </input>
-                                                <input type="submit" value={translations[this.props.translationState].movie_page.ok}></input>
+                                                <input class="btn btn-outline-success" type="submit" value={translations[this.props.translationState].movie_page.ok}></input>
                                             </form>
                                         </div>
                                     </div>
@@ -654,41 +654,41 @@ class Play extends Component {
                                     : null
                                 }
                                     <ul className="container-fluid text-center list-films">
-                                        <li>
+                                        <li className="col-md-5">
                                             {this.props.filmInfosState.film_infos.release_date ?
-                                            <div className = 'col-md-6'>
+                                            <div>
                                                 <h3>{translations[this.props.translationState].movie_page.original_release_date}</h3>
                                                 <p>{this.props.filmInfosState.film_infos.release_date}</p>
                                             </div> 
                                             : null}
                                         </li>
-                                        <li>
+                                        <li className="col-md-5">
                                             {this.props.filmInfosState.film_infos.vote_average ?
-                                            <div className = 'col-md-6'>
+                                            <div>
                                                 <h3>{translations[this.props.translationState].movie_page.vote_average}</h3> 
                                                 <p>{this.props.filmInfosState.film_infos.vote_average}</p>
                                             </div> 
                                             : null}
                                         </li>
-                                        <li>
+                                        <li className="col-md-5">
                                             {this.props.filmInfosState.film_infos.runtime ?
-                                            <div className = 'col-md-6'>
+                                            <div>
                                                 <h3>{translations[this.props.translationState].movie_page.runtime}</h3> 
                                                 <p>{this.props.filmInfosState.film_infos.runtime} min</p>
                                             </div> 
                                            : null}
                                         </li>
-                                        <li>
+                                        <li className="col-md-5">
                                             {this.props.filmInfosState.film_infos.revenue ?
-                                            <div className = 'col-md-6'>
+                                            <div>
                                                 <h3>{translations[this.props.translationState].movie_page.revenue}</h3> 
                                                 <p>{this.props.filmInfosState.film_infos.revenue} $</p>
                                             </div> 
                                             : null}
                                         </li>
-                                        <li>
+                                        <li className="col-md-5">
                                             {this.props.filmInfosState.film_infos.production_countries && this.props.filmInfosState.film_infos.production_countries[0] ?
-                                            <div className = 'col-md-6'>
+                                            <div>
                                                 <h3>{translations[this.props.translationState].movie_page.production_countries}</h3> 
                                                 <p>{this.props.filmInfosState.film_infos.production_countries[0].name}</p>
                                             </div> 

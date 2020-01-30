@@ -88,7 +88,9 @@
     font-weight:normal;
 }
 
-.container-fluid
+/* CONTAINER COMPTE SLIDE DROITE*/
+
+.AccountContainer-fluid
 {
     display: flex;
     flex-direction: column;
@@ -98,6 +100,7 @@
     align-content: center;
     background-color: snow;
 }
+/* CONTAINER ADVANCED RESEARCH SLIDE GAUCHE*/
 
 .ARcontainer-fluid
 {

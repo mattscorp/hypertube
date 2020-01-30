@@ -186,7 +186,7 @@ class Account extends Component {
 
     render() {
         return (
-            <div className="container-fluid">
+            <div className="AccountContainer-fluid">
                 <br />
                 {this.props.userConnectState.uuid ? <div className="nav-item overflow-auto col-xs-12 mt-2" onClick={this.logout}><button className="btn btn-outline-danger btn-lg">Logout</button></div> : null}
                 {/* Title */}
