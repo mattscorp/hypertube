@@ -233,8 +233,10 @@ class Play extends Component {
             // .catch((err) => { throw err });
             // setTimeout(async () => {
                 
-                let subtitles = await fetch_get('/subtitles', `imdb_id=${this.props.filmInfosState.film_infos.imdb_id}`);
-                if (this._isMounted && subtitles && subtitles !== undefined && (subtitles.subtitles['en'] || subtitles.subtitles['fre']) && subtitles !== '403') {
+                // let subtitles = await fetch_get('/subtitles', `imdb_id=${this.props.filmInfosState.film_infos.imdb_id}`);
+                let subtitles = await fetch_get('/subtitles', `imdb_id=${this.props.location.search.split('movie=')[1]}`);
+                console.log(subtitles)
+                if (this._isMounted && subtitles && subtitles !== undefined && subtitles.subtitles && subtitles.subtitles!== undefined && (subtitles.subtitles['en'] || subtitles.subtitles['fre']) && subtitles !== '403') {
                     // Adding the subtitles to the props
                     if (this._isMounted) {
                         console.log(subtitles)
@@ -249,7 +251,6 @@ class Play extends Component {
                     this.props.removeSubtitles();
                     console.log('No subtitles available');
                 }
-            // }, 10000)
         }
     }
 
