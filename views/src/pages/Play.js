@@ -533,14 +533,14 @@ class Play extends Component {
                                                     preload="auto" controlsList="nodownload">
                                                     <source src={'http://localhost:8000/movie_player?moviedb_id=' + this.props.location.search.split('movie=')[1]}></source>
                                                     {/* Subtitles */}
-                                                    {this._isMounted && this.props.subtitles ? (
-                                                    this.props.subtitles.subtitles['en'] ? 
+                                                    {this.props.subtitles.subtitles['en'] ? 
                                                         <track label='en' language='en' kind="subtitles" srcLang='en' default={true}
                                                         src={`data:text/vtt;base64, ${this.props.subtitles.subtitles['en']}`}/>
-                                                    : (this.props.subtitles.subtitles['fre'] ? 
-                                                        <track label='fre' language='fre' kind="subtitles" srcLang='fre'
-                                                        src={`data:text/vtt;base64, ${this.props.subtitles.subtitles['fre']}`}/>
-                                                    :null)) : null }
+                                                    :null } */}
+                                                    {this.props.subtitles.subtitles['fr'] ? 
+                                                        <track label='fr' language='fr' kind="subtitles" srcLang='fr'
+                                                        src={`data:text/vtt;base64, ${this.props.subtitles.subtitles['fr']}`}/>
+                                                    :null }
                                                 </video>
                                             </div>
                                             : <div className="movie_not_found col-md-10 col-xl-12">
