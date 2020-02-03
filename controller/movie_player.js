@@ -53,7 +53,7 @@ const downloadSubtitles = async (imdbid) => {
 		});
 }
 
-const getSubtitles = async (imdbid, langs) => {
+const _getSubtitles = async (imdbid, langs) => {
 	return (new Promise((resolve, reject) => {
 		const filename = `${imdbid}_${langs}`;
 		console.log(filename);
@@ -89,7 +89,7 @@ const getSubtitles = async (imdbid, langs) => {
 /*
     Get subtitles
 */
-const _getSubtitles = async(imdbid, langs) => {
+const __getSubtitles = async(imdbid, langs) => {
     try {
         const response = await OS.search({ imdbid, sublanguageid: langs.join(), limit: 'best' })
         return Promise.all(
@@ -227,20 +227,101 @@ const _getSubtitles = async(imdbid, langs) => {
 //     }
 // }
 
+// router.get('/subtitles', async (req, res) => {
+// 	console.log('/asdasdasdasd');
+// 	if (req.query && req.query.imdb_id && req.query.imdb_id != '') {
+// 		const lang = ['en', 'fr'];
+// 		getSubtitles(req.query.imdb_id, lang).then((result) => {
+// 			console.log('Get subtitles Over')
+// 			console.log(result);
+// 			res.json(result);
+// 		}).catch((reason) => {
+// 			console.log('An error occured while fetching subtitles:\n');
+// 			console.log(reason);
+// 		})
+// 	}
+// })
+
+
+
+/*
+    Get subtitles
+*/
+const getSubtitles = async(imdbid, langs) => {
+    try {
+        const response = await OS.search({ imdbid, sublanguageid: langs.join(), limit: 'best' })
+        return Promise.all(
+            Object.entries(response).map(async(entry) => {
+                const langCode = entry[0]
+                return new Promise (async (resolve, reject) => {
+                    let req = http.get(entry[1].vtt)
+                    req.on("response", async (res) => {
+                        const file = fs.createWriteStream(`./subs/${imdbid}_${langCode}`)
+                        if (file) {
+                            const stream = res.pipe(file)
+                            if (stream) {
+                                stream.on('finish', () => {
+                                    try {
+                                        console.log("imdbid ==> sousou titre");
+
+                                        console.log(imdbid);
+                                        if (fs.existsSync(`./subs/${imdbid}_${langCode}`)) {
+                                            fs.readFile(`./subs/${imdbid}_${langCode}`, "utf8", (err, content) => {
+                                                if (!err) {
+                                                    const buffer = Buffer.from(content);
+                                                    resolve({ key: langCode, value: buffer.toString("base64") })
+                                                }
+                                            })
+                                        }
+                                    } catch(err) {
+                                        throw err;
+                                    }
+                                    
+                                })
+                            }
+                        }
+                    })
+                    req.on("error", error => {
+                        reject(error)
+                    })
+                })
+            })
+        )
+    } catch (err) {
+        console.log('Error in getting the subtitles : ' + err);
+    }
+}
+
 router.get('/subtitles', async (req, res) => {
-	console.log('/asdasdasdasd');
-	if (req.query && req.query.imdb_id && req.query.imdb_id != '') {
-		const lang = 'en';
-		getSubtitles(req.query.imdb_id, lang).then((result) => {
-			console.log('Get subtitles Over')
-			console.log(result);
-			res.json(result);
-		}).catch((reason) => {
-			console.log('An error occured while fetching subtitles:\n');
-			console.log(reason);
-		})
-	}
-})
+    if (req.query && req.query.imdb_id && req.query.imdb_id != '') {
+        const langs = ["fre", "eng"];
+        try {
+            const response = await getSubtitles(req.query.imdb_id, langs)
+            let subtitles = {}
+            if (response) {
+                response.forEach((subtitle) => {
+                    subtitles = {
+                        ...subtitles,
+                        [subtitle.key]: subtitle.value,
+                    }
+                })
+            }
+            res.json({ subtitles })
+        } catch (error) {
+            res.json({ error })
+        }
+    }
+});
+
+
+
+
+
+
+
+
+
+
 
 // router.get('/subtitles', async (req, res) => {
 //     if (req.query && req.query.imdb_id && req.query.imdb_id != '') {

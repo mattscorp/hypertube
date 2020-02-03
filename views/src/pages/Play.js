@@ -233,16 +233,21 @@ class Play extends Component {
             // .catch((err) => { throw err });
             // setTimeout(async () => {
                 
-                // let subtitles = await fetch_get('/subtitles', `imdb_id=${this.props.filmInfosState.film_infos.imdb_id}`);
-                let subtitles = await fetch_get('/subtitles', `imdb_id=${this.props.location.search.split('movie=')[1]}`);
+                 let subtitles = await fetch_get('/subtitles', `imdb_id=${this.props.filmInfosState.film_infos.imdb_id}`);
+                //let subtitles = await fetch_get('/subtitles', `imdb_id=${this.props.location.search.split('movie=')[1]}`);
                 console.log(subtitles);
                 console.log('END')
                 if (this._isMounted && subtitles && subtitles !== undefined && subtitles.value !== undefined && (subtitles.key === 'en' || subtitles.key === 'fr') && subtitles !== '403') {
                     // Adding the subtitles to the props
+                    console.log("dans le 1er if");
                     if (this._isMounted) {
+                    console.log("dans le 2eme if");
+
                         console.log(subtitles)
                         if (!this.state.subtitles_OK) {
-                            this.props.setSubtitles(subtitles.subtitles);
+                    console.log("dans le 3eme if");
+
+                            this.props.setSubtitles(subtitles);
                             this.setState({
                                 subtitles_OK: true
                             })
@@ -525,7 +530,7 @@ class Play extends Component {
                                         </div>
                                         {/* Film */}
                                         {this.state.movie_not_found === false ?
-                                            <div className = 'videoPlayer col-md-10 col-xl-12' style={this.state.fake_add > -1 ? {display:'none'} : null}>
+                                           <div className = 'videoPlayer col-md-10 col-xl-12' style={this.state.fake_add > -1 ? {display:'none'} : null}>
                                                 <video width="100%" height="auto"
                                                     ref={this.video_player}
                                                     controls
@@ -534,14 +539,15 @@ class Play extends Component {
                                                     preload="auto" controlsList="nodownload">
                                                     <source src={'http://localhost:8000/movie_player?moviedb_id=' + this.props.location.search.split('movie=')[1]}></source>
                                                     {/* Subtitles */}
-                                                    {this.props.subtitles.key === 'en' ? 
-                                                        <track label='en' language='en' kind="subtitles" srcLang='en' default={true}
+                                                    {this.props.subtitles.subtitles['en'] !== [] ?
+                                                        <track label='en' language='en' kind="subtitles" srclang='en' default={true}
                                                         src={`data:text/vtt;base64, ${this.props.subtitles.subtitles['en']}`}/>
-                                                    :null } */}
-                                                    {this.props.subtitles.key  === 'fr' ? 
-                                                        <track label='fr' language='fr' kind="subtitles" srcLang='fr'
+                                                    :null }
+                                                    {this.props.subtitles.subtitles['fr'] !== [] ?
+                                                        <track label='fr' language='fr' kind="subtitles" srclang='fr'
                                                         src={`data:text/vtt;base64, ${this.props.subtitles.subtitles['fr']}`}/>
                                                     :null }
+                                                    
                                                 </video>
                                             </div>
                                             : <div className="movie_not_found col-md-10 col-xl-12">
