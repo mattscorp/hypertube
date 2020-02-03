@@ -235,8 +235,9 @@ class Play extends Component {
                 
                 // let subtitles = await fetch_get('/subtitles', `imdb_id=${this.props.filmInfosState.film_infos.imdb_id}`);
                 let subtitles = await fetch_get('/subtitles', `imdb_id=${this.props.location.search.split('movie=')[1]}`);
-                console.log(subtitles)
-                if (this._isMounted && subtitles && subtitles !== undefined && subtitles.subtitles && subtitles.subtitles!== undefined && (subtitles.subtitles['en'] || subtitles.subtitles['fre']) && subtitles !== '403') {
+                console.log(subtitles);
+                console.log('END')
+                if (this._isMounted && subtitles && subtitles !== undefined && subtitles.value !== undefined && (subtitles.key === 'en' || subtitles.key === 'fr') && subtitles !== '403') {
                     // Adding the subtitles to the props
                     if (this._isMounted) {
                         console.log(subtitles)
@@ -533,11 +534,11 @@ class Play extends Component {
                                                     preload="auto" controlsList="nodownload">
                                                     <source src={'http://localhost:8000/movie_player?moviedb_id=' + this.props.location.search.split('movie=')[1]}></source>
                                                     {/* Subtitles */}
-                                                    {this.props.subtitles.subtitles['en'] ? 
+                                                    {this.props.subtitles.key === 'en' ? 
                                                         <track label='en' language='en' kind="subtitles" srcLang='en' default={true}
                                                         src={`data:text/vtt;base64, ${this.props.subtitles.subtitles['en']}`}/>
                                                     :null } */}
-                                                    {this.props.subtitles.subtitles['fr'] ? 
+                                                    {this.props.subtitles.key  === 'fr' ? 
                                                         <track label='fr' language='fr' kind="subtitles" srcLang='fr'
                                                         src={`data:text/vtt;base64, ${this.props.subtitles.subtitles['fr']}`}/>
                                                     :null }
