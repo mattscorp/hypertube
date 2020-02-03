@@ -380,13 +380,13 @@ router.get('/movie_player', async (req, res) => {
                 console.log(torrents[0].url)
                 let torrent_magnet = `magnet:?xt=urn:btih:${torrents[0].hash}&dn=${encodeURI(movie_infos_api.original_title)}&tr=http://track.one:1234/announce&tr=udp://track.two:80`;
                 console.log(torrent_magnet)
-                const engine = torrentStream(torrent_magnet, { path: "./torrents" })
+                const engine = torrentStream(torrent_magnet, { path: "/torrents" })
                 engine.on("ready", () => {
                     engine.files.forEach((file) => {
                         if (path.extname(file.name) === ".mp4" || path.extname(file.name) === ".mkv" || path.extname(file.name) === ".avi" ) {
-                            if (fs.existsSync(`./torrents/${file.path}`)) {
+                            if (fs.existsSync(`/torrents/${file.path}`)) {
                                 console.log('PAS DANS LE ELSE')
-                                fs.stat(`./torrents/${file.path}`, function(err, stats) {
+                                fs.stat(`/torrents/${file.path}`, function(err, stats) {
                                     if (err) {
                                         if (err.code === 'ENOENT') {
                                           // 201 Error if file not found
@@ -417,8 +417,8 @@ router.get('/movie_player', async (req, res) => {
                                             let extension2 = extension1[extension1.length - 1];
                                             let stream = {}
                                             try {
-                                                if (fs.existsSync(`./torrents/${file.path}`)) {
-                                                    stream = fs.createReadStream(`./torrents/${file.path}`, { start, end })
+                                                if (fs.existsSync(`/torrents/${file.path}`)) {
+                                                    stream = fs.createReadStream(`/torrents/${file.path}`, { start, end })
                                                     .on("open", function() {
                                                         console.log('dans open')
                                                         stream.pipe(res);
@@ -451,6 +451,104 @@ router.get('/movie_player', async (req, res) => {
         }
     }
 })
+// router.get('/movie_player', async (req, res) => {
+//     if (req.query && req.query.moviedb_id && req.query.moviedb_id != '') {
+//         let movie_infos_api = await movie_model.movie_infos(req.query.moviedb_id);
+//         console.log(movie_infos_api)
+//         if (movie_infos_api.status_code == 34) {
+//             console.log('The movie could not be found');
+//             res.status(201).send('No movie');
+//         } else if (movie_infos_api && movie_infos_api.id == req.query.moviedb_id) {
+//             // const providers = await torrent.enable_providers(['Rarbg', 'Torrentz2', 'ThePirateBay', 'KickassTorrents', 'TorrentProject']);
+//             const torrents = await torrent.get_magnet(movie_infos_api);
+//             console.log(torrents)
+//             if (torrents && torrents.success && torrents.success === false) {
+//                 console.log('PAS DE MAGNET');
+//                 res.status(201).send('No movie');
+//             } else if (torrents && torrents[0] && torrents[0] !== undefined && torrents[0].url) {
+//                 console.log(torrents[0].url)
+//                 let torrent_magnet = `magnet:?xt=urn:btih:${torrents[0].hash}&dn=${encodeURI(movie_infos_api.original_title)}&tr=http://track.one:1234/announce&tr=udp://track.two:80`;
+//                 console.log(torrent_magnet)
+//                 try {
+//                     const engine = torrentStream(torrent_magnet, { path: "./torrents" })
+//                     if (engine) {
+//                         engine.on("ready", () => {
+//                             engine.files.forEach((file) => {
+//                                 if (path.extname(file.name) === ".mp4" || path.extname(file.name) === ".mkv" || path.extname(file.name) === ".avi" ) {
+//                                     if (fs.existsSync(`./torrents/${file.path}`)) {
+//                                         console.log('PAS DANS LE ELSE')
+//                                         fs.stat(`./torrents/${file.path}`, function(err, stats) {
+//                                             if (err) {
+//                                                 if (err.code === 'ENOENT') {
+//                                                 // 201 Error if file not found
+//                                                 return res.status(201).send('No movie');
+//                                                 }
+//                                                 res.end(err);
+//                                             } else {
+//                                                 let range = req.headers.range;
+//                                                 if (!range) {
+//                                                     // 416 Wrong range
+//                                                     return res.sendStatus(416);
+//                                                 } else {
+//                                                     console.log('LA')
+//                                                     const positions = range.replace(/bytes=/, "").split("-");
+//                                                     let start = parseInt(positions[0], 10);
+//                                                     const total = stats.size;
+//                                                     const end = positions[1] ? parseInt(positions[1], 10) : total - 1;
+//                                                     if (start >= end)
+//                                                         start = end
+//                                                     const chunksize = (end - start) + 1;
+//                                                     res.writeHead(206, {
+//                                                         "Content-Range": "bytes " + start + "-" + end + "/" + total,
+//                                                         "Accept-Ranges": "bytes",
+//                                                         "Content-Length": chunksize,
+//                                                         "Content-Type": "video/mp4"
+//                                                     })
+//                                                     let extension1 = file.path.split('.');
+//                                                     let extension2 = extension1[extension1.length - 1];
+//                                                     let stream = {}
+//                                                     try {
+//                                                         if (fs.existsSync(`./torrents/${file.path}`)) {
+//                                                             stream = fs.createReadStream(`./torrents/${file.path}`, { start, end })
+//                                                             .on("open", function() {
+//                                                                 console.log('dans open')
+//                                                                 stream.pipe(res);
+//                                                             }).on("error", function(err) {
+//                                                                 res.end(err);
+//                                                             })
+//                                                         }
+//                                                     } catch(err) {
+//                                                         throw err;
+//                                                     }
+//                                                 }
+//                                             }
+//                                         })
+//                                     } else {
+//                                         const extension_split = file.name.split('.');
+//                                         const extension = extension_split[extension_split.length - 1]
+//                                         const year = movie_infos_api.release_date.split('-')[0];
+//                                         movie_model.add_torrent(movie_infos_api.id, file.path, extension, file.name, year, torrents[0].url);
+//                                         console.log("DANS LE ELSE");
+//                                         const fileStream = file.createReadStream()
+//                                         fileStream.pipe(res)
+//                                     }
+//                                 }
+//                             })
+//                         })
+//                     } else {
+//                         console.log('error in getting the torrents');
+//                     }
+//                 } catch(err) 
+//                 {
+//                     console.log(err);
+//                 }
+//             } else {
+//                 console.log('PAS DE TORRENT');
+//                 res.status(201).send('No movie')
+//             }
+//         }
+//     }
+// })
 
 /*
     MOVIE_ADVANCEMENT: sent every minute to update the viewer's advancement
