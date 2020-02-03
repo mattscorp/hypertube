@@ -230,13 +230,13 @@ router.get('/movie_player', async (req, res) => {
                 console.log(torrents[0].url)
                 let torrent_magnet = `magnet:?xt=urn:btih:${torrents[0].hash}&dn=${encodeURI(movie_infos_api.original_title)}&tr=http://track.one:1234/announce&tr=udp://track.two:80`;
                 console.log(torrent_magnet)
-                const engine = torrentStream(torrent_magnet, { path: "./views/public/torrents" })
+                const engine = torrentStream(torrent_magnet, { path: "./torrents" })
                 engine.on("ready", () => {
                     engine.files.forEach((file) => {
                         if (path.extname(file.name) === ".mp4" || path.extname(file.name) === ".mkv" || path.extname(file.name) === ".avi" ) {
-                            if (fs.existsSync(`./views/public/torrents/${file.path}`)) {
+                            if (fs.existsSync(`./torrents/${file.path}`)) {
                                 console.log('PAS DANS LE ELSE')
-                                fs.stat(`./views/public/torrents/${file.path}`, function(err, stats) {
+                                fs.stat(`./torrents/${file.path}`, function(err, stats) {
                                     if (err) {
                                         if (err.code === 'ENOENT') {
                                           // 201 Error if file not found
@@ -267,8 +267,8 @@ router.get('/movie_player', async (req, res) => {
                                             let extension2 = extension1[extension1.length - 1];
                                             let stream = {}
                                             try {
-                                                if (fs.existsSync(`./views/public/torrents/${file.path}`)) {
-                                                    stream = fs.createReadStream(`./views/public/torrents/${file.path}`, { start, end })
+                                                if (fs.existsSync(`./torrents/${file.path}`)) {
+                                                    stream = fs.createReadStream(`./torrents/${file.path}`, { start, end })
                                                     .on("open", function() {
                                                         console.log('dans open')
                                                         stream.pipe(res);
