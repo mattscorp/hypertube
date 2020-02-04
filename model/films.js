@@ -103,12 +103,8 @@ const search_movies = async (page, public_category, film_category, name, rating,
         if (duration != '' && duration != undefined)
             duration_URL = `&with_runtime.lte=${duration}`;
         if (decade != '') {
-            console.log(decade);
             decadeTop = +decade + 10;
-            console.log(decadeTop);
-
             decade_URL = `&release_date.gte=${decade}-01-01&release_date.lte=${decadeTop}-01-01`;
-            console.log(decade_URL);
         }
         let sql = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&vote_count.gte=10&query=${name}${duration_URL}${decade_URL}${rating_URL}${US_CERTIFICATE}${CATEGORY}&page=${page}&language=${language_full}`;
         request(sql, {json: true}, function (error, response, body) {

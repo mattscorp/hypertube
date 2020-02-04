@@ -539,11 +539,11 @@ class Play extends Component {
                                                     preload="auto" controlsList="nodownload">
                                                     <source src={'http://localhost:8000/movie_player?moviedb_id=' + this.props.location.search.split('movie=')[1]}></source>
                                                     {/* Subtitles */}
-                                                    {this.props.subtitles.subtitles['en'] !== '' ?
+                                                    {this.props.subtitles.subtitles['en'] !== '' && this.props.subtitles.subtitles['en'] !== undefined ?
                                                         <track label='en' language='en' kind="subtitles" srcLang='en' default={true}
                                                         src={`data:text/vtt;base64, ${this.props.subtitles.subtitles['en']}`}/>
                                                     :null }
-                                                    {this.props.subtitles.subtitles['fr'] !== '' ?
+                                                    {this.props.subtitles.subtitles['fr'] !== '' && this.props.subtitles.subtitles['fr'] !== undefined ?
                                                         <track label='fr' language='fr' kind="subtitles" srcLang='fr'
                                                         src={`data:text/vtt;base64, ${this.props.subtitles.subtitles['fr']}`}/>
                                                     :null }
