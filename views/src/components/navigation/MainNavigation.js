@@ -78,18 +78,35 @@ class MainNavigation extends Component {
             credentials: 'include'
         })
         .then(res => {
-            if (res.status !== 200) {
-                this.props.setUserDisconnect()
+            if (res.status === 401 || res === undefined || res.status === undefined){
+                alert("premier");
+                return({error : true});
+            }
+            else if (res.status !== 200) {
+                alert("2");
+                this.props.setUserDisconnect();
+                return({error : true});
             } else {
+                alert("3");
+                // return (JSON.stringify(res));
+                // return (JSON.parse(res));
                 return res.json();
             }
         })
         .then(resData => {
+
             if (resData && resData[0] && resData[0].uuid && resData[0].uuid !== undefined) {
-                this.props.setUserConnect(resData[0]);
-                if (resData[0].dark_mode === 1)
-                    this.props.setDarkMode();
+                alert("premier");
+                if (!(resData.error && resData.error === true)){
+                alert("deuxieme");
+                    
+                    this.props.setUserConnect(resData[0]);
+                    if (resData[0].dark_mode === 1)
+                        this.props.setDarkMode();
+
+                }
             }
+            alert("sortie");
         })
         .then(() => {
             if (this.props.userConnectState.language === "English")
