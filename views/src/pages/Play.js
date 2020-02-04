@@ -540,11 +540,11 @@ class Play extends Component {
                                                     <source src={'http://localhost:8000/movie_player?moviedb_id=' + this.props.location.search.split('movie=')[1]}></source>
                                                     {/* Subtitles */}
                                                     {this.props.subtitles.subtitles['en'] !== '' ?
-                                                        <track label='en' language='en' kind="subtitles" srclang='en' default={true}
+                                                        <track label='en' language='en' kind="subtitles" srcLang='en' default={true}
                                                         src={`data:text/vtt;base64, ${this.props.subtitles.subtitles['en']}`}/>
                                                     :null }
                                                     {this.props.subtitles.subtitles['fr'] !== '' ?
-                                                        <track label='fr' language='fr' kind="subtitles" srclang='fr'
+                                                        <track label='fr' language='fr' kind="subtitles" srcLang='fr'
                                                         src={`data:text/vtt;base64, ${this.props.subtitles.subtitles['fr']}`}/>
                                                     :null }
                                                     
@@ -610,7 +610,7 @@ class Play extends Component {
                                             <form onSubmit={this.make_comm}>
                                                 <input className="text-dark" ref={this.com}>
                                                 </input>
-                                                <input class="btn btn-outline-success" type="submit" value={translations[this.props.translationState].movie_page.ok}></input>
+                                                <input className="btn btn-outline-success" type="submit" value={translations[this.props.translationState].movie_page.ok}></input>
                                             </form>
                                         </div>
                                     </div>
