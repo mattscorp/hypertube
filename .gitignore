@@ -6,3 +6,7 @@ views/public/torrents
 views/public/subtitles
 sandbox
 model/db_connect.js
+subs/*
+!subs/.hiden
+torrents/*
+!torrents/.hidden

@@ -191,7 +191,7 @@ class Account extends Component {
                 {this.props.userConnectState.uuid ? <div className="nav-item overflow-auto col-xs-12 mt-2" onClick={this.logout}><button className="btn btn-outline-danger btn-lg">Logout</button></div> : null}
                 {/* Title */}
 
-                    {/*<h1 class="text-muted">{translations[this.props.translationState].account.header}</h1>*/}
+                    {/*<h1 className="text-muted">{translations[this.props.translationState].account.header}</h1>*/}
                 {/* Dark mode toggle */}
                         <label htmlFor="darkMode">{translations[this.props.translationState].account.dark_mode}</label>
                         <label className="switch">
@@ -199,7 +199,7 @@ class Account extends Component {
                             <span className="slider round"></span>
                         </label>
                 {/* Change language */}
-                    <select class="selectpicker show-tick" defaultValue={this.props.translationState} onChange={this.change_language}  ref={this.language}>
+                    <select className="selectpicker show-tick" defaultValue={this.props.translationState} onChange={this.change_language}  ref={this.language}>
                         <option value="en">{translations[this.props.translationState].main_navigation.english}</option>
                         <option value="fr">{translations[this.props.translationState].main_navigation.french}</option>
                     </select>
@@ -209,7 +209,7 @@ class Account extends Component {
                     {/* Update profile picture */}
                     <form onSubmit={this.profilePictureForm}>
                           <br /> <input onChange={this.onChangePicture} required type="file" accept="image/png, image/jpeg, image/jpg" title="Update picture" ref={this.profilePictureEl}/>
-                           <br /><button class="btn btn-outline-success">{translations[this.props.translationState].account.update_profile_picture}</button>
+                           <br /><button className="btn btn-outline-success">{translations[this.props.translationState].account.update_profile_picture}</button>
                     </form>
                 
                 {/* Accout form (always available) */}
@@ -247,7 +247,7 @@ class Account extends Component {
                     </div>
                     <div className="form-actions col-xs-12">
                         <div className="">
-                            <button class="btn btn-dark">{translations[this.props.translationState].account.change_password}</button>
+                            <button className="btn btn-dark">{translations[this.props.translationState].account.change_password}</button>
                         </div>
                     </div>
                 </form> : null}

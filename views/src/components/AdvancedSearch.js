@@ -7,8 +7,8 @@ class AdvancedSearch extends Component {
         return (
           <div className="ARcontainer-fluid">
                 <form>
-                        <label class="text-muted">{translations[this.props.translationState].advanced_search.seen}</label><br />
-                        <select class="btn btn-outline-secondary" onChange={this.props.advanceSearchFunction} ref={this.props.seen} name="seen">
+                        <label className="text-muted">{translations[this.props.translationState].advanced_search.seen}</label><br />
+                        <select className="btn btn-outline-secondary" onChange={this.props.advanceSearchFunction} ref={this.props.seen} name="seen">
                             <option defaultValue>{translations[this.props.translationState].advanced_search.all_movies}</option>
                             <option>{translations[this.props.translationState].advanced_search.seen}</option>
                             {/* <option>{translations[this.props.translationState].advanced_search.not_seen_yet}</option> */}
@@ -20,8 +20,8 @@ class AdvancedSearch extends Component {
                             <option>{translations[this.props.translationState].advanced_search.watching}</option>
                         </select>
                     </div> */}
-                       <br /><label class="text-muted">{translations[this.props.translationState].advanced_search.gender}</label><br />
-                        <select  class="btn btn-outline-secondary" onChange={this.props.advanceSearchFunction} ref={this.props.gender}>
+                       <br /><label className="text-muted">{translations[this.props.translationState].advanced_search.gender}</label><br />
+                        <select  className="btn btn-outline-secondary" onChange={this.props.advanceSearchFunction} ref={this.props.gender}>
                             <option defaultValue value="All">{translations[this.props.translationState].advanced_search.all}</option>
                             <option value="Action">{translations[this.props.translationState].advanced_search.action}</option>
                             <option value="Adventure">{translations[this.props.translationState].advanced_search.adventure}</option>
@@ -43,22 +43,22 @@ class AdvancedSearch extends Component {
                             <option value="War">{translations[this.props.translationState].advanced_search.war}</option>
                             <option value="Western">{translations[this.props.translationState].advanced_search.western}</option>
                         </select>
-                        <br /><label class="text-muted">{translations[this.props.translationState].advanced_search.public}</label><br />
-                        <select class="btn btn-outline-secondary" onChange={this.props.advanceSearchFunction} ref={this.props.public} name="public">
+                        <br /><label className="text-muted">{translations[this.props.translationState].advanced_search.public}</label><br />
+                        <select className="btn btn-outline-secondary" onChange={this.props.advanceSearchFunction} ref={this.props.public} name="public">
                             <option defaultValue value="All movies">{translations[this.props.translationState].advanced_search.all_movies}</option>
                             <option value="G">{translations[this.props.translationState].advanced_search.family_friendly}</option>
                         </select>
-                        <br /><label class="text-muted">{translations[this.props.translationState].advanced_search.minimum_rating}</label><br />
+                        <br /><label className="text-muted">{translations[this.props.translationState].advanced_search.minimum_rating}</label><br />
                         <input onChange={this.props.advanceSearchFunction} ref={this.props.rating} type="range" defaultValue="1" name="rating" min="1" max="10"/>
-                        <label class="text-muted">{translations[this.props.translationState].advanced_search.maximum_duration}</label><br />
-                        <select class="btn btn-outline-secondary" onChange={this.props.advanceSearchFunction} ref={this.props.duration} name="duration">
+                        <label className="text-muted">{translations[this.props.translationState].advanced_search.maximum_duration}</label><br />
+                        <select className="btn btn-outline-secondary" onChange={this.props.advanceSearchFunction} ref={this.props.duration} name="duration">
                             <option defaultValue></option>
                             <option value="60">{translations[this.props.translationState].advanced_search.less_than_1_hour}</option>
                             <option value="120">{translations[this.props.translationState].advanced_search.less_than_2_hour}</option>
                             <option value="180">{translations[this.props.translationState].advanced_search.less_than_3_hour}</option>
                         </select>
-                        <br /><label class="text-muted">{translations[this.props.translationState].advanced_search.decade}</label>
-                        <br /><select class="btn btn-outline-secondary" onChange={this.props.advanceSearchFunction} ref={this.props.decade} name="decade"><br />
+                        <br /><label className="text-muted">{translations[this.props.translationState].advanced_search.decade}</label>
+                        <br /><select className="btn btn-outline-secondary" onChange={this.props.advanceSearchFunction} ref={this.props.decade} name="decade">
                             <option></option>
                             <option>2010</option>
                             <option>2000</option>
@@ -70,7 +70,7 @@ class AdvancedSearch extends Component {
                             <option>1940</option>
                             <option>1930</option>
                         </select><br />
-                    <br /><button class="btn btn-outline-secondary" onClick={this.props.clearAdvancedSearch}>{translations[this.props.translationState].advanced_search.clear_search}</button>
+                    <br /><button className="btn btn-outline-secondary" onClick={this.props.clearAdvancedSearch}>{translations[this.props.translationState].advanced_search.clear_search}</button>
                 </form>
             </div>
         )
