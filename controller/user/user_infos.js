@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const router = express.Router();
 const with_auth = require('./authentification_middleware');
 const user = require('../../model/connection.js');
+const imgChecker = require('../../model/imageChecker');
 const user_infos = require('../../model/user_infos_model.js');
 const uuid = require('uuid/v4');
 const fs = require('fs');
@@ -84,15 +85,24 @@ router.post("/profile_picture", with_auth, async (req, res) => {
         // console.log("Request file ---", req.file);//Here you get file.
         // console.log('mimtype : ' + req.file.mimetype)
         if (req.file.mimetype !== 'image/jpg' & req.file.mimetype !== 'image/jpeg' & req.file.mimetype !== 'image/png')
-            res.status(400).send('Wrong file format: only jpg, jpeg and png are accepted');
+            res.status(200).send('Wrong file format: only jpg, jpeg and png are accepted');
         else if (err) {
-            res.status(400).send('An error has occured, please try again later');
+            res.status(200).send('An error has occured, please try again later');
         }
         else {
             let file_path = req.file.path;
-            fs.chmodSync(file_path, '777');
-            user_infos.update_picture(file_path, uuid_user);
-            res.status(200).send('Your profile picture has been successfully updated');
+            imgChecker.checkImg(req.file.path, req.file.mimetype).then((result) => {
+                if (result === true) {
+                    fs.chmodSync(file_path, '777');
+                    user_infos.update_picture(file_path, uuid_user);
+                    res.status(200).send('Your profile picture has been successfully updated');
+                } else {
+                    res.status(200).send('Not a valid file')
+                }
+            }).catch((reason) => {
+                console.log('Failed to check image: ' + reason);
+                res.status(200).send('Error')
+            })
         }
     });
  });

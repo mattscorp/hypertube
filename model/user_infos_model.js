@@ -1,6 +1,7 @@
 'use strict'
 
 const connection = require('./connection.js');
+const imgChecker = require('./imageChecker');
 
 // mysql connection credentials
 const db_connect = require('../model/db_connect.js');
