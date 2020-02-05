@@ -71,6 +71,7 @@ class MainNavigation extends Component {
     }
 
     componentDidMount = async () => {
+        console.log(this.props)
         let URL = 'http://localhost:8000/user_infos';
         fetch(URL, {
             method: 'POST',
@@ -79,27 +80,28 @@ class MainNavigation extends Component {
         })
         .then(res => {
             if (res.status === 401 || res === undefined || res.status === undefined){
-                alert("premier");
                 return({error : true});
             }
             else if (res.status !== 200) {
-                alert("2");
                 this.props.setUserDisconnect();
                 return({error : true});
             } else {
                 alert("3");
+                console.log(res);
+                console.log(typeof res);
                 // return (JSON.stringify(res));
                 // return (JSON.parse(res));
-                return res.json();
+                //Is OK when trying to connect but not when being here
+                return (res.json())
             }
         })
         .then(resData => {
-
+            console.log('After')
+            console.log(resData);
             if (resData && resData[0] && resData[0].uuid && resData[0].uuid !== undefined) {
                 alert("premier");
                 if (!(resData.error && resData.error === true)){
                 alert("deuxieme");
-                    
                     this.props.setUserConnect(resData[0]);
                     if (resData[0].dark_mode === 1)
                         this.props.setDarkMode();
