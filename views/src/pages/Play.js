@@ -437,7 +437,14 @@ class Play extends Component {
 
     show_user = async (elem) => {
         let user_infos = await fetch_post('/user_public_profile', {uuid: elem.uuid});
-        if (user_infos !== undefined && user_infos !== '' && user_infos !== '403') {
+        if (user_infos === '204'){
+            this.setState({
+                show_user: undefined,
+                user_infos: undefined
+                })
+
+        }
+        else if (user_infos !== undefined && user_infos !== '' && user_infos !== '403') {
             if (this._isMounted) {
                 this.setState({
                     show_user: elem.uuid,
@@ -445,6 +452,7 @@ class Play extends Component {
                 })
             }
         }
+        
     }
     
     fake_ad_countdown = () => {
@@ -584,7 +592,7 @@ class Play extends Component {
                                                                 {elem.uuid === this.props.userConnectState.uuid ?
                                                                     <button className="btn btn-outline-danger" onClick={() => this.delete_com(elem)}>X</button> : null
                                                                 }
-                                                                {this.state.show_user === elem.uuid ?
+                                                                {this.state.show_user === elem.uuid && this.state.user_infos !== undefined ?
                                                                     <UserProfile
                                                                         elem={elem}
                                                                         hide_user={this.hide_user}

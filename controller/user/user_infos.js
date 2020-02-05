@@ -117,7 +117,12 @@ router.post('/dark_mode', with_auth, async(req, res) => {
 router.post('/user_public_profile', with_auth, async(req, res) => {
     if (req && req.body && req.body.uuid != '') {
         let public_profile = await user_infos.get_public_profile(req.body.uuid);
-        res.status(200).send(public_profile[0]);
+        if (public_profile == 'vide'){
+            res.sendStatus(204);
+        }
+        else{
+           res.send(public_profile[0]).status(200);
+        }
     } else {
         res.sendStatus(403);
     }

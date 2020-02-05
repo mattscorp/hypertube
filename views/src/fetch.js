@@ -11,6 +11,8 @@ const fetch_post = async (path, body) => {
                 window.location.assign('/');
             else if (res.status === 403)
                 resolve('403');
+            else if (res.status === 204)
+                resolve('204');
             else
                 resolve(res.json());
         })
