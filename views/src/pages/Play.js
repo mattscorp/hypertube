@@ -144,8 +144,9 @@ class Play extends Component {
         .then((res) => {
             if (res.status === 401)
                 window.location.assign('/');
-            else if (res.status !== 200)
-                console.log('Fail to fetch comment on the select movie');
+            else if (res.status !== 200) {
+
+            }
             else
                 return res.json();
         })
@@ -208,55 +209,21 @@ class Play extends Component {
     // GET THE SUBTITLES FOR THE MOVIE
     get_subtitles = async () => {
         if (this._isMounted) {
-        
-            // fetch(`http://localhost:8000/subtitles?imdb_id=${this.props.filmInfosState.film_infos.imdb_id}`, {
-            //     method: 'GET',
-            //     credentials: 'include',
-            //     headers: {'Content-Type': 'application/json'},
-            // })
-            // .then((res) => {
-            //     if (res.status === 401) {
-            //         alert("1111111");
-            //         window.location.assign('/');
-            //     } else if (res.status === 403) {
-            //         alert("2222222");
-            //         alert('403');
-            //         alert('No subtitles available');
-            //     } else {
-            //         alert("3333333");
-            //         if (res.subtitles) {
-            //             if ((res.subtitles['en'] !== undefined && res.subtitles['en'] != '') || (res.subtitles['fre'] !== undefined && res.subtitles['fre'] != ''))
-            //                 this.props.setSubtitles(res.subtitles);
-            //         }
-            //     }
-            // })
-            // .catch((err) => { throw err });
-            // setTimeout(async () => {
-                
-                 let subtitles = await fetch_get('/subtitles', `imdb_id=${this.props.filmInfosState.film_infos.imdb_id}`);
-                //let subtitles = await fetch_get('/subtitles', `imdb_id=${this.props.location.search.split('movie=')[1]}`);
-                console.log(subtitles);
-                console.log('END')
-                if (this._isMounted && subtitles && subtitles !== undefined && subtitles.subtitles && subtitles.subtitles !== undefined && subtitles.subtitles !== '403') {
-                    // Adding the subtitles to the props
-                    console.log("dans le 1er if");
-                    if (this._isMounted) {
-                    console.log("dans le 2eme if");
-
-                        console.log(subtitles.subtitles)
-                        if (!this.state.subtitles_OK) {
-                    console.log("dans le 3eme if");
-
-                            this.props.setSubtitles(subtitles.subtitles);
-                            this.setState({
-                                subtitles_OK: true
-                            })
-                        }
+                let subtitles = await fetch_get('/subtitles', `imdb_id=${this.props.filmInfosState.film_infos.imdb_id}`);
+            //let subtitles = await fetch_get('/subtitles', `imdb_id=${this.props.location.search.split('movie=')[1]}`);
+            if (this._isMounted && subtitles && subtitles !== undefined && subtitles.subtitles && subtitles.subtitles !== undefined && subtitles.subtitles !== '403') {
+                // Adding the subtitles to the props
+                if (this._isMounted) {
+                    if (!this.state.subtitles_OK) {
+                        this.props.setSubtitles(subtitles.subtitles);
+                        this.setState({
+                            subtitles_OK: true
+                        })
                     }
-                } else {
-                    this.props.removeSubtitles();
-                    console.log('No subtitles available');
                 }
+            } else {
+                this.props.removeSubtitles();
+            }
         }
     }
 
@@ -424,7 +391,7 @@ class Play extends Component {
             }
         })
         .then((resData) => {
-            if (resData[0].rating !== undefined) {
+            if (resData && resData !== undefined && resData[0] && resData[0] !== undefined && resData[0].rating !== undefined) {
                 if (this._isMounted) {
                     this.setState({
                         user_rating: resData[0].rating

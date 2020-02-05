@@ -7,7 +7,7 @@ const rimraf = require("rimraf");
 const directoryPath = path.join(__dirname, '/../views/public/torrents');
 
 const delete_movie = to_delete => {
-    console.log("I WILL DELETE " + to_delete)
+    console.log("Delete movie : " + to_delete)
     rimraf(to_delete, function () {
         fs.rmdir(to_delete)
     });

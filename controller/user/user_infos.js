@@ -82,8 +82,6 @@ router.post('/update_password', with_auth, async (req, res) => {
 router.post("/profile_picture", with_auth, async (req, res) => {
     let uuid_user = req.uuid;
     upload(req, res, (err) => {
-        // console.log("Request file ---", req.file);//Here you get file.
-        // console.log('mimtype : ' + req.file.mimetype)
         if (req.file.mimetype !== 'image/jpg' & req.file.mimetype !== 'image/jpeg' & req.file.mimetype !== 'image/png')
             res.status(200).send('Wrong file format: only jpg, jpeg and png are accepted');
         else if (err) {

@@ -25,7 +25,7 @@ const get_magnet = async (movie_infos) => {
         let selectedSource = await selected_source();
         request.get({url: `${selectedSource}/list_movies.json?query_term=${movie_infos.imdb_id}&limit=1`}, async (err, results, body) => {
             if (err) {
-                console.log('Error 1 : ' + err);
+                console.log('Error : ' + err);
                 resolve({ success: false });
             } else if (JSON.parse(body).status == 'ok') {
                 const parseBody = JSON.parse(body.replace(/^\ufeff/g,""));
@@ -33,7 +33,7 @@ const get_magnet = async (movie_infos) => {
                     resolve(parseBody.data.movies[0].torrents)
                 } else resolve({ success: false })
             } else {
-                console.log('Error 2 : ' + err);
+                console.log('Error : ' + err);
                 resolve({ success: false });
             }
         })

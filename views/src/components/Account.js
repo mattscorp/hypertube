@@ -28,7 +28,6 @@ class Account extends Component {
     // LOGOUT
     logout = (event) => {
         event.preventDefault();
-        console.log('ICI');
         fetch(`http://localhost:8000/logout`, {
             method: 'POST',
             credentials: 'include',
