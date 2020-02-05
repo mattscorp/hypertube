@@ -81,6 +81,8 @@ class AuthPage extends Component {
         });
     }
 
+    callback = () => {}
+
     // FORGOTTEN PASSWORD
     forgottenPassword = (event) => {
         event.preventDefault();
@@ -243,7 +245,7 @@ class AuthPage extends Component {
                                 </div>
                                 )}
                                 {/* GOOGLE RECAPTCHA V2 */}
-                                {this.state.isLogin ? null : (
+                                {this.state.isLogin ? false : (
                                     <div className="mx-auto">
                                         <ReCAPTCHA
                                             ref={this.recaptchaEl}
