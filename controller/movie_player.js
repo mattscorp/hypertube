@@ -105,7 +105,6 @@ router.get('/movie_player', async (req, res) => {
             res.status(201).send('No movie');
         } else if (movie_infos_api && movie_infos_api.id == req.query.moviedb_id) {
             const torrents = await torrent.get_magnet(movie_infos_api);
-            console.log(torrents)
             if (torrents && torrents.success && torrents.success === false) {
                 console.log('No magnet available');
                 res.status(201).send('No movie');

@@ -46,7 +46,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "preinstall": "npx npm-force-resolutions",
-    "start": "(node setup.js && npm install && nodemon controller/app.js) || true"
+    "start": "(npm install && nodemon controller/app.js) || true"
   },
   "repository": {
     "type": "git",
