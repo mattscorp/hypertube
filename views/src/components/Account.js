@@ -229,19 +229,19 @@ class Account extends Component {
                     <div className="form-group col-xs-12">
                         <label className="col-xs-6 col-form-label text-md-right" htmlFor="password_confirm">{translations[this.props.translationState].account.new_password}</label>
                         <div className="col-xs-6">
-                            <input title="Must containe 8 characters, small and capital letters, numbers and special characters." required className="form-control" type="password" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" id="password_new" ref={this.passwordNewEl}/>
+                            <input title="Must containe 8 characters, small and capital letters, numbers and special characters." required className="form-control" type="password" autoComplete="on" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" id="password_new" ref={this.passwordNewEl}/>
                         </div>
                     </div>
                     <div className="form-group col-xs-12">
                         <label className="col-xs-6 col-form-label text-md-right" htmlFor="password_confirm">{translations[this.props.translationState].account.confirm_password}</label>
                         <div className="col-xs-6">
-                            <input title="Must containe 8 characters, small and capital letters, numbers and special characters." required className="form-control" type="password" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" id="password_confirm" ref={this.passwordConfirmEl}/>
+                            <input title="Must containe 8 characters, small and capital letters, numbers and special characters." required className="form-control" type="password" autoComplete="on" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" id="password_confirm" ref={this.passwordConfirmEl}/>
                         </div>
                     </div>
                     <div className="form-group col-xs-12">
                         <label className="col-xs-6 col-form-label text-md-right" htmlFor="password_confirm">{translations[this.props.translationState].account.old_password}</label>
                         <div className="col-xs-6">
-                            <input title="Must containe 8 characters, small and capital letters, numbers and special characters." required className="form-control" type="password" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" id="password_old" ref={this.passwordOldEl}/>
+                            <input title="Must containe 8 characters, small and capital letters, numbers and special characters." required className="form-control" type="password" autoComplete="on" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" id="password_old" ref={this.passwordOldEl}/>
                         </div>
                     </div>
                     <div className="form-actions col-xs-12">
