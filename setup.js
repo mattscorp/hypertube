@@ -1,5 +1,4 @@
-let con = require('./model/db_connect').con;
-let con1 = require('./model/db_connect').con1;
+let con = require('./model/db_connect').con1;
 
 function createTables () {
     return (new Promise((resolve, reject) => {
@@ -62,27 +61,27 @@ function createTables () {
     }))
 }
 
-con1.query('DROP DATABASE IF EXISTS `hypertube`', [], (err) => {
+con.query('DROP DATABASE IF EXISTS `hypertube`', [], (err) => {
     if (err) {
         console.log(err.stack);
         process.exit(0);
     }
-    con1.query('CREATE DATABASE `hypertube`', [], (err) => {
+    con.query('CREATE DATABASE `hypertube`', [], (err) => {
         if (err) {
             console.log(err.stack);
             process.exit(0);
         }
-        con1.query('USE `hypertube`', [], (err) => {
+        con.query('USE `hypertube`', [], (err) => {
             if (err) {
                 console.log(err.stack);
                 process.exit(0);
             }
             createTables().then(() => {
-                con1.end();
+                con.end();
                 console.log('Setup done, database is ready');
                 console.log('You can now launch server with npm start');
             }).catch((reason) => {
-                con1.end();
+                con.end();
                 console.log('Failed to setup database:\n\t' + reason);
             })
         })
