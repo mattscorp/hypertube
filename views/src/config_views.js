@@ -1,27 +1,27 @@
 // CLIENT_ID 42
-const uuid_42 = '6c052f70112fb5a99b4de55b7191641e92012a9a7e35a3f61d4d3a22bcbbcbd8';
+const uuid_42 = '';
 module.exports.uuid_42 = uuid_42;
 
 // CLIENT_ID GITHUB
-const client_github = 'dfec2b7bc063846a39b4';
+const client_github = '';
 module.exports.client_github = client_github;
 
 // CLIENT_ID GOOGLE
-const client_google = '321607071701-la7bhht64qj1s2oep0d9r02lbo1is61o.apps.googleusercontent.com';
+const client_google = '';
 module.exports.client_google = client_google;
 
 // CLIENT_ID INSTAGRAM
-const client_instagram = '023c2b2d6cf84735860a7e3cea4641f9';
+const client_instagram = '';
 module.exports.client_instagram = client_instagram;
 
 // CLIENT_ID FACEBOOK
-const client_facebook = '420084558677477';
+const client_facebook = '';
 module.exports.client_facebook = client_facebook;
 
 // GOOGLE RECAPTCHA V2 ID PUBLIC
-const google_recaptcha_public = '6Ldc-MEUAAAAAHHL6HBdseQHoxbpBlKBqQUdNeEI';
+const google_recaptcha_public = '';
 module.exports.google_recaptcha_public = google_recaptcha_public;
 
 // GOOGLE RECAPTCHA V2 ID PRIVATE
-const google_recaptcha_private = '6Ldc-MEUAAAAAHpnD8dR7-p8kSyArySli_0ZmKjL';
+const google_recaptcha_private = '';
 module.exports.google_recaptcha_private = google_recaptcha_private;
